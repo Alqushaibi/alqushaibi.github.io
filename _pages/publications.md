@@ -1,5 +1,5 @@
 ---
-title: "Publications ([Google Scholar Profile](https://scholar.google.com.hk/citations?user=mj5a8WgAAAAJ&hl))"
+title: "Publications ([Google Scholar Profile](https://scholar.google.com/citations?hl=en&user=7B_-M3YAAAAJ))"
 permalink: /publications/
 author_profile: true
 ---
@@ -7,19 +7,19 @@ author_profile: true
 <sup>*</sup> indicates Equal Contribution;
 
 ## 2024
-
+<!-- 
 * <b>Efficient Backdoor Attacks for Deep Neural Networks in Real-world Scenarios</b>. <br>
 <b>Ziqiang Li* </b>, Hong Sun*, Pengfei Xia, Heng Li, Beihao Xia, Yi Wu, Bin Li. <i>ICLR, 2024</i>. <br>
-[[PDF]](https://openreview.net/pdf?id=vRyp2dhEQp)
+[[PDF]](https://openreview.net/pdf?id=vRyp2dhEQp) -->
 
 ## 2023
-
+<!-- 
 * <b>Domain Re-Modulation for Few-Shot Generative Domain Adaptation</b>. <br>
 Yi Wu*, <b>Ziqiang Li*</b>, Chaoyue Wang, Heliang Zheng, Shanshan Zhao, Bin Li, and Dacheng Tao. <i>NeurIPS, 2023</i>. <br>
-[[PDF]](https://openreview.net/pdf?id=jown9RvYn7)
+[[PDF]](https://openreview.net/pdf?id=jown9RvYn7) -->
 
 ## 2022
-
+<!-- 
 * <b>Exploring The Effect of High-frequency Components in GANs Training</b>. <br>
 <b>Ziqiang Li</b>, Pengfei Xia, Xue Rui, and Bin Li. <i>ACM Transactions on Multimedia Computing, Communications and Applications, 2022</i>. <br>
 [[PDF]](https://dl.acm.org/doi/abs/10.1145/3578585)
@@ -46,10 +46,10 @@ Yi Wu*, <b>Ziqiang Li*</b>, Chaoyue Wang, Heliang Zheng, Shanshan Zhao, Bin Li, 
 
 * <b>Enhancing Backdoor Attacks with Multi-Level MMD Regularization</b>.<br>
  Pengfei Xia, Hongjing Niu, <b>Ziqiang Li</b>, and Bin Li. <i>IEEE Transactions on Dependable and Secure Computing, 2022</i>. <br>
-[[PDF]](https://arxiv.org/abs/2111.05077)
+[[PDF]](https://arxiv.org/abs/2111.05077) -->
 
 ## 2021
-* <b>On the Receptive Field Misalignment in CAM-based Visual Explanations</b>.<br>
+<!-- * <b>On the Receptive Field Misalignment in CAM-based Visual Explanations</b>.<br>
  Pengfei Xia, Hongjing Niu, <b>Ziqiang Li</b>, and Bin Li. <i>Pattern Recognition Letters, 2021</i>. <br>
 [[PDF]](https://www.sciencedirect.com/science/article/pii/S0167865521003810)
 
@@ -59,15 +59,15 @@ Pengfei Xia, <b>Ziqiang Li</b>, Hongjing Niu and Bin Li. <i>arXiv preprint arXiv
 
 * <b>Interpreting the Latent Space of GANs via Measuring Decoupling</b>. <br>
 <b>Ziqiang Li</b>, Rentuo Tao, Jie Wang, Fu Li, Hongjing Niu, Mingdao Yue, Bin Li. <i>IEEE Transactions on Artificial Intelligence, 2021</i>. <br>
-[[PDF]](https://ieeexplore.ieee.org/document/9399843)
+[[PDF]](https://ieeexplore.ieee.org/document/9399843) -->
 
 ## 2020
-* <b>Interpreting the Latent Space of GANs via Correlation Analysis for Controllable Concept Manipulation</b>. <br>
+<!-- * <b>Interpreting the Latent Space of GANs via Correlation Analysis for Controllable Concept Manipulation</b>. <br>
 <b>Ziqiang Li</b><sup>*</sup>, Rentuo Tao<sup>*</sup>, Hongjing Niu, Mingdao Yue, Bin Li. <i>25th International Conference on Pattern Recognition (ICPR), 2020</i>. <br>
 [[PDF]](https://arxiv.org/pdf/2006.10132)
 * <b>DA-RefineNet: Dual-inputs Attention RefineNet for Whole Slide Image Segmentation</b>. <br>
 <b>Ziqiang Li</b>, Rentuo Tao, Qianrun Wu, Bin Li. <i>25th International Conference on Pattern Recognition (ICPR), 2020</i>. <br>
 [[PDF]](https://arxiv.org/pdf/1907.06358)
-
+ -->
 
 
