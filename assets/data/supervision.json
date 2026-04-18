@@ -1,0 +1,52 @@
+{
+  "phd": [
+    {
+      "id": "phd-1",
+      "name": "Raju Aparadhi",
+      "degree": "Ph.D. Candidate",
+      "university": "MAHSA University",
+      "role": "Main Supervisor",
+      "research_area": "AI / Machine Learning",
+      "status": "current",
+      "year_start": 2025
+    }
+  ],
+  "masters": [],
+  "fyp": [
+    {
+      "id": "fyp-1",
+      "name": "Mustafa Mohamed",
+      "title": "Sudan Donation Website",
+      "role": "Main Supervisor",
+      "status": "completed"
+    },
+    {
+      "id": "fyp-2",
+      "name": "Mutaman Fadhil",
+      "title": "Design and Implementation of a Tourist Website",
+      "role": "Main Supervisor",
+      "status": "completed"
+    },
+    {
+      "id": "fyp-3",
+      "name": "Mohannad Algaali Mohammed Abdullah",
+      "title": "Smart Waste Management System Using Image Recognition",
+      "role": "Main Supervisor",
+      "status": "current"
+    },
+    {
+      "id": "fyp-4",
+      "name": "Md Abdul Kader Jahid",
+      "title": "Intelligent Chatbot System for Student Enquiry Support Using Natural Language Processing",
+      "role": "Main Supervisor",
+      "status": "current"
+    },
+    {
+      "id": "fyp-5",
+      "name": "Mohamad Adham Ikram Bin Ideris",
+      "title": "Email Phishing Detection System using Natural Language Processing (NLP)",
+      "role": "Main Supervisor",
+      "status": "current"
+    }
+  ]
+}

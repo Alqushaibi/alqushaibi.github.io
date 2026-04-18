@@ -68,6 +68,7 @@
       <li><a class="nav-link"        data-tab="teaching"    href="#teaching">Teaching</a></li>
       <li><a class="nav-link"        data-tab="supervision" href="#supervision">Supervision</a></li>
       <li><a class="nav-link"        data-tab="publications"href="#publications">Publications</a></li>
+      <li><a class="nav-link"        data-tab="media"       href="#media">Media</a></li>
       <li><a class="nav-link"        data-tab="cv"          href="#cv">CV</a></li>
     </ul>
   </div>
@@ -114,6 +115,9 @@
       <button class="tab-btn" data-tab="publications">
         <i class="fas fa-book-open"></i> Publications
         <span class="tab-badge" id="pubCount">36</span>
+      </button>
+      <button class="tab-btn" data-tab="media">
+        <i class="fas fa-images"></i> Media
       </button>
       <button class="tab-btn" data-tab="cv">
         <i class="fas fa-file-alt"></i> CV
@@ -950,159 +954,37 @@
           </button>
         </div>
 
-        <!-- PhD Content -->
+        <!-- PhD Content – rendered by JS from supervision.json -->
         <div class="suptab-content active" id="suptab-phd">
-          <div class="students-grid">
-            <div class="student-card phd-card">
-              <div class="student-header">
-                <div class="student-avatar phd-avatar"><i class="fas fa-user-graduate"></i></div>
-                <div class="student-title-block">
-                  <h3>Raju Aparadhi</h3>
-                  <span class="student-degree">Ph.D. Candidate</span>
-                </div>
-                <span class="student-status-badge current">Current</span>
-              </div>
-              <div class="student-details">
-                <div class="student-detail-item">
-                  <i class="fas fa-university"></i>
-                  <span>MAHSA University</span>
-                </div>
-                <div class="student-detail-item">
-                  <i class="fas fa-user-tie"></i>
-                  <span>Role: <strong>Main Supervisor</strong></span>
-                </div>
-                <div class="student-detail-item">
-                  <i class="fas fa-flask"></i>
-                  <span>Research area: AI / Machine Learning</span>
-                </div>
-              </div>
+          <div class="students-grid" id="phdGrid">
+            <div style="text-align:center;padding:2rem;color:#718096">
+              <i class="fas fa-spinner fa-spin" style="font-size:1.5rem;display:block;margin-bottom:.5rem"></i>Loading…
             </div>
           </div>
         </div>
 
-        <!-- Masters Content -->
+        <!-- Masters Content – rendered by JS -->
         <div class="suptab-content" id="suptab-masters">
-          <div class="coming-soon">
-            <i class="fas fa-user-clock"></i>
-            <h3>Master Students</h3>
-            <p>Master student supervision details will be added soon.</p>
+          <div id="mastersGrid">
+            <div class="coming-soon">
+              <i class="fas fa-user-clock"></i>
+              <h3>Master Students</h3>
+              <p>Master student supervision details will be added soon.</p>
+            </div>
           </div>
         </div>
 
-        <!-- FYP Content -->
+        <!-- FYP Content – rendered by JS -->
         <div class="suptab-content" id="suptab-fyp">
           <div class="fyp-filter-row">
-            <button class="fyp-filter-btn active" data-fypstatus="all">All <span class="filter-count">5</span></button>
-            <button class="fyp-filter-btn" data-fypstatus="completed">Completed <span class="filter-count">2</span></button>
-            <button class="fyp-filter-btn" data-fypstatus="current">Current <span class="filter-count">3</span></button>
+            <button class="fyp-filter-btn active" data-fypstatus="all">All <span class="filter-count">0</span></button>
+            <button class="fyp-filter-btn" data-fypstatus="completed">Completed <span class="filter-count">0</span></button>
+            <button class="fyp-filter-btn" data-fypstatus="current">Current <span class="filter-count">0</span></button>
           </div>
           <div class="students-grid" id="fypGrid">
-
-            <div class="student-card fyp-card" data-fypstatus="completed">
-              <div class="student-header">
-                <div class="student-avatar fyp-avatar completed"><i class="fas fa-check-circle"></i></div>
-                <div class="student-title-block">
-                  <h3>Mustafa Mohamed</h3>
-                  <span class="student-degree">Final Year Project</span>
-                </div>
-                <span class="student-status-badge completed">Completed</span>
-              </div>
-              <div class="student-details">
-                <div class="student-detail-item">
-                  <i class="fas fa-project-diagram"></i>
-                  <span>Title: <strong>Sudan Donation Website</strong></span>
-                </div>
-                <div class="student-detail-item">
-                  <i class="fas fa-user-tie"></i>
-                  <span>Role: <strong>Main Supervisor</strong></span>
-                </div>
-              </div>
+            <div style="text-align:center;padding:2rem;color:#718096">
+              <i class="fas fa-spinner fa-spin" style="font-size:1.5rem;display:block;margin-bottom:.5rem"></i>Loading…
             </div>
-
-            <div class="student-card fyp-card" data-fypstatus="completed">
-              <div class="student-header">
-                <div class="student-avatar fyp-avatar completed"><i class="fas fa-check-circle"></i></div>
-                <div class="student-title-block">
-                  <h3>Mutaman Fadhil</h3>
-                  <span class="student-degree">Final Year Project</span>
-                </div>
-                <span class="student-status-badge completed">Completed</span>
-              </div>
-              <div class="student-details">
-                <div class="student-detail-item">
-                  <i class="fas fa-project-diagram"></i>
-                  <span>Title: <strong>Design and Implementation of a Tourist Website</strong></span>
-                </div>
-                <div class="student-detail-item">
-                  <i class="fas fa-user-tie"></i>
-                  <span>Role: <strong>Main Supervisor</strong></span>
-                </div>
-              </div>
-            </div>
-
-            <div class="student-card fyp-card" data-fypstatus="current">
-              <div class="student-header">
-                <div class="student-avatar fyp-avatar current"><i class="fas fa-spinner"></i></div>
-                <div class="student-title-block">
-                  <h3>Mohannad Algaali Mohammed Abdullah</h3>
-                  <span class="student-degree">Final Year Project</span>
-                </div>
-                <span class="student-status-badge current">Current</span>
-              </div>
-              <div class="student-details">
-                <div class="student-detail-item">
-                  <i class="fas fa-project-diagram"></i>
-                  <span>Title: <strong>Smart Waste Management System Using Image Recognition</strong></span>
-                </div>
-                <div class="student-detail-item">
-                  <i class="fas fa-user-tie"></i>
-                  <span>Role: <strong>Main Supervisor</strong></span>
-                </div>
-              </div>
-            </div>
-
-            <div class="student-card fyp-card" data-fypstatus="current">
-              <div class="student-header">
-                <div class="student-avatar fyp-avatar current"><i class="fas fa-spinner"></i></div>
-                <div class="student-title-block">
-                  <h3>Md Abdul Kader Jahid</h3>
-                  <span class="student-degree">Final Year Project</span>
-                </div>
-                <span class="student-status-badge current">Current</span>
-              </div>
-              <div class="student-details">
-                <div class="student-detail-item">
-                  <i class="fas fa-project-diagram"></i>
-                  <span>Title: <strong>Intelligent Chatbot System for Student Enquiry Support Using Natural Language Processing</strong></span>
-                </div>
-                <div class="student-detail-item">
-                  <i class="fas fa-user-tie"></i>
-                  <span>Role: <strong>Main Supervisor</strong></span>
-                </div>
-              </div>
-            </div>
-
-            <div class="student-card fyp-card" data-fypstatus="current">
-              <div class="student-header">
-                <div class="student-avatar fyp-avatar current"><i class="fas fa-spinner"></i></div>
-                <div class="student-title-block">
-                  <h3>Mohamad Adham Ikram Bin Ideris</h3>
-                  <span class="student-degree">Final Year Project</span>
-                </div>
-                <span class="student-status-badge current">Current</span>
-              </div>
-              <div class="student-details">
-                <div class="student-detail-item">
-                  <i class="fas fa-project-diagram"></i>
-                  <span>Title: <strong>Email Phishing Detection System using Natural Language Processing (NLP)</strong></span>
-                </div>
-                <div class="student-detail-item">
-                  <i class="fas fa-user-tie"></i>
-                  <span>Role: <strong>Main Supervisor</strong></span>
-                </div>
-              </div>
-            </div>
-
           </div>
         </div>
 
@@ -1152,6 +1034,36 @@
   </div><!-- /#tab-publications -->
 
   <!-- ═══════════════════════════════════════════════════════════════════
+       MEDIA TAB
+  ═══════════════════════════════════════════════════════════════════ -->
+  <div class="tab-content" id="tab-media">
+    <section class="media-section">
+      <div class="section-container">
+        <h2 class="section-title"><span>Media Gallery</span></h2>
+        <p style="color:var(--text-secondary);margin-bottom:1.5rem">
+          Photos, videos, and highlights from academic activities, events, and research.
+        </p>
+
+        <div class="media-filters">
+          <button class="media-filter-btn active" data-mediatype="all">All</button>
+          <button class="media-filter-btn" data-mediatype="image"><i class="fas fa-image"></i> Images</button>
+          <button class="media-filter-btn" data-mediatype="video"><i class="fas fa-video"></i> Videos</button>
+        </div>
+
+        <div class="media-grid" id="mediaGrid"></div>
+
+        <div id="mediaEmpty">
+          <div class="coming-soon">
+            <i class="fas fa-images"></i>
+            <h3>No media yet</h3>
+            <p>Media items will be added soon.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div><!-- /#tab-media -->
+
+  <!-- ═══════════════════════════════════════════════════════════════════
        CV TAB
   ═══════════════════════════════════════════════════════════════════ -->
   <div class="tab-content" id="tab-cv">
@@ -1195,6 +1107,21 @@
     </div>
   </div>
 </footer>
+
+<!-- Image Lightbox -->
+<div id="lightbox" class="lightbox-overlay" style="display:none" onclick="closeLightbox()">
+  <button class="lb-close" onclick="closeLightbox()" aria-label="Close"><i class="fas fa-times"></i></button>
+  <img class="lb-img" src="" alt="">
+  <div class="lb-title"></div>
+</div>
+
+<!-- Video Modal -->
+<div id="videoModal" class="lightbox-overlay" style="display:none" onclick="closeLightbox()">
+  <button class="lb-close" onclick="closeLightbox()" aria-label="Close"><i class="fas fa-times"></i></button>
+  <div class="video-container" onclick="event.stopPropagation()">
+    <iframe src="" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+  </div>
+</div>
 
 <script src="assets/js/main.js"></script>
 </body>
