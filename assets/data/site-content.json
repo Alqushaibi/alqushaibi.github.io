@@ -1,0 +1,360 @@
+{
+  "bio": {
+    "paragraphs": [
+      "Currently serving as <strong>Program Coordinator</strong> for the Information Technology program at MAHSA University, with responsibilities in curriculum oversight, academic coordination, and quality assurance. A reliable and competent <strong>PhD graduate</strong> with over <strong>8 years</strong> of combined experience in teaching, research and development, and student supervision.",
+      "Expertise in <strong>Machine Learning</strong>, <strong>Deep Learning</strong>, and <strong>Data Science</strong>, backed by a strong publication record in Q1/Q2 journals and international conferences. My research spans Generative AI, Medical Image Processing, Metaheuristic Optimization, and Computer Vision, with work published in <em>IEEE Access</em>, <em>Heliyon</em>, <em>Sustainability</em>, and more.",
+      "Proven ability to design and deliver engaging curricula for courses including Advanced Databases, Data Science Fundamentals, and Structured Programming. Skilled in fostering student-centered learning through workshops such as Computer Vision with MATLAB and AI micro-credential programs."
+    ],
+    "research_interests": [
+      "Machine Learning","Deep Learning","Artificial Intelligence","Generative AI",
+      "Image Processing","Data Science","Optimization","Metaheuristics",
+      "Computer Vision","Medical Imaging","GANs","Reinforcement Learning"
+    ]
+  },
+  "education": [
+    {
+      "id": "edu-1",
+      "degree": "Ph.D. in Information Technology",
+      "institution": "Universiti Teknologi PETRONAS, Malaysia",
+      "period": "Jan 2022 – May 2025",
+      "thesis": "Optimization of Pix2pix GANs via Gradient Penalty Sine Cosine Algorithm",
+      "dot_color": ""
+    },
+    {
+      "id": "edu-2",
+      "degree": "M.S. in IT, by Research",
+      "institution": "Universiti Teknologi PETRONAS, Malaysia",
+      "period": "Jul 2019 – Aug 2021",
+      "thesis": "Enhanced Weight Optimized RNN Based on Sine Cosine Algorithm",
+      "dot_color": ""
+    },
+    {
+      "id": "edu-3",
+      "degree": "B.S. in Computer Science",
+      "institution": "Universiti Teknologi Malaysia",
+      "period": "Jul 2008 – Mar 2012",
+      "thesis": "Computer Network and Security · CGPA 3.10/4 (2nd Upper)",
+      "dot_color": ""
+    },
+    {
+      "id": "edu-4",
+      "degree": "AWS re/Start Program",
+      "institution": "Amazon Web Services (AWS) Training Program",
+      "period": "Dec 2025 – Mar 2026",
+      "thesis": "Cloud Architecture, DevOps, Security, AI/ML on AWS",
+      "dot_color": "#f6ad55"
+    }
+  ],
+  "current_positions": [
+    {
+      "id": "pos-1",
+      "title": "Program Coordinator – Information Technology",
+      "institution": "MAHSA University",
+      "period": "Jan 2026 – Present"
+    },
+    {
+      "id": "pos-2",
+      "title": "Lecturer in Artificial Intelligence",
+      "institution": "MAHSA University",
+      "period": "Jul 2025 – Present"
+    }
+  ],
+  "experience": [
+    {
+      "id": "exp-1",
+      "title": "Program Coordinator – Information Technology",
+      "company": "MAHSA University",
+      "period": "Jan 2026 – Present",
+      "type": "academic",
+      "badge": "Current",
+      "badge_type": "current",
+      "icon": "fas fa-university",
+      "duties": [
+        "Coordinate academic and administrative operations of the IT program",
+        "Oversee curriculum planning, course mapping, and syllabus alignment with MQF and accreditation standards",
+        "Coordinate course offerings, teaching assignments, and semester scheduling",
+        "Liaise with faculty members, Dean/Deputy, and university management on program matters",
+        "Monitor course delivery quality and learning outcomes achievement",
+        "Support accreditation, audit, and quality assurance documentation",
+        "Handle student academic issues, progression matters, and program-level advising",
+        "Review and improve assessment methods and moderation processes",
+        "Assist in strategic planning and continuous improvement initiatives for the IT program"
+      ]
+    },
+    {
+      "id": "exp-2",
+      "title": "Lecturer in Artificial Intelligence",
+      "company": "MAHSA University",
+      "period": "Jul 2025 – Present",
+      "type": "academic",
+      "badge": "Current",
+      "badge_type": "current",
+      "icon": "fas fa-chalkboard-teacher",
+      "duties": [
+        "IT Lecturer, Faculty of Engineering, Built Environment and Information Technology, MAHSA University",
+        "Teach undergraduate courses: Data Science, Artificial Intelligence, Wireless Communication, IT Fundamentals, Operating Systems, DBMS, Information Management, Information System, Introduction to Programming, OOP, and Computer Architecture & Organization",
+        "Design, prepare, and update lecture materials, tutorials, assignments, and assessments",
+        "Design, prepare, and teach Standalone Micro Credential Programs",
+        "Supervise PhD students, co-supervise PhD students, co-supervisor postdoctoral projects, and supervise FYP students",
+        "Conduct lectures, tutorials, and practical sessions using active and student-centered learning approaches",
+        "Evaluate student performance through continuous assessment and final examinations",
+        "Participate in curriculum development and course review",
+        "Engage in academic research and publish findings in peer-reviewed journals and conferences",
+        "Provide academic advising and mentoring to students",
+        "Support institutional activities, accreditation, and quality assurance processes"
+      ]
+    },
+    {
+      "id": "exp-3",
+      "title": "Lecturer of Computer Science",
+      "company": "Yemeni Military College",
+      "period": "Jul 2012 – May 2018",
+      "type": "academic",
+      "badge": "6 Years",
+      "badge_type": "past",
+      "icon": "fas fa-school",
+      "duties": [
+        "Plan, prepare and conduct C++ and Java lectures",
+        "Apply interactive teaching methods to boost engagement",
+        "Trainer for the International ICDL Course",
+        "Undergraduate lab demonstration and CS lecturing",
+        "Supervised and mentored Bachelor's degree students",
+        "Facilitated hands-on technical workshops and labs"
+      ]
+    },
+    {
+      "id": "exp-4",
+      "title": "Information Technology Support",
+      "company": "ML Company for Training and Logistic Services",
+      "period": "Jun 2018 – Jun 2019",
+      "type": "industry",
+      "badge": "1 Year",
+      "badge_type": "past",
+      "icon": "fas fa-laptop",
+      "duties": [
+        "Preparing and writing daily reports and financial support administration",
+        "Hard and soft copy archiving for company and project documents",
+        "Plan and manage timelines to ensure goals are met on time",
+        "Recording the attendance of trainees",
+        "Preparing and translating course slides (English to Arabic) and crane user manuals",
+        "Designing, printing, and processing official certificates",
+        "Communicating with port departments and providing comprehensive logistical support"
+      ]
+    },
+    {
+      "id": "exp-5",
+      "title": "System Administrator Assistant (Part Time)",
+      "company": "Sabafon Company, Yemen",
+      "period": "Jun 2013 – May 2018",
+      "type": "industry",
+      "badge": "5 Years",
+      "badge_type": "past",
+      "icon": "fas fa-server",
+      "duties": [
+        "Install, manage and upgrade Windows Server 2008/2012/2016 and apply patches",
+        "Create domain users and manage existing user properties",
+        "Manage hardware installation and maintenance of Intel servers (Disk, CPU/Memory, PCI, HBA, SAS)",
+        "Manage and configure Windows DNS/DHCP service",
+        "Physical installation of server racks, KVM, switches and rack mount keyboards",
+        "LAN, WAN, WLAN – Installation, Configuration, and Troubleshooting"
+      ]
+    },
+    {
+      "id": "exp-6",
+      "title": "Customer Care Consultant (Part Time)",
+      "company": "Sabafon Company, Yemen",
+      "period": "Jul 2012 – Jun 2013",
+      "type": "industry",
+      "badge": "1 Year",
+      "badge_type": "past",
+      "icon": "fas fa-headset",
+      "duties": [
+        "Provide user-level technical support",
+        "Give suggestions contributing to high customer satisfaction",
+        "Solve customer problems or escalate to concerned departments",
+        "Promote the company's products and services"
+      ]
+    },
+    {
+      "id": "exp-7",
+      "title": "Practical Training (Bachelor Degree)",
+      "company": "Ecosensa Technologies Sdn. Bhd, Malaysia",
+      "period": "Jul 2011 – Dec 2011",
+      "type": "industry",
+      "badge": "6 Months",
+      "badge_type": "past",
+      "icon": "fas fa-tools",
+      "duties": [
+        "Installing RFID devices, configuring routers, and troubleshooting gantry problems",
+        "Requirements gathering, development planning, designing, workshops, documentation, and MySQL database maintenance",
+        "Promote company products and services and convince customers to sign contracts"
+      ]
+    }
+  ],
+  "research_projects": [
+    {
+      "id": "proj-1",
+      "title": "AI-Powered Gamma Radiation Classification",
+      "description": "Deep learning framework for nuclear scanning equipment — material classification (gas, liquid, air, solid). Collaboration with the Malaysian Nuclear Agency.",
+      "badge": "Active · 2025–Present"
+    },
+    {
+      "id": "proj-2",
+      "title": "Deep Learning Teeth Age Prediction from Dental Radiographs",
+      "description": "AI model for biological age estimation from dental X-rays. Cross-faculty collaboration with MAHSA Medic (IT & Dentistry).",
+      "badge": "Active · 2025–Present"
+    },
+    {
+      "id": "proj-3",
+      "title": "FOEBEIT Academic Planner",
+      "description": "Timetable Generation and Human Resource Planning System for the Faculty of Engineering, Built Environment and IT – MAHSA University.",
+      "badge": "Active · 2025–Present"
+    },
+    {
+      "id": "proj-4",
+      "title": "PaperDirect Conference Management System",
+      "description": "Full-lifecycle platform: paper submission, blind peer review, editorial decisions, QR attendance, badges, and digital certificates. Hosting MISEBEIT 2026.",
+      "badge": "Active · 2025–Present"
+    },
+    {
+      "id": "proj-5",
+      "title": "Autonomous Underwater Defect Detection",
+      "description": "CNN-based detection of structural defects (corrosion, cracks, biofilm) in offshore oil & gas platforms. Collaboration with UTP.",
+      "badge": "Active · 2023–Present"
+    },
+    {
+      "id": "proj-6",
+      "title": "Head & Neck Tumor Segmentation in PET-CT",
+      "description": "Transformer-based segmentation for radiotherapy planning. Published in IEEE Access, Diagnostics, and CMES. (Project ID: RG-23137)",
+      "badge": "Completed · 2023–2025"
+    },
+    {
+      "id": "proj-7",
+      "title": "Scalable Automated Data Preprocessing Framework",
+      "description": "For Very Big Data Stream in Oil Platform Equipment's Time to Failure Prediction Model – UTP.",
+      "badge": "Completed · 2022–2024"
+    },
+    {
+      "id": "proj-8",
+      "title": "Supervised ML for Offshore Defect Mapping",
+      "description": "Fundamental study of supervised machine learning techniques for autonomous defect mapping of offshore structures – UTP.",
+      "badge": "Completed · 2022–2024"
+    },
+    {
+      "id": "proj-9",
+      "title": "Digital Twin for Structural Asset Monitoring",
+      "description": "Solution and decision making for onshore facilities – UTP.",
+      "badge": "Completed · 2019–2021"
+    },
+    {
+      "id": "proj-10",
+      "title": "Assessment of Structural Steel Riser-Guard Load Capacities",
+      "description": "Resultant impact assessment on offshore structures loading – UTP.",
+      "badge": "Completed · 2019–2021"
+    }
+  ],
+  "technical_skills": [
+    { "id": "sk-1", "name": "MATLAB",    "icon": "fas fa-chart-area",  "level": 3, "label": "Proficient" },
+    { "id": "sk-2", "name": "Python",    "icon": "fab fa-python",       "level": 4, "label": "Advanced"  },
+    { "id": "sk-3", "name": "SQL",       "icon": "fas fa-database",     "level": 3, "label": "Proficient" },
+    { "id": "sk-4", "name": "Linux",     "icon": "fab fa-linux",        "level": 4, "label": "Advanced"  },
+    { "id": "sk-5", "name": "AWS Cloud", "icon": "fab fa-aws",          "level": 4, "label": "Advanced"  }
+  ],
+  "language_skills": [
+    { "id": "lang-1", "name": "Arabic",  "flag": "🇾🇪", "level": 5, "label": "Native"  },
+    { "id": "lang-2", "name": "English", "flag": "🇬🇧", "level": 5, "label": "Fluent"  },
+    { "id": "lang-3", "name": "Malay",   "flag": "🇲🇾", "level": 1, "label": "Basic"   }
+  ],
+  "reviewer_journals": [
+    "Computers, Materials & Continua",
+    "IEEE Access",
+    "PLOS ONE",
+    "Computer Systems Science & Engineering",
+    "Franklin Open",
+    "International Journal of Computer Mathematics"
+  ],
+  "workshops": [
+    { "id": "ws-1", "title": "Student-Centered Learning: Engaging Learners through Active Learning", "institution": "Universiti Teknologi PETRONAS", "year": "2024", "icon": "fas fa-chalkboard-teacher" },
+    { "id": "ws-2", "title": "Computer Vision with MATLAB", "institution": "Universiti Teknologi PETRONAS", "year": "2022", "icon": "fas fa-eye" },
+    { "id": "ws-3", "title": "Introduction to Artificial Intelligence", "institution": "Yemeni Student Union – Malaysia", "year": "2020", "icon": "fas fa-brain" },
+    { "id": "ws-4", "title": "How To Be A Data Scientist", "institution": "Yemeni Student Union – Malaysia", "year": "2020", "icon": "fas fa-chart-bar" },
+    { "id": "ws-5", "title": "AI-100T01: Designing & Implementing an Azure AI Solution (3 days)", "institution": "Universiti Teknologi PETRONAS", "year": "2020", "icon": "fab fa-microsoft" },
+    { "id": "ws-6", "title": "Diploma of Maintenance and Programming Mobile", "institution": "Science and Life Institution", "year": "2018", "icon": "fas fa-mobile-alt" },
+    { "id": "ws-7", "title": "Professional Skills", "institution": "Universiti Teknologi Malaysia", "year": "2012", "icon": "fas fa-briefcase" },
+    { "id": "ws-8", "title": "International Student Leaders Conference 2010 (7 days)", "institution": "Ministry of Higher Education Malaysia", "year": "2010", "icon": "fas fa-globe" }
+  ],
+  "awards": [
+    { "id": "aw-1", "title": "Graduate on Time (GOT) Award – PhD", "issuer": "Universiti Teknologi PETRONAS (UTP)", "year": "2025", "description": "For completion of PhD in the stipulated time of 42 months", "level": "gold", "icon": "fas fa-medal" },
+    { "id": "aw-2", "title": "Graduate on Time (GOT) Award – M.S.", "issuer": "Universiti Teknologi PETRONAS (UTP)", "year": "2021", "description": "For completion of M.S. in the stipulated time of 24 months", "level": "gold", "icon": "fas fa-medal" },
+    { "id": "aw-3", "title": "Best Paper Award – International Conference", "issuer": "Pimpri Chinchwad College of Engineering, Pune, India", "year": "2024", "description": "Recognition for outstanding research paper", "level": "silver", "icon": "fas fa-trophy" },
+    { "id": "aw-4", "title": "Publication Achievement Recognition", "issuer": "Universiti Teknologi PETRONAS (UTP)", "year": "2024", "description": "For outstanding publication record during doctoral studies", "level": "silver", "icon": "fas fa-star" },
+    { "id": "aw-5", "title": "International Students Leadership Conference", "issuer": "Ministry of Higher Education Malaysia", "year": "2010", "description": "", "level": "bronze", "icon": "fas fa-globe-asia" },
+    { "id": "aw-6", "title": "Yemen Scholarship for Outstanding Students", "issuer": "Ministry of Higher Education, Yemen", "year": "2007", "description": "Awarded for bachelor's degree studies abroad", "level": "bronze", "icon": "fas fa-award" }
+  ],
+  "memberships": [
+    { "id": "mem-1", "title": "Professional Technologist (Ts.)", "organization": "Malaysia Board of Technologists (MBOT)", "icon": "fas fa-id-badge" },
+    { "id": "mem-2", "title": "Graduate Technologist", "organization": "Malaysia Board of Technologists (MBOT)", "icon": "fas fa-id-card" },
+    { "id": "mem-3", "title": "Centre for Research in Data Science (CERDAS)", "organization": "Universiti Teknologi PETRONAS", "icon": "fas fa-microscope" },
+    { "id": "mem-4", "title": "International Association of Engineers (IAENG)", "organization": "Member", "icon": "fas fa-cogs" }
+  ],
+  "leadership": [
+    {
+      "id": "lead-1",
+      "title": "President – Association of International Students (Yemen Chapter)",
+      "organization": "Universiti Teknologi PETRONAS, Malaysia",
+      "period": "2023 – 2025",
+      "icon": "fas fa-users",
+      "icon_gradient": "linear-gradient(135deg,#667eea,#764ba2)",
+      "duties": [
+        "Represented the chapter in all internal and external matters; led executive committee meetings and activities",
+        "Served as main liaison between the Yemen Chapter and the main association body and university",
+        "Set short-term and long-term goals; oversaw planning and implementation of annual programs and cultural events",
+        "Supervised and supported all executive members; delegated responsibilities and ensured deadlines are met",
+        "Addressed academic, social, and cultural concerns of Yemeni students; provided guidance to new arrivals",
+        "Advocated for inclusion, diversity, and student welfare within the university"
+      ]
+    },
+    {
+      "id": "lead-2",
+      "title": "Vice President – Yemeni Student Society",
+      "organization": "Universiti Teknologi Malaysia (UTM)",
+      "period": "Jan 2009 – Mar 2010",
+      "icon": "fas fa-user-tie",
+      "icon_gradient": "linear-gradient(135deg,#f093fb,#f5576c)",
+      "duties": [
+        "Co-established the Yemeni Student Society at UTM",
+        "Managed regular meetings, planned activities and trips for society members",
+        "Solved student problems and followed up with concerned university departments",
+        "Participated in orientation week and convocation festival; managed Yemeni cultural activities"
+      ]
+    },
+    {
+      "id": "lead-3",
+      "title": "Member – AIESEC",
+      "organization": "AIESEC in Universiti Teknologi Malaysia",
+      "period": "May 2010 – May 2012",
+      "icon": "fas fa-hands-helping",
+      "icon_gradient": "linear-gradient(135deg,#4facfe,#00f2fe)",
+      "duties": [
+        "Social service and conference preparation",
+        "Hosted international guests, arranged airport pickup and accommodation in Malaysia",
+        "Educated people about HIV/AIDS prevention in lectures and community outreach",
+        "Worked in special needs schools helping disabled students"
+      ]
+    }
+  ],
+  "teaching": [
+    { "id": "teach-1",  "title": "Artificial Intelligence",              "description": "ML fundamentals, search algorithms, neural networks, intelligent systems, and AI applications",                                           "category": "ai-data",          "level": "Undergraduate", "status": "current" },
+    { "id": "teach-2",  "title": "Data Science",                         "description": "Data analysis, visualization, statistical modeling, machine learning pipelines, and Python tools",                                          "category": "ai-data",          "level": "Undergraduate", "status": "current" },
+    { "id": "teach-3",  "title": "Introduction to Programming",          "description": "Fundamentals of programming logic, algorithms, problem solving, and coding using modern languages",                                         "category": "programming",      "level": "Undergraduate", "status": "current" },
+    { "id": "teach-4",  "title": "Object-Oriented Programming",          "description": "OOP concepts, classes, inheritance, polymorphism, encapsulation, and design patterns",                                                       "category": "programming",      "level": "Undergraduate", "status": "current" },
+    { "id": "teach-5",  "title": "Information Technology Fundamentals",  "description": "Core IT concepts, hardware, software, networking basics, and digital literacy foundations",                                                  "category": "info-systems",     "level": "Undergraduate", "status": "current" },
+    { "id": "teach-6",  "title": "Database Management Systems",          "description": "Relational databases, SQL, ER modeling, normalization, transactions, and database administration",                                          "category": "info-systems",     "level": "Undergraduate", "status": "current" },
+    { "id": "teach-7",  "title": "Information Management",               "description": "Information lifecycle, knowledge management, digital information systems, and organizational information strategy",                          "category": "info-systems",     "level": "Undergraduate", "status": "current" },
+    { "id": "teach-8",  "title": "Information System",                   "description": "Systems analysis, design, implementation, and evaluation of enterprise information systems",                                               "category": "info-systems",     "level": "Undergraduate", "status": "current" },
+    { "id": "teach-9",  "title": "Wireless Communication",               "description": "Wireless networks, protocols, 4G/5G, IoT connectivity, signal propagation, and mobile systems",                                             "category": "networks-systems", "level": "Undergraduate", "status": "current" },
+    { "id": "teach-10", "title": "Operating Systems",                    "description": "Process management, memory management, file systems, scheduling, concurrency, and Linux administration",                                    "category": "networks-systems", "level": "Undergraduate", "status": "current" },
+    { "id": "teach-11", "title": "Computer Architecture & Organization", "description": "CPU design, memory hierarchy, instruction sets, pipelining, I/O systems, and computer performance",                                        "category": "networks-systems", "level": "Undergraduate", "status": "current" }
+  ],
+  "cv_filename": "Alaw Alqushaibi CV 17-04-2026.pdf"
+}

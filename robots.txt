@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Keep admin panel out of search indexes
+Disallow: /admin.html
+
+Sitemap: https://alqushaibi.github.io/sitemap.xml

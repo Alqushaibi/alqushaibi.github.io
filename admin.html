@@ -3,457 +3,385 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel – Alawi Alqushaibi</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Admin – Alawi Alqushaibi</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --primary: #1e3a5f; --secondary: #0077b6; --accent: #00b4d8;
-      --success: #38a169; --danger: #e53e3e; --warning: #d69e2e;
-      --bg: #f0f4f8; --surface: #fff; --border: #e2e8f0;
-      --text: #1a202c; --text-secondary: #4a5568; --text-muted: #718096;
-      --radius: 12px; --radius-sm: 8px;
-      --shadow: 0 4px 20px rgba(0,0,0,0.1);
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --p:#1e3a5f;--s:#0077b6;--a:#00b4d8;
+      --ok:#38a169;--err:#e53e3e;--warn:#d69e2e;
+      --bg:#f0f4f8;--surf:#fff;--surf2:#f7fafc;--border:#e2e8f0;
+      --txt:#1a202c;--txt2:#4a5568;--muted:#718096;
+      --r:12px;--rs:8px;--sh:0 4px 20px rgba(0,0,0,.1);
     }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-
-    /* ── Auth Gate ── */
-    #authGate {
-      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem;
-    }
-    .auth-card {
-      background: var(--surface); border-radius: var(--radius); padding: 2.5rem;
-      box-shadow: var(--shadow); width: 100%; max-width: 420px; text-align: center;
-    }
-    .auth-card .logo { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
-    .auth-card h1 { font-size: 1.4rem; color: var(--primary); margin-bottom: 0.35rem; }
-    .auth-card p  { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 2rem; }
-
-    /* ── Admin App ── */
-    #adminApp { display: none; min-height: 100vh; }
-    .admin-header {
-      background: var(--primary); color: #fff; padding: 0 2rem; height: 60px;
-      display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
-    }
-    .admin-header h1 { font-size: 1.1rem; font-weight: 700; }
-    .admin-header h1 span { opacity: 0.65; font-weight: 400; margin-left: 0.5rem; font-size: 0.9rem; }
-    .admin-header-actions { display: flex; gap: 0.75rem; align-items: center; }
-    .admin-layout { display: flex; min-height: calc(100vh - 60px); }
-    .admin-sidebar {
-      width: 220px; background: var(--surface); border-right: 1px solid var(--border);
-      padding: 1.5rem 0; flex-shrink: 0; position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto;
-    }
-    .sidebar-item {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.75rem 1.5rem; font-size: 0.9rem; font-weight: 500; color: var(--text-secondary);
-      cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent;
-    }
-    .sidebar-item:hover { background: var(--bg); color: var(--primary); }
-    .sidebar-item.active { background: #ebf8ff; color: var(--secondary); border-left-color: var(--secondary); }
-    .sidebar-item i { width: 18px; text-align: center; }
-    .admin-content { flex: 1; padding: 2rem; max-width: 1000px; }
-
-    /* ── Form Elements ── */
-    .form-group { margin-bottom: 1.25rem; }
-    label { display: block; font-size: 0.84rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.4rem; }
-    input[type="text"], input[type="password"], input[type="date"], input[type="url"],
-    input[type="email"], select, textarea {
-      width: 100%; padding: 0.6rem 0.9rem; border-radius: var(--radius-sm);
-      border: 1.5px solid var(--border); background: var(--surface); font-family: inherit;
-      font-size: 0.9rem; color: var(--text); transition: border-color 0.2s; outline: none;
-    }
-    input:focus, select:focus, textarea:focus { border-color: var(--secondary); }
-    textarea { resize: vertical; min-height: 80px; }
-
-    /* ── Buttons ── */
-    .btn {
-      display: inline-flex; align-items: center; gap: 0.45rem;
-      padding: 0.55rem 1.2rem; border-radius: var(--radius-sm); border: none; cursor: pointer;
-      font-family: inherit; font-size: 0.88rem; font-weight: 600; transition: all 0.2s;
-    }
-    .btn-primary { background: var(--secondary); color: #fff; }
-    .btn-primary:hover { background: var(--primary); }
-    .btn-success { background: var(--success); color: #fff; }
-    .btn-success:hover { filter: brightness(0.9); }
-    .btn-danger  { background: var(--danger);  color: #fff; }
-    .btn-danger:hover { filter: brightness(0.9); }
-    .btn-outline {
-      background: transparent; color: var(--text-secondary);
-      border: 1.5px solid var(--border);
-    }
-    .btn-outline:hover { border-color: var(--secondary); color: var(--secondary); }
-    .btn-sm { padding: 0.35rem 0.75rem; font-size: 0.8rem; }
-    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
-    .btn-icon { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0.3rem; font-size: 0.95rem; transition: color 0.2s; }
-    .btn-icon:hover { color: var(--secondary); }
-    .btn-icon.danger:hover { color: var(--danger); }
-
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+    /* ── Auth ── */
+    #authGate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+    .auth-card{background:var(--surf);border-radius:var(--r);padding:2.5rem;box-shadow:var(--sh);width:100%;max-width:420px;text-align:center}
+    .auth-card .logo{font-size:2.5rem;color:var(--p);margin-bottom:1rem}
+    .auth-card h1{font-size:1.4rem;color:var(--p);margin-bottom:.3rem}
+    .auth-card > p{font-size:.87rem;color:var(--muted);margin-bottom:1.75rem}
+    /* ── App ── */
+    #adminApp{display:none;min-height:100vh}
+    .adm-hdr{background:var(--p);color:#fff;padding:0 1.5rem;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+    .adm-hdr h1{font-size:1.05rem;font-weight:700;display:flex;align-items:center;gap:.6rem}
+    .adm-hdr-r{display:flex;gap:.6rem;align-items:center}
+    .adm-layout{display:flex;min-height:calc(100vh - 60px)}
+    /* ── Sidebar ── */
+    .adm-sidebar{width:230px;background:var(--surf);border-right:1px solid var(--border);padding:1rem 0;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
+    .sb-group{padding:.4rem 1rem .2rem;font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:.5rem}
+    .sb-item{display:flex;align-items:center;gap:.7rem;padding:.6rem 1.25rem;font-size:.875rem;font-weight:500;color:var(--txt2);cursor:pointer;transition:all .15s;border-left:3px solid transparent}
+    .sb-item:hover{background:var(--bg);color:var(--p)}
+    .sb-item.active{background:#ebf8ff;color:var(--s);border-left-color:var(--s);font-weight:600}
+    .sb-item i{width:17px;text-align:center;font-size:.9rem}
+    /* ── Content ── */
+    .adm-content{flex:1;padding:1.75rem;max-width:980px}
+    .sec{display:none}.sec.active{display:block}
+    .sec-hdr{margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+    .sec-hdr h2{font-size:1.25rem;color:var(--p);display:flex;align-items:center;gap:.6rem}
+    .sec-hdr p{font-size:.85rem;color:var(--muted);margin-top:.3rem}
     /* ── Cards ── */
-    .admin-card {
-      background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border);
-      padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-    }
-    .admin-card h3 { font-size: 1rem; color: var(--primary); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
-    .card-actions { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
-
-    /* ── Section panels ── */
-    .admin-section { display: none; }
-    .admin-section.active { display: block; }
-    .section-header { margin-bottom: 1.5rem; }
-    .section-header h2 { font-size: 1.3rem; color: var(--primary); }
-    .section-header p  { font-size: 0.88rem; color: var(--text-muted); margin-top: 0.25rem; }
-
-    /* ── Student row ── */
-    .student-row {
-      display: grid; grid-template-columns: 1fr 1fr auto auto; align-items: center; gap: 0.75rem;
-      padding: 0.85rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border);
-      background: var(--bg); margin-bottom: 0.5rem; transition: border-color 0.2s;
-    }
-    .student-row:hover { border-color: var(--secondary); }
-    .student-row-name { font-size: 0.9rem; font-weight: 600; color: var(--text); }
-    .student-row-title { font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .student-row select { padding: 0.3rem 0.6rem; font-size: 0.82rem; width: auto; }
-    .status-badge {
-      display: inline-block; padding: 0.2rem 0.65rem; border-radius: 50px;
-      font-size: 0.72rem; font-weight: 700;
-    }
-    .status-badge.current   { background: #c6f6d5; color: #276749; }
-    .status-badge.completed { background: #ebf4ff; color: #2b6cb0; }
-    .status-badge.graduated { background: #faf5ff; color: #553c9a; }
-
-    /* ── Media item row ── */
-    .media-row {
-      display: flex; align-items: center; gap: 1rem;
-      padding: 0.85rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border);
-      background: var(--bg); margin-bottom: 0.5rem;
-    }
-    .media-row-thumb {
-      width: 60px; height: 40px; border-radius: 6px; object-fit: cover;
-      background: var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-    }
-    .media-row-thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .media-row-thumb i  { font-size: 1.1rem; color: var(--text-muted); }
-    .media-row-info { flex: 1; min-width: 0; }
-    .media-row-info strong { display: block; font-size: 0.88rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .media-row-info span  { font-size: 0.77rem; color: var(--text-muted); }
-
-    /* ── Toast ── */
-    #toast {
-      position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
-      background: var(--text); color: #fff; padding: 0.85rem 1.4rem; border-radius: var(--radius-sm);
-      font-size: 0.88rem; font-weight: 500; box-shadow: var(--shadow);
-      transform: translateY(100px); opacity: 0; transition: all 0.35s;
-      display: flex; align-items: center; gap: 0.6rem;
-    }
-    #toast.show { transform: translateY(0); opacity: 1; }
-    #toast.success { background: var(--success); }
-    #toast.error   { background: var(--danger); }
-
-    /* ── Loading spinner ── */
-    .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── Modal ── */
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 500;
-      display: flex; align-items: center; justify-content: center; padding: 1rem;
-    }
-    .modal {
-      background: var(--surface); border-radius: var(--radius); padding: 2rem;
-      width: 100%; max-width: 540px; box-shadow: var(--shadow); position: relative;
-    }
-    .modal h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 1.25rem; }
-    .modal-close {
-      position: absolute; top: 1rem; right: 1rem;
-      background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 1.1rem;
-    }
-    .modal-close:hover { color: var(--danger); }
-    .modal-actions { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; }
-
+    .card{background:var(--surf);border-radius:var(--r);border:1px solid var(--border);padding:1.4rem;margin-bottom:1.25rem;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+    .card h3{font-size:.97rem;color:var(--p);margin-bottom:1.1rem;display:flex;align-items:center;gap:.5rem}
+    /* ── Form ── */
+    .fg{margin-bottom:1rem}
+    label{display:block;font-size:.82rem;font-weight:600;color:var(--txt2);margin-bottom:.35rem}
+    input,select,textarea{width:100%;padding:.55rem .85rem;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--surf);font-family:inherit;font-size:.88rem;color:var(--txt);transition:border-color .15s;outline:none}
+    input:focus,select:focus,textarea:focus{border-color:var(--s)}
+    textarea{resize:vertical;min-height:80px}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+    .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.9rem}
+    /* ── Buttons ── */
+    .btn{display:inline-flex;align-items:center;gap:.4rem;padding:.52rem 1.1rem;border-radius:var(--rs);border:none;cursor:pointer;font-family:inherit;font-size:.86rem;font-weight:600;transition:all .15s}
+    .btn-primary{background:var(--s);color:#fff}.btn-primary:hover{background:var(--p)}
+    .btn-ok{background:var(--ok);color:#fff}.btn-ok:hover{filter:brightness(.9)}
+    .btn-err{background:var(--err);color:#fff}.btn-err:hover{filter:brightness(.9)}
+    .btn-outline{background:transparent;color:var(--txt2);border:1.5px solid var(--border)}.btn-outline:hover{border-color:var(--s);color:var(--s)}
+    .btn-sm{padding:.32rem .7rem;font-size:.78rem}
+    .btn:disabled{opacity:.55;cursor:not-allowed}
+    .icon-btn{background:none;border:none;cursor:pointer;color:var(--muted);padding:.25rem;font-size:.9rem;transition:color .15s;border-radius:4px}
+    .icon-btn:hover{color:var(--s)}.icon-btn.del:hover{color:var(--err)}
+    /* ── Item rows ── */
+    .item-row{display:flex;align-items:center;gap:.75rem;padding:.8rem 1rem;border-radius:var(--rs);border:1px solid var(--border);background:var(--bg);margin-bottom:.45rem;transition:border-color .15s}
+    .item-row:hover{border-color:var(--s)}
+    .item-row-main{flex:1;min-width:0}
+    .item-row-main strong{display:block;font-size:.88rem;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .item-row-main span{font-size:.76rem;color:var(--muted)}
+    .row-actions{display:flex;gap:.25rem;flex-shrink:0}
+    /* ── Status badges ── */
+    .badge{display:inline-block;padding:.18rem .6rem;border-radius:50px;font-size:.7rem;font-weight:700}
+    .badge.current{background:#c6f6d5;color:#276749}
+    .badge.completed{background:#ebf4ff;color:#2b6cb0}
+    .badge.graduated{background:#faf5ff;color:#553c9a}
+    .badge.past{background:#ebf4ff;color:#2b6cb0}
     /* ── Upload area ── */
-    .upload-area {
-      border: 2px dashed var(--border); border-radius: var(--radius-sm); padding: 2rem;
-      text-align: center; cursor: pointer; transition: all 0.2s; color: var(--text-muted);
-    }
-    .upload-area:hover, .upload-area.dragover { border-color: var(--secondary); color: var(--secondary); background: #ebf8ff; }
-    .upload-area i { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
-    .upload-area p { font-size: 0.85rem; }
-    .upload-preview { max-width: 100%; max-height: 180px; border-radius: var(--radius-sm); margin-top: 1rem; }
-
+    .upload-zone{border:2px dashed var(--border);border-radius:var(--rs);padding:1.75rem;text-align:center;cursor:pointer;transition:all .2s;color:var(--muted)}
+    .upload-zone:hover,.upload-zone.dragover{border-color:var(--s);color:var(--s);background:#ebf8ff}
+    .upload-zone i{font-size:1.8rem;display:block;margin-bottom:.5rem}
+    .upload-zone p{font-size:.83rem}
+    .preview-img{max-width:100%;max-height:160px;border-radius:var(--rs);margin-top:.75rem;display:none}
+    /* ── Modal ── */
+    .modal-wrap{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem}
+    .modal{background:var(--surf);border-radius:var(--r);padding:1.75rem;width:100%;max-width:580px;box-shadow:var(--sh);position:relative;max-height:90vh;overflow-y:auto}
+    .modal h3{font-size:1.05rem;color:var(--p);margin-bottom:1.1rem}
+    .modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;cursor:pointer;color:var(--muted);font-size:1rem;padding:.25rem}
+    .modal-close:hover{color:var(--err)}
+    .modal-footer{display:flex;justify-content:flex-end;gap:.65rem;margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)}
+    /* ── Info box ── */
+    .info-box{font-size:.83rem;color:var(--txt2);background:#ebf8ff;padding:.75rem 1rem;border-radius:var(--rs);border-left:3px solid var(--s);margin-bottom:1rem;display:flex;align-items:flex-start;gap:.5rem}
+    .warn-box{background:#fffbeb;border-left-color:var(--warn);color:#744210}
+    .err-box{background:#fff5f5;border-left-color:var(--err);color:#742a2a}
+    /* ── Save bar ── */
+    .save-bar{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.25rem;display:flex;align-items:center;gap:1rem;margin-top:1.25rem}
+    .save-bar span{flex:1;font-size:.83rem;color:var(--muted)}
+    /* ── Toast ── */
+    #toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;background:var(--txt);color:#fff;padding:.8rem 1.3rem;border-radius:var(--rs);font-size:.86rem;font-weight:500;box-shadow:var(--sh);transform:translateY(80px);opacity:0;transition:all .3s;display:flex;align-items:center;gap:.5rem}
+    #toast.show{transform:translateY(0);opacity:1}
+    #toast.ok{background:var(--ok)}
+    #toast.er{background:var(--err)}
+    /* ── Empty state ── */
+    .empty{text-align:center;padding:2rem;color:var(--muted)}
+    .empty i{font-size:1.8rem;display:block;margin-bottom:.5rem;opacity:.35}
+    /* ── Spinner ── */
+    .spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:sp .65s linear infinite}
+    @keyframes sp{to{transform:rotate(360deg)}}
     /* ── Misc ── */
-    .flex-row { display: flex; align-items: center; gap: 0.75rem; }
-    .pill { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 50px; font-size: 0.72rem; font-weight: 700; }
-    .pill.video { background: #fef3c7; color: #92400e; }
-    .pill.image { background: #ebf8ff; color: #2b6cb0; }
-    .divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
-    .info-text { font-size: 0.83rem; color: var(--text-muted); margin-bottom: 1rem; background: #ebf8ff; padding: 0.75rem 1rem; border-radius: var(--radius-sm); border-left: 3px solid var(--secondary); }
-    .empty-state { text-align: center; padding: 2.5rem; color: var(--text-muted); }
-    .empty-state i { font-size: 2rem; display: block; margin-bottom: 0.75rem; opacity: 0.4; }
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    @media (max-width: 680px) {
-      .admin-sidebar { display: none; }
-      .student-row  { grid-template-columns: 1fr auto; }
-      .student-row-title { display: none; }
-      .two-col { grid-template-columns: 1fr; }
-    }
+    .divider{border:none;border-top:1px solid var(--border);margin:1rem 0}
+    code{font-family:monospace;font-size:.82rem;background:var(--surf2);padding:.1rem .35rem;border-radius:4px;border:1px solid var(--border)}
+    .pill{display:inline-block;padding:.12rem .55rem;border-radius:50px;font-size:.69rem;font-weight:700}
+    .pill.image{background:#ebf8ff;color:#2b6cb0}
+    .pill.video{background:#fef3c7;color:#92400e}
+    @media(max-width:680px){.adm-sidebar{display:none}.two-col,.three-col{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
 
-<!-- ═══ AUTH GATE ════════════════════════════════════════════ -->
+<!-- ═══ AUTH ═══════════════════════════════════════════════════ -->
 <div id="authGate">
   <div class="auth-card">
     <div class="logo"><i class="fas fa-shield-alt"></i></div>
     <h1>Admin Panel</h1>
-    <p id="authSubtitle">Manage supervision students and media gallery</p>
+    <p id="authSub">Website content management</p>
 
-    <div id="authSetup" style="display:none">
-      <div class="form-group">
-        <label>Create Admin Password</label>
-        <input type="password" id="newPassword" placeholder="Enter a secure password" autocomplete="new-password">
-      </div>
-      <div class="form-group">
-        <label>Confirm Password</label>
-        <input type="password" id="confirmPassword" placeholder="Repeat password">
-      </div>
-      <button class="btn btn-primary" style="width:100%" onclick="setupPassword()">
-        <i class="fas fa-key"></i> Set Password
-      </button>
+    <div id="frmSetup" style="display:none">
+      <div class="fg"><label>Create a password</label><input type="password" id="pw1" placeholder="Min 8 characters" autocomplete="new-password"></div>
+      <div class="fg"><label>Confirm password</label><input type="password" id="pw2" placeholder="Repeat password" onkeydown="if(event.key==='Enter')setupPw()"></div>
+      <button class="btn btn-primary" style="width:100%" onclick="setupPw()"><i class="fas fa-key"></i> Set Password &amp; Enter</button>
     </div>
 
-    <div id="authLogin" style="display:none">
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="loginPassword" placeholder="Enter admin password" autocomplete="current-password"
-               onkeydown="if(event.key==='Enter') login()">
-      </div>
-      <button class="btn btn-primary" style="width:100%" onclick="login()">
-        <i class="fas fa-sign-in-alt"></i> Login
-      </button>
-      <p style="font-size:0.78rem;color:var(--text-muted);margin-top:1rem">
-        <a href="#" onclick="resetPassword()" style="color:var(--secondary)">Forgot password? (clear and reset)</a>
-      </p>
+    <div id="frmLogin" style="display:none">
+      <div class="fg"><label>Password</label><input type="password" id="pwLogin" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="btn btn-primary" style="width:100%" id="loginBtn" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> Login</button>
+      <p style="font-size:.77rem;color:var(--muted);margin-top:.9rem"><a href="#" onclick="resetPw()" style="color:var(--s)">Forgot password? Reset</a></p>
     </div>
-
-    <p id="authError" style="color:var(--danger);font-size:0.85rem;margin-top:1rem;display:none"></p>
+    <p id="authErr" style="color:var(--err);font-size:.83rem;margin-top:.9rem;display:none"></p>
   </div>
 </div>
 
-<!-- ═══ ADMIN APP ════════════════════════════════════════════ -->
+<!-- ═══ ADMIN APP ═══════════════════════════════════════════════ -->
 <div id="adminApp">
-  <header class="admin-header">
-    <h1><i class="fas fa-cog"></i> Admin Panel <span>Alawi Alqushaibi</span></h1>
-    <div class="admin-header-actions">
-      <a href="index.html" class="btn btn-outline btn-sm" style="color:#fff;border-color:rgba(255,255,255,0.3)">
-        <i class="fas fa-eye"></i> View Site
-      </a>
-      <button class="btn btn-outline btn-sm" style="color:#fff;border-color:rgba(255,255,255,0.3)" onclick="logout()">
-        <i class="fas fa-sign-out-alt"></i> Logout
-      </button>
+  <header class="adm-hdr">
+    <h1><i class="fas fa-cog"></i> Admin Panel</h1>
+    <div class="adm-hdr-r">
+      <a href="index.html" class="btn btn-outline btn-sm" style="color:#fff;border-color:rgba(255,255,255,.3)" target="_blank"><i class="fas fa-eye"></i> View Site</a>
+      <button class="btn btn-outline btn-sm" style="color:#fff;border-color:rgba(255,255,255,.3)" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
   </header>
 
-  <div class="admin-layout">
-    <nav class="admin-sidebar">
-      <div class="sidebar-item active" onclick="showSection('supervision')">
-        <i class="fas fa-user-graduate"></i> Supervision
-      </div>
-      <div class="sidebar-item" onclick="showSection('media')">
-        <i class="fas fa-images"></i> Media
-      </div>
-      <div class="sidebar-item" onclick="showSection('settings')">
-        <i class="fas fa-sliders-h"></i> Settings
-      </div>
+  <div class="adm-layout">
+    <nav class="adm-sidebar" id="sidebar">
+      <div class="sb-group">About</div>
+      <div class="sb-item active" data-sec="bio"><i class="fas fa-user"></i> Bio &amp; Interests</div>
+      <div class="sb-item" data-sec="experience"><i class="fas fa-briefcase"></i> Experience</div>
+      <div class="sb-item" data-sec="projects"><i class="fas fa-flask"></i> Research Projects</div>
+      <div class="sb-item" data-sec="skills"><i class="fas fa-tools"></i> Skills &amp; Languages</div>
+      <div class="sb-item" data-sec="workshops"><i class="fas fa-certificate"></i> Workshops</div>
+      <div class="sb-item" data-sec="awards"><i class="fas fa-trophy"></i> Awards</div>
+      <div class="sb-item" data-sec="memberships"><i class="fas fa-id-card"></i> Memberships</div>
+      <div class="sb-item" data-sec="leadership"><i class="fas fa-users"></i> Leadership</div>
+      <div class="sb-group">Other Tabs</div>
+      <div class="sb-item" data-sec="teaching"><i class="fas fa-chalkboard-teacher"></i> Teaching</div>
+      <div class="sb-item" data-sec="supervision"><i class="fas fa-user-graduate"></i> Supervision</div>
+      <div class="sb-item" data-sec="media"><i class="fas fa-images"></i> Media Gallery</div>
+      <div class="sb-item" data-sec="cv"><i class="fas fa-file-alt"></i> CV / Resume</div>
+      <div class="sb-group">System</div>
+      <div class="sb-item" data-sec="settings"><i class="fas fa-sliders-h"></i> Settings</div>
     </nav>
 
-    <main class="admin-content">
+    <main class="adm-content" id="content">
 
-      <!-- ── SUPERVISION SECTION ── -->
-      <div id="section-supervision" class="admin-section active">
-        <div class="section-header">
-          <h2><i class="fas fa-user-graduate"></i> Supervision Management</h2>
-          <p>Edit student statuses, add new students, or remove entries. Changes are saved to GitHub automatically.</p>
+      <!-- ════ BIO ════ -->
+      <div class="sec active" id="sec-bio">
+        <div class="sec-hdr"><h2><i class="fas fa-user"></i> Bio &amp; Research Interests</h2><p>Edit the About Me paragraphs and research interest tags.</p></div>
+        <div class="card">
+          <h3><i class="fas fa-paragraph"></i> Bio Paragraphs</h3>
+          <div id="bioParas"></div>
+          <button class="btn btn-outline btn-sm" onclick="addBioPara()"><i class="fas fa-plus"></i> Add Paragraph</button>
         </div>
-
-        <div id="tokenWarning" class="info-text" style="display:none">
-          <i class="fas fa-exclamation-triangle"></i>
-          GitHub token not configured. Go to <a href="#" onclick="showSection('settings')">Settings</a> to add your token before saving changes.
+        <div class="card">
+          <h3><i class="fas fa-tags"></i> Research Interests</h3>
+          <div class="fg"><label>Tags (one per line)</label><textarea id="interestTags" rows="6"></textarea></div>
         </div>
+        <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>assets/data/site-content.json</code></span>
+          <button class="btn btn-ok" id="saveBioBtn" onclick="saveSection('bio')"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
+      </div>
 
-        <!-- PhD Students -->
-        <div class="admin-card">
-          <h3><i class="fas fa-user-graduate" style="color:var(--primary)"></i> PhD Students</h3>
-          <div id="phdList"></div>
-          <hr class="divider">
-          <button class="btn btn-outline btn-sm" onclick="showAddStudent('phd')">
-            <i class="fas fa-plus"></i> Add PhD Student
-          </button>
+      <!-- ════ EXPERIENCE ════ -->
+      <div class="sec" id="sec-experience">
+        <div class="sec-hdr"><h2><i class="fas fa-briefcase"></i> Experience</h2><p>Add, edit, or remove work experience entries.</p></div>
+        <div class="card"><h3><i class="fas fa-list"></i> Entries</h3><div id="expList"></div>
+          <button class="btn btn-outline btn-sm" style="margin-top:.75rem" onclick="openExpModal()"><i class="fas fa-plus"></i> Add Entry</button></div>
+        <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>site-content.json</code></span>
+          <button class="btn btn-ok" onclick="saveSection('experience')"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
+      </div>
+
+      <!-- ════ PROJECTS ════ -->
+      <div class="sec" id="sec-projects">
+        <div class="sec-hdr"><h2><i class="fas fa-flask"></i> Research Projects</h2></div>
+        <div class="card"><h3><i class="fas fa-list"></i> Projects</h3><div id="projList"></div>
+          <button class="btn btn-outline btn-sm" style="margin-top:.75rem" onclick="openProjModal()"><i class="fas fa-plus"></i> Add Project</button></div>
+        <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>site-content.json</code></span>
+          <button class="btn btn-ok" onclick="saveSection('research_projects')"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
+      </div>
+
+      <!-- ════ SKILLS ════ -->
+      <div class="sec" id="sec-skills">
+        <div class="sec-hdr"><h2><i class="fas fa-tools"></i> Skills &amp; Languages</h2></div>
+        <div class="card"><h3>Technical Skills</h3><div id="techSkillList"></div>
+          <button class="btn btn-outline btn-sm" style="margin-top:.75rem" onclick="openSkillModal('tech')"><i class="fas fa-plus"></i> Add Skill</button></div>
+        <div class="card"><h3>Languages</h3><div id="langSkillList"></div>
+          <button class="btn btn-outline btn-sm" style="margin-top:.75rem" onclick="openSkillModal('lang')"><i class="fas fa-plus"></i> Add Language</button></div>
+        <div class="card"><h3>Journal Reviewer</h3>
+          <div class="fg"><label>Journals (one per line)</label><textarea id="reviewerJournals" rows="7"></textarea></div></div>
+        <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>site-content.json</code></span>
+          <button class="btn btn-ok" onclick="saveSection('skills')"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
+      </div>
+
+      <!-- ════ WORKSHOPS ════ -->
+      <div class="sec" id="sec-workshops">
+        <div class="sec-hdr"><h2><i class="fas fa-certificate"></i> Workshops &amp; Competencies</h2></div>
+        <div class="card"><h3><i class="fas fa-list"></i> Workshops</h3><div id="wsList"></div>
+          <button class="btn btn-outline btn-sm" style="margin-top:.75rem" onclick="openWsModal()"><i class="fas fa-plus"></i> Add Workshop</button></div>
+        <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>site-content.json</code></span>
+          <button class="btn btn-ok" onclick="saveSection('workshops')"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
+      </div>
+
+      <!-- ════ AWARDS ════ -->
+      <div class="sec" id="sec-awards">
+        <div class="sec-hdr"><h2><i class="fas fa-trophy"></i> Awards &amp; Recognition</h2></div>
+        <div class="card"><h3><i class="fas fa-list"></i> Awards</h3><div id="awardList"></div>
+          <button class="btn btn-outline btn-sm" style="margin-top:.75rem" onclick="openAwardModal()"><i class="fas fa-plus"></i> Add Award</button></div>
+        <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>site-content.json</code></span>
+          <button class="btn btn-ok" onclick="saveSection('awards')"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
+      </div>
+
+      <!-- ════ MEMBERSHIPS ════ -->
+      <div class="sec" id="sec-memberships">
+        <div class="sec-hdr"><h2><i class="fas fa-id-card"></i> Professional Memberships</h2></div>
+        <div class="card"><h3><i class="fas fa-list"></i> Memberships</h3><div id="memList"></div>
+          <button class="btn btn-outline btn-sm" style="margin-top:.75rem" onclick="openMemModal()"><i class="fas fa-plus"></i> Add Membership</button></div>
+        <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>site-content.json</code></span>
+          <button class="btn btn-ok" onclick="saveSection('memberships')"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
+      </div>
+
+      <!-- ════ LEADERSHIP ════ -->
+      <div class="sec" id="sec-leadership">
+        <div class="sec-hdr"><h2><i class="fas fa-users"></i> Leadership &amp; Volunteer</h2></div>
+        <div class="card"><h3><i class="fas fa-list"></i> Entries</h3><div id="leadList"></div>
+          <button class="btn btn-outline btn-sm" style="margin-top:.75rem" onclick="openLeadModal()"><i class="fas fa-plus"></i> Add Entry</button></div>
+        <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>site-content.json</code></span>
+          <button class="btn btn-ok" onclick="saveSection('leadership')"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
+      </div>
+
+      <!-- ════ TEACHING ════ -->
+      <div class="sec" id="sec-teaching">
+        <div class="sec-hdr"><h2><i class="fas fa-chalkboard-teacher"></i> Teaching Subjects</h2></div>
+        <div class="card"><h3><i class="fas fa-list"></i> Subjects</h3><div id="teachList"></div>
+          <button class="btn btn-outline btn-sm" style="margin-top:.75rem" onclick="openTeachModal()"><i class="fas fa-plus"></i> Add Subject</button></div>
+        <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>site-content.json</code></span>
+          <button class="btn btn-ok" onclick="saveSection('teaching')"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
+      </div>
+
+      <!-- ════ SUPERVISION ════ -->
+      <div class="sec" id="sec-supervision">
+        <div class="sec-hdr"><h2><i class="fas fa-user-graduate"></i> Supervision</h2><p>Manage PhD, Master, and FYP students.</p></div>
+        <div id="supTokenWarn" class="warn-box info-box" style="display:none"><i class="fas fa-exclamation-triangle"></i> GitHub token not set. Go to Settings first.</div>
+        <div class="card"><h3>PhD Students</h3><div id="admPhdList"></div>
+          <button class="btn btn-outline btn-sm" style="margin-top:.75rem" onclick="openSupModal('phd')"><i class="fas fa-plus"></i> Add PhD Student</button></div>
+        <div class="card"><h3>Master Students</h3><div id="admMasterList"></div>
+          <button class="btn btn-outline btn-sm" style="margin-top:.75rem" onclick="openSupModal('masters')"><i class="fas fa-plus"></i> Add Master Student</button></div>
+        <div class="card"><h3>FYP Students</h3><div id="admFypList"></div>
+          <button class="btn btn-outline btn-sm" style="margin-top:.75rem" onclick="openSupModal('fyp')"><i class="fas fa-plus"></i> Add FYP Student</button></div>
+        <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>assets/data/supervision.json</code></span>
+          <button class="btn btn-ok" id="saveSupBtn" onclick="saveSupervision()"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
+      </div>
+
+      <!-- ════ MEDIA ════ -->
+      <div class="sec" id="sec-media">
+        <div class="sec-hdr"><h2><i class="fas fa-images"></i> Media Gallery</h2></div>
+        <div class="card">
+          <h3><i class="fas fa-plus-circle"></i> Add New Item</h3>
+          <div style="display:flex;gap:.6rem;margin-bottom:1.1rem">
+            <button class="btn btn-outline" id="addImgBtn" onclick="setMediaType('image')" style="flex:1"><i class="fas fa-image"></i> Image</button>
+            <button class="btn btn-outline" id="addVidBtn" onclick="setMediaType('video')" style="flex:1"><i class="fab fa-youtube"></i> YouTube</button>
+          </div>
+          <div id="imgForm" style="display:none">
+            <div class="upload-zone" id="dropZone" onclick="document.getElementById('imgFile').click()"
+                 ondragover="event.preventDefault();this.classList.add('dragover')"
+                 ondragleave="this.classList.remove('dragover')"
+                 ondrop="handleDrop(event)">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <p>Click to select or drag &amp; drop (PNG, JPG, WEBP – max 5 MB)</p>
+            </div>
+            <input type="file" id="imgFile" accept="image/*" style="display:none" onchange="handleImgFile(this.files[0])">
+            <img id="imgPreview" class="preview-img" alt="Preview">
+            <div class="two-col" style="margin-top:.9rem">
+              <div class="fg"><label>Title *</label><input type="text" id="imgTitle" placeholder="Photo caption"></div>
+              <div class="fg"><label>Date</label><input type="text" id="imgDate" placeholder="e.g. April 2024"></div>
+            </div>
+            <div class="fg"><label>Description</label><textarea id="imgDesc" placeholder="Short description (optional)" rows="2"></textarea></div>
+            <button class="btn btn-ok" id="uploadImgBtn" onclick="uploadImage()" disabled><i class="fas fa-upload"></i> Upload &amp; Add to Gallery</button>
+          </div>
+          <div id="vidForm" style="display:none">
+            <div class="fg"><label>YouTube URL *</label><input type="url" id="vidUrl" placeholder="https://www.youtube.com/watch?v=..."></div>
+            <div class="two-col">
+              <div class="fg"><label>Title *</label><input type="text" id="vidTitle" placeholder="Video title"></div>
+              <div class="fg"><label>Date</label><input type="text" id="vidDate" placeholder="e.g. March 2025"></div>
+            </div>
+            <div class="fg"><label>Description</label><textarea id="vidDesc" rows="2" placeholder="Short description (optional)"></textarea></div>
+            <button class="btn btn-ok" onclick="addVideo()"><i class="fas fa-plus"></i> Add Video</button>
+          </div>
         </div>
+        <div class="card"><h3><i class="fas fa-list"></i> Gallery Items</h3><div id="mediaList"></div></div>
+        <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>assets/data/media.json</code></span>
+          <button class="btn btn-ok" id="saveMediaBtn" onclick="saveMedia()"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
+      </div>
 
-        <!-- Masters Students -->
-        <div class="admin-card">
-          <h3><i class="fas fa-graduation-cap" style="color:var(--secondary)"></i> Master Students</h3>
-          <div id="mastersList"></div>
-          <hr class="divider">
-          <button class="btn btn-outline btn-sm" onclick="showAddStudent('masters')">
-            <i class="fas fa-plus"></i> Add Master Student
-          </button>
+      <!-- ════ CV ════ -->
+      <div class="sec" id="sec-cv">
+        <div class="sec-hdr"><h2><i class="fas fa-file-alt"></i> CV / Resume</h2><p>Upload a new PDF to replace the current CV. The filename is updated automatically.</p></div>
+        <div class="card">
+          <h3><i class="fas fa-file-pdf"></i> Current CV</h3>
+          <p style="font-size:.87rem;color:var(--txt2);margin-bottom:1rem">Filename: <code id="curCvName">loading…</code></p>
+          <a id="cvPreviewLink" href="#" target="_blank" class="btn btn-outline btn-sm"><i class="fas fa-eye"></i> Preview Current CV</a>
         </div>
-
-        <!-- FYP Students -->
-        <div class="admin-card">
-          <h3><i class="fas fa-laptop-code" style="color:var(--accent)"></i> FYP Students</h3>
-          <div id="fypList"></div>
-          <hr class="divider">
-          <button class="btn btn-outline btn-sm" onclick="showAddStudent('fyp')">
-            <i class="fas fa-plus"></i> Add FYP Student
-          </button>
-        </div>
-
-        <div class="card-actions" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem">
-          <span style="font-size:0.84rem;color:var(--text-muted);flex:1">
-            <i class="fas fa-info-circle"></i> Saves directly to <code>assets/data/supervision.json</code> on GitHub
-          </span>
-          <button class="btn btn-success" id="saveSupBtn" onclick="saveSupervision()">
-            <i class="fas fa-cloud-upload-alt"></i> Save to GitHub
-          </button>
+        <div class="card">
+          <h3><i class="fas fa-upload"></i> Upload New CV</h3>
+          <div class="info-box"><i class="fas fa-info-circle"></i> Upload a PDF. It will be committed to the repository and the site will use the new filename immediately.</div>
+          <div class="upload-zone" id="cvDropZone" onclick="document.getElementById('cvFile').click()"
+               ondragover="event.preventDefault();this.classList.add('dragover')"
+               ondragleave="this.classList.remove('dragover')"
+               ondrop="handleCvDrop(event)">
+            <i class="fas fa-file-pdf"></i>
+            <p>Click to select PDF or drag &amp; drop</p>
+          </div>
+          <input type="file" id="cvFile" accept=".pdf" style="display:none" onchange="handleCvFile(this.files[0])">
+          <p id="cvFileName" style="font-size:.84rem;color:var(--s);margin-top:.5rem;display:none"></p>
+          <button class="btn btn-ok" id="uploadCvBtn" onclick="uploadCv()" disabled style="margin-top:.9rem"><i class="fas fa-cloud-upload-alt"></i> Upload &amp; Set as Active CV</button>
         </div>
       </div>
 
-      <!-- ── MEDIA SECTION ── -->
-      <div id="section-media" class="admin-section">
-        <div class="section-header">
-          <h2><i class="fas fa-images"></i> Media Gallery</h2>
-          <p>Upload images or add YouTube videos to your media gallery.</p>
+      <!-- ════ SETTINGS ════ -->
+      <div class="sec" id="sec-settings">
+        <div class="sec-hdr"><h2><i class="fas fa-sliders-h"></i> Settings</h2></div>
+        <div class="card">
+          <h3><i class="fab fa-github"></i> GitHub Personal Access Token</h3>
+          <div class="info-box"><i class="fas fa-info-circle"></i>
+            Create a Fine-grained token at <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="color:var(--s)">github.com/settings/tokens</a>
+            with <strong>Contents: Read &amp; Write</strong> for repository <code>alqushaibi/alqushaibi.github.io</code> only.
+            The token is stored in your browser session only and never sent anywhere except GitHub's API.
+          </div>
+          <div class="fg"><label>Token</label><input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off"></div>
+          <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">
+            <label style="font-size:.83rem;color:var(--txt2);display:flex;align-items:center;gap:.4rem;cursor:pointer;margin:0">
+              <input type="checkbox" id="rememberToken"> Remember token in localStorage (less secure)
+            </label>
+          </div>
+          <button class="btn btn-primary" onclick="saveToken()"><i class="fas fa-save"></i> Save Token</button>
+          <span id="tokenOk" style="margin-left:.75rem;font-size:.83rem;color:var(--ok);display:none"><i class="fas fa-check-circle"></i> Token saved</span>
         </div>
-
-        <div class="admin-card">
-          <h3><i class="fas fa-plus-circle" style="color:var(--success)"></i> Add New Item</h3>
-          <div style="display:flex;gap:0.75rem;margin-bottom:1.25rem">
-            <button class="btn btn-outline" id="addTypeImage" onclick="setAddType('image')" style="flex:1">
-              <i class="fas fa-image"></i> Image
-            </button>
-            <button class="btn btn-outline" id="addTypeVideo" onclick="setAddType('video')" style="flex:1">
-              <i class="fab fa-youtube"></i> YouTube Video
-            </button>
+        <div class="card">
+          <h3><i class="fas fa-lock"></i> Change Password</h3>
+          <div class="two-col">
+            <div class="fg"><label>Current password</label><input type="password" id="curPw"></div>
+            <div class="fg"></div>
+            <div class="fg"><label>New password</label><input type="password" id="newPw"></div>
+            <div class="fg"><label>Confirm new password</label><input type="password" id="confPw"></div>
           </div>
-
-          <div id="addImageForm" style="display:none">
-            <div class="form-group">
-              <label>Image File</label>
-              <div class="upload-area" id="uploadArea" onclick="document.getElementById('imageFileInput').click()"
-                   ondragover="event.preventDefault();this.classList.add('dragover')"
-                   ondragleave="this.classList.remove('dragover')"
-                   ondrop="handleDrop(event)">
-                <i class="fas fa-cloud-upload-alt"></i>
-                <p>Click to choose an image or drag &amp; drop here</p>
-                <p style="font-size:0.75rem;margin-top:0.25rem">PNG, JPG, WEBP – max 5 MB</p>
-              </div>
-              <input type="file" id="imageFileInput" accept="image/*" style="display:none" onchange="handleImageFile(this.files[0])">
-              <img id="imagePreview" class="upload-preview" style="display:none" alt="Preview">
-            </div>
-            <div class="two-col">
-              <div class="form-group">
-                <label>Title *</label>
-                <input type="text" id="imgTitle" placeholder="e.g. Best Paper Award – Pune 2024">
-              </div>
-              <div class="form-group">
-                <label>Date</label>
-                <input type="text" id="imgDate" placeholder="e.g. April 2024">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Description</label>
-              <textarea id="imgDesc" placeholder="Short caption or description"></textarea>
-            </div>
-            <button class="btn btn-success" id="uploadBtn" onclick="uploadImage()" disabled>
-              <i class="fas fa-upload"></i> Upload &amp; Add
-            </button>
-          </div>
-
-          <div id="addVideoForm" style="display:none">
-            <div class="form-group">
-              <label>YouTube URL *</label>
-              <input type="url" id="videoUrl" placeholder="https://www.youtube.com/watch?v=...">
-            </div>
-            <div class="two-col">
-              <div class="form-group">
-                <label>Title *</label>
-                <input type="text" id="videoTitle" placeholder="e.g. Conference Keynote">
-              </div>
-              <div class="form-group">
-                <label>Date</label>
-                <input type="text" id="videoDate" placeholder="e.g. March 2025">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Description</label>
-              <textarea id="videoDesc" placeholder="Short description"></textarea>
-            </div>
-            <button class="btn btn-success" onclick="addVideo()">
-              <i class="fas fa-plus"></i> Add Video
-            </button>
-          </div>
+          <button class="btn btn-primary" onclick="changePw()"><i class="fas fa-key"></i> Update Password</button>
         </div>
-
-        <div class="admin-card">
-          <h3><i class="fas fa-list" style="color:var(--secondary)"></i> Current Media Items</h3>
-          <div id="mediaList"></div>
-        </div>
-
-        <div class="card-actions" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem">
-          <span style="font-size:0.84rem;color:var(--text-muted);flex:1">
-            <i class="fas fa-info-circle"></i> Saves directly to <code>assets/data/media.json</code> on GitHub
-          </span>
-          <button class="btn btn-success" id="saveMediaBtn" onclick="saveMedia()">
-            <i class="fas fa-cloud-upload-alt"></i> Save to GitHub
-          </button>
-        </div>
-      </div>
-
-      <!-- ── SETTINGS SECTION ── -->
-      <div id="section-settings" class="admin-section">
-        <div class="section-header">
-          <h2><i class="fas fa-sliders-h"></i> Settings</h2>
-        </div>
-
-        <div class="admin-card">
-          <h3><i class="fab fa-github" style="color:var(--text)"></i> GitHub Token</h3>
-          <p style="font-size:0.84rem;color:var(--text-secondary);margin-bottom:1rem">
-            Required to save changes. Create a Personal Access Token at
-            <a href="https://github.com/settings/tokens" target="_blank" rel="noopener" style="color:var(--secondary)">github.com/settings/tokens</a>
-            with <strong>Contents: Read &amp; Write</strong> permission for repository <code>alqushaibi/alqushaibi.github.io</code>.
-          </p>
-          <div class="form-group">
-            <label>Personal Access Token</label>
-            <input type="password" id="ghTokenInput" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
-          </div>
-          <button class="btn btn-primary" onclick="saveToken()">
-            <i class="fas fa-save"></i> Save Token
-          </button>
-          <span id="tokenStatus" style="margin-left:1rem;font-size:0.84rem;color:var(--text-muted)"></span>
-        </div>
-
-        <div class="admin-card">
-          <h3><i class="fas fa-key" style="color:var(--warning)"></i> Change Admin Password</h3>
-          <div class="form-group">
-            <label>Current Password</label>
-            <input type="password" id="curPw" placeholder="Current password">
-          </div>
-          <div class="form-group">
-            <label>New Password</label>
-            <input type="password" id="newPw" placeholder="New password">
-          </div>
-          <div class="form-group">
-            <label>Confirm New Password</label>
-            <input type="password" id="confPw" placeholder="Repeat new password">
-          </div>
-          <button class="btn btn-primary" onclick="changePassword()">
-            <i class="fas fa-lock"></i> Update Password
-          </button>
+        <div class="card" style="border-color:#fed7d7">
+          <h3 style="color:var(--err)"><i class="fas fa-exclamation-triangle"></i> Security Notes</h3>
+          <ul style="font-size:.84rem;color:var(--txt2);padding-left:1.25rem;line-height:2">
+            <li>This admin page is publicly accessible — never share the URL or password.</li>
+            <li>Your GitHub token is stored in session memory (cleared on browser close) unless "Remember" is checked.</li>
+            <li>Use a fine-grained token scoped to this repo only — not a classic full-access token.</li>
+            <li><code>robots.txt</code> blocks crawlers from indexing this page.</li>
+            <li>After 5 failed login attempts you are locked out for 10 minutes.</li>
+          </ul>
         </div>
       </div>
 
@@ -461,60 +389,17 @@
   </div>
 </div>
 
-<!-- ── Add Student Modal ── -->
-<div id="addStudentModal" class="modal-overlay" style="display:none">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('addStudentModal')"><i class="fas fa-times"></i></button>
-    <h3 id="addStudentTitle">Add Student</h3>
-    <input type="hidden" id="addStudentType">
+<!-- ═══ MODALS ══════════════════════════════════════════════════ -->
 
-    <div class="form-group">
-      <label>Full Name *</label>
-      <input type="text" id="sName" placeholder="e.g. Ahmad bin Abdullah">
-    </div>
-    <div id="phdFields">
-      <div class="two-col">
-        <div class="form-group">
-          <label>Degree</label>
-          <input type="text" id="sDegree" placeholder="Ph.D. Candidate" value="Ph.D. Candidate">
-        </div>
-        <div class="form-group">
-          <label>University</label>
-          <input type="text" id="sUniversity" placeholder="MAHSA University" value="MAHSA University">
-        </div>
-      </div>
-      <div class="two-col">
-        <div class="form-group">
-          <label>Role</label>
-          <input type="text" id="sRole" placeholder="Main Supervisor" value="Main Supervisor">
-        </div>
-        <div class="form-group">
-          <label>Research Area</label>
-          <input type="text" id="sResearch" placeholder="AI / Machine Learning">
-        </div>
-      </div>
-    </div>
-    <div id="fypFields" style="display:none">
-      <div class="form-group">
-        <label>Project Title *</label>
-        <input type="text" id="sTitle" placeholder="e.g. Smart Traffic Management System">
-      </div>
-      <div class="form-group">
-        <label>Role</label>
-        <input type="text" id="sRoleFyp" placeholder="Main Supervisor" value="Main Supervisor">
-      </div>
-    </div>
-    <div class="form-group">
-      <label>Status</label>
-      <select id="sStatus">
-        <option value="current">Current</option>
-        <option value="completed">Completed</option>
-        <option value="graduated">Graduated</option>
-      </select>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closeModal('addStudentModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="addStudent()"><i class="fas fa-plus"></i> Add Student</button>
+<!-- Generic item modal -->
+<div id="itemModal" class="modal-wrap" style="display:none">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('itemModal')"><i class="fas fa-times"></i></button>
+    <h3 id="itemModalTitle">Edit</h3>
+    <div id="itemModalBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('itemModal')">Cancel</button>
+      <button class="btn btn-primary" id="itemModalSave" onclick="saveModalItem()"><i class="fas fa-check"></i> Save</button>
     </div>
   </div>
 </div>
@@ -531,529 +416,788 @@ const REPO  = 'alqushaibi.github.io';
 const API   = 'https://api.github.com';
 
 /* ════════════════════════════════════════════════════════════
-   AUTH
+   AUTH  (SHA-256 hash + lockout)
 ════════════════════════════════════════════════════════════ */
-async function hashStr(str) {
-  const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str + '_admin_v1'));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str + '::adm::v2'));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
 }
+
+let failCount = 0;
+let lockUntil = 0;
 
 function initAuth() {
-  const stored = localStorage.getItem('admin_pw_hash');
-  if (!stored) {
-    document.getElementById('authSetup').style.display = 'block';
-    document.getElementById('authSubtitle').textContent = 'Create a password to secure this panel';
-  } else {
-    document.getElementById('authLogin').style.display = 'block';
+  const stored = localStorage.getItem('adm_hash');
+  document.getElementById('authSub').textContent = stored
+    ? 'Enter your password to continue' : 'Set up a password to protect this panel';
+  document.getElementById(stored ? 'frmLogin' : 'frmSetup').style.display = 'block';
+  if (sessionStorage.getItem('adm_ok') === '1') showApp();
+  // restore lockout
+  lockUntil = parseInt(localStorage.getItem('adm_lock') || '0', 10);
+}
+
+async function setupPw() {
+  const p1 = document.getElementById('pw1').value;
+  const p2 = document.getElementById('pw2').value;
+  if (!p1 || p1.length < 8) return authErr('Password must be at least 8 characters.');
+  if (p1 !== p2)             return authErr('Passwords do not match.');
+  localStorage.setItem('adm_hash', await sha256(p1));
+  sessionStorage.setItem('adm_ok', '1');
+  showApp();
+}
+
+async function doLogin() {
+  if (Date.now() < lockUntil) {
+    const secs = Math.ceil((lockUntil - Date.now()) / 1000);
+    return authErr(`Too many attempts. Try again in ${secs}s.`);
   }
-  if (sessionStorage.getItem('admin_auth') === '1') showAdmin();
-}
-
-async function setupPassword() {
-  const pw1 = document.getElementById('newPassword').value;
-  const pw2 = document.getElementById('confirmPassword').value;
-  if (!pw1 || pw1.length < 6) return showAuthError('Password must be at least 6 characters.');
-  if (pw1 !== pw2)            return showAuthError('Passwords do not match.');
-  localStorage.setItem('admin_pw_hash', await hashStr(pw1));
-  sessionStorage.setItem('admin_auth', '1');
-  showAdmin();
-}
-
-async function login() {
-  const pw = document.getElementById('loginPassword').value;
+  const pw = document.getElementById('pwLogin').value;
   if (!pw) return;
-  const hash   = await hashStr(pw);
-  const stored = localStorage.getItem('admin_pw_hash');
-  if (hash === stored) {
-    sessionStorage.setItem('admin_auth', '1');
-    showAdmin();
+  const hash = await sha256(pw);
+  if (hash === localStorage.getItem('adm_hash')) {
+    failCount = 0;
+    localStorage.removeItem('adm_lock');
+    sessionStorage.setItem('adm_ok', '1');
+    showApp();
   } else {
-    showAuthError('Incorrect password.');
+    failCount++;
+    if (failCount >= 5) {
+      lockUntil = Date.now() + 10 * 60 * 1000;
+      localStorage.setItem('adm_lock', lockUntil);
+      authErr('Too many attempts. Locked for 10 minutes.');
+    } else {
+      authErr(`Incorrect password. (${5 - failCount} attempts left)`);
+    }
   }
 }
 
-function logout() {
-  sessionStorage.removeItem('admin_auth');
-  location.reload();
-}
+function logout() { sessionStorage.removeItem('adm_ok'); location.reload(); }
 
-function resetPassword() {
-  if (confirm('This will clear your password. You will need to set a new one. Continue?')) {
-    localStorage.removeItem('admin_pw_hash');
-    sessionStorage.removeItem('admin_auth');
+function resetPw() {
+  if (confirm('Clear password and all local data? You will need to set a new one.')) {
+    ['adm_hash','adm_lock','gh_token'].forEach(k => localStorage.removeItem(k));
     location.reload();
   }
 }
 
-function showAuthError(msg) {
-  const el = document.getElementById('authError');
-  el.textContent = msg;
-  el.style.display = 'block';
-}
-
-async function changePassword() {
+async function changePw() {
   const cur  = document.getElementById('curPw').value;
   const nw   = document.getElementById('newPw').value;
   const conf = document.getElementById('confPw').value;
-  const hash = await hashStr(cur);
-  if (hash !== localStorage.getItem('admin_pw_hash')) return toast('Current password incorrect.', 'error');
-  if (!nw || nw.length < 6)  return toast('New password must be at least 6 characters.', 'error');
-  if (nw !== conf)            return toast('Passwords do not match.', 'error');
-  localStorage.setItem('admin_pw_hash', await hashStr(nw));
-  ['curPw','newPw','confPw'].forEach(id => document.getElementById(id).value = '');
-  toast('Password updated!', 'success');
+  if (await sha256(cur) !== localStorage.getItem('adm_hash')) return toast('Current password incorrect.','er');
+  if (!nw || nw.length < 8) return toast('New password must be 8+ characters.','er');
+  if (nw !== conf) return toast('Passwords do not match.','er');
+  localStorage.setItem('adm_hash', await sha256(nw));
+  ['curPw','newPw','confPw'].forEach(id => { document.getElementById(id).value = ''; });
+  toast('Password updated!','ok');
 }
 
-/* ════════════════════════════════════════════════════════════
-   ADMIN INIT
-════════════════════════════════════════════════════════════ */
-let supData   = null;
-let supSha    = '';
-let mediaData = [];
-let mediaSha  = '';
-let pendingImageFile = null;
-
-async function showAdmin() {
-  document.getElementById('authGate').style.display = 'none';
-  document.getElementById('adminApp').style.display = 'block';
-  checkToken();
-  await Promise.all([loadSupervision(), loadMedia()]);
-}
-
-function checkToken() {
-  const token = localStorage.getItem('gh_token');
-  const warn  = document.getElementById('tokenWarning');
-  if (!token) {
-    if (warn) warn.style.display = 'block';
-  } else {
-    if (warn) warn.style.display = 'none';
-    document.getElementById('tokenStatus').textContent = 'Token saved ✓';
-  }
-  const inp = document.getElementById('ghTokenInput');
-  if (inp && token) inp.placeholder = '(token saved – paste new to replace)';
-}
-
-function saveToken() {
-  const val = document.getElementById('ghTokenInput').value.trim();
-  if (!val) return toast('Please enter a token.', 'error');
-  localStorage.setItem('gh_token', val);
-  document.getElementById('ghTokenInput').value = '';
-  document.getElementById('tokenStatus').textContent = 'Token saved ✓';
-  const warn = document.getElementById('tokenWarning');
-  if (warn) warn.style.display = 'none';
-  toast('GitHub token saved!', 'success');
+function authErr(msg) {
+  const el = document.getElementById('authErr');
+  el.textContent = msg;
+  el.style.display = 'block';
 }
 
 /* ════════════════════════════════════════════════════════════
    GITHUB API
 ════════════════════════════════════════════════════════════ */
-function getToken() { return localStorage.getItem('gh_token') || ''; }
+function getToken() {
+  return sessionStorage.getItem('gh_token') || localStorage.getItem('gh_token') || '';
+}
+
+function saveToken() {
+  const val = document.getElementById('ghToken').value.trim();
+  if (!val) return toast('Enter a token first.','er');
+  sessionStorage.setItem('gh_token', val);
+  if (document.getElementById('rememberToken').checked)
+    localStorage.setItem('gh_token', val);
+  document.getElementById('ghToken').value = '';
+  document.getElementById('tokenOk').style.display = 'inline';
+  const w = document.getElementById('supTokenWarn');
+  if (w) w.style.display = 'none';
+  toast('Token saved!','ok');
+}
+
+const ghHeaders = () => ({
+  Authorization: `Bearer ${getToken()}`,
+  Accept: 'application/vnd.github.v3+json',
+  'Content-Type': 'application/json'
+});
 
 async function ghGet(path) {
-  const res = await fetch(`${API}${path}`, {
-    headers: { Authorization: `Bearer ${getToken()}`, Accept: 'application/vnd.github.v3+json' }
-  });
-  if (!res.ok) throw new Error(`GitHub API error ${res.status}: ${res.statusText}`);
-  return res.json();
+  const r = await fetch(`${API}${path}`, {headers: ghHeaders()});
+  if (!r.ok) throw new Error(`GitHub ${r.status}: ${r.statusText}`);
+  return r.json();
 }
 
-async function ghPut(path, content, sha, message) {
-  const body = { message, content: toBase64(JSON.stringify(content, null, 2)), sha };
-  const res = await fetch(`${API}${path}`, {
-    method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${getToken()}`,
-      Accept: 'application/vnd.github.v3+json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
+async function ghPut(path, jsonContent, sha, msg) {
+  const body = {message: msg, content: b64utf(JSON.stringify(jsonContent, null, 2)), sha};
+  const r = await fetch(`${API}${path}`, {method:'PUT', headers: ghHeaders(), body: JSON.stringify(body)});
+  if (!r.ok) { const e = await r.json().catch(()=>{}); throw new Error(e?.message||`Save failed (${r.status})`); }
+  return r.json();
+}
+
+async function ghPutBin(path, b64, existingSha, msg) {
+  const body = {message: msg, content: b64};
+  if (existingSha) body.sha = existingSha;
+  const r = await fetch(`${API}${path}`, {method:'PUT', headers: ghHeaders(), body: JSON.stringify(body)});
+  if (!r.ok) { const e = await r.json().catch(()=>{}); throw new Error(e?.message||`Upload failed (${r.status})`); }
+  return r.json();
+}
+
+function b64utf(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  bytes.forEach(b => bin += String.fromCharCode(b));
+  return btoa(bin);
+}
+
+/* ════════════════════════════════════════════════════════════
+   DATA STATE
+════════════════════════════════════════════════════════════ */
+let SC = null;   // site-content
+let scSha = '';
+let SUP = null;  // supervision
+let supSha = '';
+let MEDIA = [];  // media items
+let mediaSha = '';
+let pendingImgFile = null;
+let pendingCvFile  = null;
+let editingType = null;
+let editingIdx  = -1;
+
+async function showApp() {
+  document.getElementById('authGate').style.display = 'none';
+  document.getElementById('adminApp').style.display = 'block';
+  // Sidebar navigation
+  document.querySelectorAll('.sb-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.sb-item').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
+      item.classList.add('active');
+      const sec = document.getElementById(`sec-${item.dataset.sec}`);
+      if (sec) sec.classList.add('active');
+    });
   });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.message || `Save failed (${res.status})`);
+  // Token status
+  if (getToken()) document.getElementById('tokenOk').style.display = 'inline';
+  if (localStorage.getItem('gh_token') && document.getElementById('rememberToken'))
+    document.getElementById('rememberToken').checked = true;
+  await Promise.all([loadSC(), loadSup(), loadMedia()]);
+}
+
+/* ─── Site Content ─── */
+async function loadSC() {
+  try {
+    const d = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/site-content.json`);
+    scSha = d.sha;
+    SC = JSON.parse(atob(d.content.replace(/\n/g,'')));
+  } catch(e) {
+    try { const r = await fetch('assets/data/site-content.json'); SC = await r.json(); } catch(_) {}
   }
-  return res.json();
+  if (SC) renderSC();
 }
 
-async function ghPutBinary(path, base64Content, sha, message) {
-  const body = { message, content: base64Content };
-  if (sha) body.sha = sha;
-  const res = await fetch(`${API}${path}`, {
-    method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${getToken()}`,
-      Accept: 'application/vnd.github.v3+json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.message || `Upload failed (${res.status})`);
+function renderSC() {
+  /* Bio */
+  renderBioPanels();
+  const it = document.getElementById('interestTags');
+  if (it) it.value = (SC.research_interests||SC.bio?.research_interests||[]).join('\n');
+
+  /* Lists */
+  renderSimpleList('expList',      SC.experience,       itemExpHtml);
+  renderSimpleList('projList',     SC.research_projects, itemProjHtml);
+  renderSimpleList('wsList',       SC.workshops,         itemWsHtml);
+  renderSimpleList('awardList',    SC.awards,            itemAwardHtml);
+  renderSimpleList('memList',      SC.memberships,       itemMemHtml);
+  renderSimpleList('leadList',     SC.leadership,        itemLeadHtml);
+  renderSimpleList('teachList',    SC.teaching,          itemTeachHtml);
+  renderSkillLists();
+  renderCvInfo();
+}
+
+function renderBioPanels() {
+  const c = document.getElementById('bioParas');
+  if (!c) return;
+  const paras = SC.bio?.paragraphs || [];
+  c.innerHTML = paras.map((p,i) => `
+    <div class="fg" style="position:relative">
+      <label>Paragraph ${i+1}</label>
+      <textarea rows="4" oninput="SC.bio.paragraphs[${i}]=this.value">${esc(p)}</textarea>
+      <button class="icon-btn del" style="position:absolute;top:0;right:0" onclick="removeBioPara(${i})" title="Remove"><i class="fas fa-trash"></i></button>
+    </div>`).join('');
+}
+
+function addBioPara() {
+  if (!SC.bio) SC.bio = {paragraphs:[], research_interests:[]};
+  SC.bio.paragraphs.push('');
+  renderBioPanels();
+}
+
+function removeBioPara(i) {
+  SC.bio.paragraphs.splice(i,1);
+  renderBioPanels();
+}
+
+function renderSkillLists() {
+  renderSimpleList('techSkillList', SC.technical_skills||[], s =>
+    `<strong>${esc(s.name)}</strong> <span style="margin-left:.5rem">${'●'.repeat(s.level)}${'○'.repeat(5-s.level)}</span> <span style="color:var(--muted)">${esc(s.label)}</span>`);
+  renderSimpleList('langSkillList', SC.language_skills||[], s =>
+    `<strong>${esc(s.flag)} ${esc(s.name)}</strong> <span style="margin-left:.5rem">${'●'.repeat(s.level)}${'○'.repeat(5-s.level)}</span> <span style="color:var(--muted)">${esc(s.label)}</span>`);
+  const rj = document.getElementById('reviewerJournals');
+  if (rj) rj.value = (SC.reviewer_journals||[]).join('\n');
+}
+
+function renderCvInfo() {
+  const fn = SC.cv_filename || '';
+  const el = document.getElementById('curCvName');
+  if (el) el.textContent = fn || '(none)';
+  const lnk = document.getElementById('cvPreviewLink');
+  if (lnk) { lnk.href = fn ? encodeURIComponent(fn) : '#'; }
+}
+
+/* ─── Generic list renderer ─── */
+function renderSimpleList(id, arr, htmlFn) {
+  const c = document.getElementById(id);
+  if (!c || !arr) return;
+  if (!arr.length) { c.innerHTML = '<div class="empty"><i class="fas fa-inbox"></i><p>No items yet.</p></div>'; return; }
+  c.innerHTML = arr.map((item, i) => `
+    <div class="item-row">
+      <div class="item-row-main">${htmlFn(item, i)}</div>
+      <div class="row-actions">
+        <button class="icon-btn" onclick="editItem('${id}',${i})" title="Edit"><i class="fas fa-edit"></i></button>
+        <button class="icon-btn del" onclick="deleteItem('${id}',${i})" title="Delete"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join('');
+}
+
+const itemExpHtml   = e => `<strong>${esc(e.title)}</strong> <span>${esc(e.company)}</span> <span class="badge ${esc(e.badge_type)}">${esc(e.badge)}</span>`;
+const itemProjHtml  = p => `<strong>${esc(p.title)}</strong><br><span>${esc(p.badge)}</span>`;
+const itemWsHtml    = w => `<strong>${esc(w.title)}</strong><br><span>${esc(w.institution)} · ${esc(w.year)}</span>`;
+const itemAwardHtml = a => `<strong>${esc(a.title)}</strong><br><span>${esc(a.issuer)} · ${esc(a.year)}</span>`;
+const itemMemHtml   = m => `<strong>${esc(m.title)}</strong><br><span>${esc(m.organization)}</span>`;
+const itemLeadHtml  = l => `<strong>${esc(l.title)}</strong><br><span>${esc(l.organization)} · ${esc(l.period)}</span>`;
+const itemTeachHtml = t => `<strong>${esc(t.title)}</strong> <span class="badge ${t.status==='current'?'current':'completed'}">${esc(t.status)}</span><br><span>${esc(t.category)} · ${esc(t.level)}</span>`;
+
+/* ─── Save sections ─── */
+async function saveSection(field) {
+  if (!getToken()) return toast('GitHub token not set — go to Settings.','er');
+  // sync textarea-based fields
+  if (field === 'bio') {
+    SC.bio.research_interests = document.getElementById('interestTags').value
+      .split('\n').map(s=>s.trim()).filter(Boolean);
   }
-  return res.json();
+  if (field === 'skills') {
+    SC.reviewer_journals = document.getElementById('reviewerJournals').value
+      .split('\n').map(s=>s.trim()).filter(Boolean);
+  }
+  await commitSC(`Admin: update ${field}`);
 }
 
-function toBase64(str) {
-  return btoa(unescape(encodeURIComponent(str)));
+async function commitSC(msg) {
+  if (!scSha) {
+    try { const d = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/site-content.json`); scSha = d.sha; }
+    catch(_) {}
+  }
+  const result = await ghPut(`/repos/${OWNER}/${REPO}/contents/assets/data/site-content.json`, SC, scSha, msg);
+  scSha = result.content.sha;
+  toast('Saved to GitHub!','ok');
 }
+
+/* ════════════════════════════════════════════════════════════
+   MODAL (universal item editor)
+════════════════════════════════════════════════════════════ */
+const LIST_MAP = {
+  expList:'experience', projList:'research_projects', wsList:'workshops',
+  awardList:'awards', memList:'memberships', leadList:'leadership', teachList:'teaching',
+  techSkillList:'technical_skills', langSkillList:'language_skills'
+};
+
+function editItem(listId, idx) {
+  const key  = LIST_MAP[listId];
+  const item = SC[key][idx];
+  editingType = key;
+  editingIdx  = idx;
+  openModalFor(key, item);
+}
+
+function deleteItem(listId, idx) {
+  if (!confirm('Delete this item?')) return;
+  const key = LIST_MAP[listId];
+  SC[key].splice(idx, 1);
+  renderSC();
+  toast('Deleted. Click Save to apply.','ok');
+}
+
+function openModalFor(type, item) {
+  document.getElementById('itemModal').style.display = 'flex';
+  const title = {
+    experience:'Experience Entry', research_projects:'Research Project',
+    workshops:'Workshop', awards:'Award', memberships:'Membership',
+    leadership:'Leadership Entry', teaching:'Teaching Subject',
+    technical_skills:'Technical Skill', language_skills:'Language'
+  }[type] || 'Edit Item';
+  document.getElementById('itemModalTitle').textContent = (editingIdx === -1 ? 'Add ' : 'Edit ') + title;
+  document.getElementById('itemModalBody').innerHTML = buildModalForm(type, item || {});
+}
+
+function buildModalForm(type, d) {
+  const f = (label, id, val='', extra='') =>
+    `<div class="fg"><label>${label}</label><input type="text" id="mf_${id}" value="${esc(val)}" ${extra}></div>`;
+  const ta = (label, id, val='', rows=3) =>
+    `<div class="fg"><label>${label}</label><textarea id="mf_${id}" rows="${rows}">${esc(val)}</textarea></div>`;
+  const sel = (label, id, opts, val='') =>
+    `<div class="fg"><label>${label}</label><select id="mf_${id}">${opts.map(([v,t])=>`<option value="${v}"${v===val?' selected':''}>${t}</option>`).join('')}</select></div>`;
+
+  switch(type) {
+    case 'experience': return `
+      ${f('Title *','title', d.title)}
+      <div class="two-col">${f('Company *','company', d.company)}${f('Period','period', d.period)}</div>
+      <div class="two-col">
+        ${sel('Type','type',[['academic','Academic'],['industry','Industry']], d.type||'academic')}
+        ${sel('Badge Type','badge_type',[['current','Current'],['past','Past']], d.badge_type||'past')}
+      </div>
+      <div class="two-col">${f('Badge Label','badge', d.badge||'', 'placeholder="e.g. Current or 2 Years"')}${f('Icon class','icon', d.icon||'fas fa-briefcase', 'placeholder="fas fa-..."')}</div>
+      ${ta('Duties (one per line) *','duties', (d.duties||[]).join('\n'), 5)}`;
+
+    case 'research_projects': return `
+      ${f('Title *','title', d.title)}
+      ${f('Badge (status · years)','badge', d.badge||'', 'placeholder="Active · 2025–Present"')}
+      ${ta('Description','description', d.description)}`;
+
+    case 'workshops': return `
+      ${f('Title *','title', d.title)}
+      <div class="two-col">${f('Institution','institution', d.institution)}${f('Year','year', d.year)}</div>
+      ${f('Icon class','icon', d.icon||'fas fa-certificate', 'placeholder="fas fa-..."')}`;
+
+    case 'awards': return `
+      ${f('Title *','title', d.title)}
+      <div class="two-col">${f('Issuer','issuer', d.issuer)}${f('Year','year', d.year)}</div>
+      <div class="two-col">
+        ${sel('Level','level',[['gold','Gold'],['silver','Silver'],['bronze','Bronze']], d.level||'silver')}
+        ${f('Icon class','icon', d.icon||'fas fa-trophy')}
+      </div>
+      ${f('Description','description', d.description||'')}`;
+
+    case 'memberships': return `
+      ${f('Title *','title', d.title)}
+      ${f('Organization','organization', d.organization)}
+      ${f('Icon class','icon', d.icon||'fas fa-id-card')}`;
+
+    case 'leadership': return `
+      ${f('Title *','title', d.title)}
+      <div class="two-col">${f('Organization','organization', d.organization)}${f('Period','period', d.period)}</div>
+      <div class="two-col">${f('Icon class','icon', d.icon||'fas fa-users')}${f('Icon gradient','icon_gradient', d.icon_gradient||'linear-gradient(135deg,#667eea,#764ba2)')}</div>
+      ${ta('Duties (one per line)','duties', (d.duties||[]).join('\n'), 5)}`;
+
+    case 'teaching': return `
+      ${f('Subject Title *','title', d.title)}
+      ${ta('Description','description', d.description, 2)}
+      <div class="two-col">
+        ${sel('Category','category',[
+          ['ai-data','AI & Data Science'],['programming','Programming'],
+          ['info-systems','Information Systems'],['networks-systems','Networks & Systems']
+        ], d.category||'ai-data')}
+        ${sel('Status','status',[['current','Currently Teaching'],['past','Past']], d.status||'current')}
+      </div>
+      ${f('Level','level', d.level||'Undergraduate')}`;
+
+    case 'technical_skills': return `
+      <div class="two-col">${f('Skill name *','name', d.name)}${f('Icon class','icon', d.icon||'fas fa-code')}</div>
+      <div class="two-col">${f('Level (1-5)','level', d.level||3, 'type="number" min="1" max="5"')}${f('Label','label', d.label||'Proficient')}</div>`;
+
+    case 'language_skills': return `
+      <div class="two-col">${f('Language *','name', d.name)}${f('Flag emoji','flag', d.flag||'🏳️')}</div>
+      <div class="two-col">${f('Level (1-5)','level', d.level||3, 'type="number" min="1" max="5"')}${f('Label','label', d.label||'Proficient')}</div>`;
+
+    default: return '<p>Unknown type.</p>';
+  }
+}
+
+function gv(id) { const e = document.getElementById(`mf_${id}`); return e ? e.value.trim() : ''; }
+
+function saveModalItem() {
+  const type = editingType;
+  let item;
+  switch(type) {
+    case 'experience':
+      if (!gv('title')||!gv('company')) return toast('Title and Company are required.','er');
+      item = {id:`exp-${Date.now()}`,title:gv('title'),company:gv('company'),period:gv('period'),
+        type:gv('type'),badge:gv('badge'),badge_type:gv('badge_type'),icon:gv('icon'),
+        duties:gv('duties').split('\n').map(s=>s.trim()).filter(Boolean)};
+      break;
+    case 'research_projects':
+      if (!gv('title')) return toast('Title is required.','er');
+      item = {id:`proj-${Date.now()}`,title:gv('title'),badge:gv('badge'),description:gv('description')};
+      break;
+    case 'workshops':
+      if (!gv('title')) return toast('Title is required.','er');
+      item = {id:`ws-${Date.now()}`,title:gv('title'),institution:gv('institution'),year:gv('year'),icon:gv('icon')};
+      break;
+    case 'awards':
+      if (!gv('title')) return toast('Title is required.','er');
+      item = {id:`aw-${Date.now()}`,title:gv('title'),issuer:gv('issuer'),year:gv('year'),
+        level:gv('level'),icon:gv('icon'),description:gv('description')};
+      break;
+    case 'memberships':
+      if (!gv('title')) return toast('Title is required.','er');
+      item = {id:`mem-${Date.now()}`,title:gv('title'),organization:gv('organization'),icon:gv('icon')};
+      break;
+    case 'leadership':
+      if (!gv('title')) return toast('Title is required.','er');
+      item = {id:`lead-${Date.now()}`,title:gv('title'),organization:gv('organization'),period:gv('period'),
+        icon:gv('icon'),icon_gradient:gv('icon_gradient'),
+        duties:gv('duties').split('\n').map(s=>s.trim()).filter(Boolean)};
+      break;
+    case 'teaching':
+      if (!gv('title')) return toast('Title is required.','er');
+      item = {id:`teach-${Date.now()}`,title:gv('title'),description:gv('description'),
+        category:gv('category'),status:gv('status'),level:gv('level')};
+      break;
+    case 'technical_skills':
+      if (!gv('name')) return toast('Name is required.','er');
+      item = {id:`sk-${Date.now()}`,name:gv('name'),icon:gv('icon'),
+        level:parseInt(gv('level'),10)||3,label:gv('label')};
+      break;
+    case 'language_skills':
+      if (!gv('name')) return toast('Name is required.','er');
+      item = {id:`lang-${Date.now()}`,name:gv('name'),flag:gv('flag'),
+        level:parseInt(gv('level'),10)||3,label:gv('label')};
+      break;
+    default: return;
+  }
+  if (editingIdx === -1) {
+    SC[type].push(item);
+  } else {
+    item.id = SC[type][editingIdx].id || item.id;
+    SC[type][editingIdx] = item;
+  }
+  closeModal('itemModal');
+  renderSC();
+  toast(`Item ${editingIdx===-1?'added':'updated'}. Click Save to apply.`,'ok');
+}
+
+/* open helpers */
+function openExpModal()   { editingType='experience';        editingIdx=-1; openModalFor('experience');        }
+function openProjModal()  { editingType='research_projects'; editingIdx=-1; openModalFor('research_projects'); }
+function openWsModal()    { editingType='workshops';         editingIdx=-1; openModalFor('workshops');         }
+function openAwardModal() { editingType='awards';            editingIdx=-1; openModalFor('awards');            }
+function openMemModal()   { editingType='memberships';       editingIdx=-1; openModalFor('memberships');       }
+function openLeadModal()  { editingType='leadership';        editingIdx=-1; openModalFor('leadership');        }
+function openTeachModal() { editingType='teaching';          editingIdx=-1; openModalFor('teaching');          }
+function openSkillModal(t){ editingType=t==='tech'?'technical_skills':'language_skills'; editingIdx=-1; openModalFor(editingType); }
 
 /* ════════════════════════════════════════════════════════════
    SUPERVISION
 ════════════════════════════════════════════════════════════ */
-async function loadSupervision() {
+async function loadSup() {
   try {
-    const data = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/supervision.json`);
-    supSha  = data.sha;
-    supData = JSON.parse(atob(data.content.replace(/\n/g, '')));
-  } catch (e) {
-    /* Fallback: load from local fetch if no token */
-    try {
-      const r = await fetch('assets/data/supervision.json');
-      supData = await r.json();
-    } catch (e2) {
-      supData = { phd: [], masters: [], fyp: [] };
-    }
+    const d = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/supervision.json`);
+    supSha = d.sha;
+    SUP = JSON.parse(atob(d.content.replace(/\n/g,'')));
+  } catch(e) {
+    try { const r = await fetch('assets/data/supervision.json'); SUP = await r.json(); } catch(_) {}
   }
-  renderSupervisionAdmin();
+  if (!SUP) SUP = {phd:[],masters:[],fyp:[]};
+  renderSupAdmin();
 }
 
-function renderSupervisionAdmin() {
-  renderStudentList('phdList',     supData.phd,     'phd');
-  renderStudentList('mastersList', supData.masters, 'masters');
-  renderStudentList('fypList',     supData.fyp,     'fyp');
-}
-
-function renderStudentList(containerId, students, type) {
-  const el = document.getElementById(containerId);
-  if (!el) return;
-  if (!students || !students.length) {
-    el.innerHTML = '<div class="empty-state"><i class="fas fa-user-plus"></i><p>No students yet. Click Add to get started.</p></div>';
-    return;
-  }
-  el.innerHTML = students.map((s, i) => `
-    <div class="student-row">
-      <div>
-        <div class="student-row-name">${esc(s.name)}</div>
-        <div style="font-size:0.77rem;color:var(--text-muted)">${esc(s.title || s.research_area || s.degree || '')}</div>
-      </div>
-      <div class="student-row-title">${esc(type === 'fyp' ? (s.title || '') : (s.university || ''))}</div>
-      <select onchange="updateStatus('${type}', ${i}, this.value)">
-        <option value="current"   ${s.status === 'current'   ? 'selected' : ''}>Current</option>
-        <option value="completed" ${s.status === 'completed' ? 'selected' : ''}>Completed</option>
-        <option value="graduated" ${s.status === 'graduated' ? 'selected' : ''}>Graduated</option>
-      </select>
-      <button class="btn-icon danger" onclick="removeStudent('${type}', ${i})" title="Remove">
-        <i class="fas fa-trash"></i>
-      </button>
-    </div>
-  `).join('');
-}
-
-function updateStatus(type, index, value) {
-  if (!supData[type] || !supData[type][index]) return;
-  supData[type][index].status = value;
-}
-
-function removeStudent(type, index) {
-  if (!confirm('Remove this student?')) return;
-  supData[type].splice(index, 1);
-  renderSupervisionAdmin();
-  toast('Student removed. Click "Save to GitHub" to apply.', 'success');
-}
-
-function showAddStudent(type) {
-  document.getElementById('addStudentType').value = type;
-  const titles = { phd: 'Add PhD Student', masters: 'Add Master Student', fyp: 'Add FYP Student' };
-  document.getElementById('addStudentTitle').textContent = titles[type] || 'Add Student';
-  document.getElementById('phdFields').style.display = (type === 'fyp') ? 'none' : 'block';
-  document.getElementById('fypFields').style.display = (type === 'fyp') ? 'block' : 'none';
-  ['sName','sDegree','sUniversity','sRole','sResearch','sTitle','sRoleFyp'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el && !['sDegree','sUniversity','sRole','sRoleFyp'].includes(id)) el.value = '';
+function renderSupAdmin() {
+  renderSimpleList('admPhdList',    SUP.phd,     s=>`<strong>${esc(s.name)}</strong> <span class="badge ${esc(s.status)}">${esc(s.status)}</span><br><span>${esc(s.university||'')} · ${esc(s.research_area||'')}</span>`);
+  renderSimpleList('admMasterList', SUP.masters, s=>`<strong>${esc(s.name)}</strong> <span class="badge ${esc(s.status)}">${esc(s.status)}</span>`);
+  renderSimpleList('admFypList',    SUP.fyp,     s=>`<strong>${esc(s.name)}</strong> <span class="badge ${esc(s.status)}">${esc(s.status)}</span><br><span>${esc(s.title||'')}</span>`);
+  // Patch editItem / deleteItem for sup lists
+  ['admPhdList','admMasterList','admFypList'].forEach(lid => {
+    document.querySelectorAll(`#${lid} .icon-btn`).forEach((btn,i) => {
+      const isEdit = btn.querySelector('.fa-edit');
+      const type   = {admPhdList:'phd',admMasterList:'masters',admFypList:'fyp'}[lid];
+      const idx    = Math.floor(i/2);
+      if (isEdit) btn.onclick = () => editSupItem(type, idx);
+      else        btn.onclick = () => delSupItem(type, idx);
+    });
   });
-  document.getElementById('sStatus').value = 'current';
-  document.getElementById('addStudentModal').style.display = 'flex';
 }
 
-function addStudent() {
-  const type = document.getElementById('addStudentType').value;
-  const name = document.getElementById('sName').value.trim();
-  if (!name) return toast('Name is required.', 'error');
+function editSupItem(type, idx) {
+  const item = SUP[type][idx];
+  editingType = 'sup_' + type;
+  editingIdx  = idx;
+  document.getElementById('itemModal').style.display = 'flex';
+  const titles = {phd:'PhD Student',masters:'Master Student',fyp:'FYP Student'};
+  document.getElementById('itemModalTitle').textContent = 'Edit ' + titles[type];
+  const f = (lbl,id,val='',extra='') => `<div class="fg"><label>${lbl}</label><input type="text" id="mf_${id}" value="${esc(val)}" ${extra}></div>`;
+  const sel = (lbl,id,opts,val='') => `<div class="fg"><label>${lbl}</label><select id="mf_${id}">${opts.map(([v,t])=>`<option value="${v}"${v===val?' selected':''}>${t}</option>`).join('')}</select></div>`;
+  document.getElementById('itemModalBody').innerHTML = type === 'fyp' ? `
+    ${f('Student Name *','name', item.name)}
+    ${f('Project Title *','title', item.title)}
+    ${f('Role','role', item.role||'Main Supervisor')}
+    ${sel('Status','status',[['current','Current'],['completed','Completed']], item.status||'current')}` : `
+    ${f('Student Name *','name', item.name)}
+    <div class="two-col">${f('Degree','degree', item.degree||'Ph.D. Candidate')}${f('University','university', item.university||'MAHSA University')}</div>
+    <div class="two-col">${f('Role','role', item.role||'Main Supervisor')}${f('Research Area','research_area', item.research_area||'')}</div>
+    ${sel('Status','status',[['current','Current'],['graduated','Graduated']], item.status||'current')}`;
+  document.getElementById('itemModalSave').onclick = () => saveSupItem(type, idx);
+}
 
-  let entry = { id: `${type}-${Date.now()}`, name, status: document.getElementById('sStatus').value };
-
+function saveSupItem(type, idx) {
+  if (!gv('name')) return toast('Name is required.','er');
+  let item;
   if (type === 'fyp') {
-    const title = document.getElementById('sTitle').value.trim();
-    if (!title) return toast('Project title is required.', 'error');
-    entry.title = title;
-    entry.role  = document.getElementById('sRoleFyp').value.trim() || 'Main Supervisor';
+    item = {id: SUP[type][idx]?.id||`fyp-${Date.now()}`, name:gv('name'), title:gv('title'), role:gv('role'), status:gv('status')};
   } else {
-    entry.degree        = document.getElementById('sDegree').value.trim()     || (type === 'phd' ? 'Ph.D. Candidate' : "Master's Candidate");
-    entry.university    = document.getElementById('sUniversity').value.trim() || 'MAHSA University';
-    entry.role          = document.getElementById('sRole').value.trim()       || 'Main Supervisor';
-    entry.research_area = document.getElementById('sResearch').value.trim();
+    item = {id: SUP[type][idx]?.id||`${type}-${Date.now()}`, name:gv('name'), degree:gv('degree'), university:gv('university'), role:gv('role'), research_area:gv('research_area'), status:gv('status')};
   }
+  SUP[type][idx] = item;
+  closeModal('itemModal');
+  renderSupAdmin();
+  toast('Updated. Click Save to apply.','ok');
+}
 
-  if (!supData[type]) supData[type] = [];
-  supData[type].push(entry);
-  renderSupervisionAdmin();
-  closeModal('addStudentModal');
-  toast('Student added. Click "Save to GitHub" to apply.', 'success');
+function delSupItem(type, idx) {
+  if (!confirm('Delete this student?')) return;
+  SUP[type].splice(idx, 1);
+  renderSupAdmin();
+  toast('Removed. Click Save to apply.','ok');
+}
+
+function openSupModal(type) {
+  editingType = 'sup_'+type;
+  editingIdx  = -1;
+  const blankItem = type==='fyp'
+    ? {name:'',title:'',role:'Main Supervisor',status:'current'}
+    : {name:'',degree:type==='phd'?'Ph.D. Candidate':"Master's Candidate",university:'MAHSA University',role:'Main Supervisor',research_area:'',status:'current'};
+  editSupItem(type, -1);
+  // Override: need blank data
+  document.getElementById('itemModalSave').onclick = () => {
+    if (!gv('name')) return toast('Name is required.','er');
+    let item;
+    if (type === 'fyp') {
+      item = {id:`fyp-${Date.now()}`, name:gv('name'), title:gv('title'), role:gv('role'), status:gv('status')};
+    } else {
+      item = {id:`${type}-${Date.now()}`, name:gv('name'), degree:gv('degree'), university:gv('university'), role:gv('role'), research_area:gv('research_area'), status:gv('status')};
+    }
+    if (!SUP[type]) SUP[type] = [];
+    SUP[type].push(item);
+    closeModal('itemModal');
+    renderSupAdmin();
+    toast('Added. Click Save to apply.','ok');
+  };
 }
 
 async function saveSupervision() {
-  if (!getToken()) return toast('GitHub token not set. Go to Settings.', 'error');
+  if (!getToken()) return toast('GitHub token not set — go to Settings.','er');
   const btn = document.getElementById('saveSupBtn');
-  btn.innerHTML = '<span class="spinner"></span> Saving…';
-  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> Saving…'; btn.disabled = true;
   try {
-    /* If SHA is missing (loaded from local fallback), fetch SHA first */
-    if (!supSha) {
-      const data = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/supervision.json`);
-      supSha = data.sha;
-    }
-    const result = await ghPut(
-      `/repos/${OWNER}/${REPO}/contents/assets/data/supervision.json`,
-      supData, supSha,
-      'Admin: update supervision data'
-    );
-    supSha = result.content.sha;
-    toast('Supervision data saved to GitHub!', 'success');
-  } catch (e) {
-    toast(`Save failed: ${e.message}`, 'error');
-  } finally {
-    btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Save to GitHub';
-    btn.disabled = false;
-  }
+    if (!supSha) { const d = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/supervision.json`); supSha = d.sha; }
+    const res = await ghPut(`/repos/${OWNER}/${REPO}/contents/assets/data/supervision.json`, SUP, supSha, 'Admin: update supervision');
+    supSha = res.content.sha;
+    toast('Supervision saved!','ok');
+  } catch(e) { toast(`Failed: ${e.message}`,'er'); }
+  finally { btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Save'; btn.disabled = false; }
 }
 
 /* ════════════════════════════════════════════════════════════
    MEDIA
 ════════════════════════════════════════════════════════════ */
-let addType = null;
-
-function setAddType(type) {
-  addType = type;
-  document.getElementById('addImageForm').style.display = type === 'image' ? 'block' : 'none';
-  document.getElementById('addVideoForm').style.display = type === 'video' ? 'block' : 'none';
-  const imgBtn   = document.getElementById('addTypeImage');
-  const videoBtn = document.getElementById('addTypeVideo');
-  imgBtn.className   = 'btn ' + (type === 'image' ? 'btn-primary' : 'btn-outline');
-  videoBtn.className = 'btn ' + (type === 'video' ? 'btn-primary' : 'btn-outline');
-}
-
 async function loadMedia() {
   try {
-    const data = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/media.json`);
-    mediaSha  = data.sha;
-    const json = JSON.parse(atob(data.content.replace(/\n/g, '')));
-    mediaData = json.items || [];
-  } catch (e) {
-    try {
-      const r = await fetch('assets/data/media.json');
-      const j = await r.json();
-      mediaData = j.items || [];
-    } catch (e2) { mediaData = []; }
+    const d = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/media.json`);
+    mediaSha = d.sha;
+    MEDIA = JSON.parse(atob(d.content.replace(/\n/g,''))).items || [];
+  } catch(e) {
+    try { const r = await fetch('assets/data/media.json'); const j = await r.json(); MEDIA = j.items||[]; } catch(_){}
   }
   renderMediaAdmin();
 }
 
 function renderMediaAdmin() {
-  const el = document.getElementById('mediaList');
-  if (!el) return;
-  if (!mediaData.length) {
-    el.innerHTML = '<div class="empty-state"><i class="fas fa-images"></i><p>No media items yet.</p></div>';
-    return;
-  }
-  el.innerHTML = mediaData.map((item, i) => {
-    const thumbHtml = item.type === 'video'
-      ? `<div class="media-row-thumb"><i class="fab fa-youtube" style="color:#ff0000"></i></div>`
-      : `<div class="media-row-thumb"><img src="${esc(item.url)}" alt="" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-image\\'></i>'"></div>`;
-    return `
-      <div class="media-row">
-        ${thumbHtml}
-        <div class="media-row-info">
-          <strong>${esc(item.title)}</strong>
-          <span>${esc(item.date || '')} <span class="pill ${item.type}">${item.type}</span></span>
-        </div>
-        <button class="btn-icon danger" onclick="removeMedia(${i})" title="Remove">
-          <i class="fas fa-trash"></i>
-        </button>
-      </div>`;
-  }).join('');
+  const c = document.getElementById('mediaList');
+  if (!c) return;
+  if (!MEDIA.length) { c.innerHTML = '<div class="empty"><i class="fas fa-images"></i><p>No items yet.</p></div>'; return; }
+  c.innerHTML = MEDIA.map((item,i) => `
+    <div class="item-row">
+      <div style="width:48px;height:32px;border-radius:6px;overflow:hidden;background:var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center">
+        ${item.type==='video' ? `<i class="fab fa-youtube" style="color:#ff0000"></i>` : `<img src="${esc(item.url)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`}
+      </div>
+      <div class="item-row-main">
+        <strong>${esc(item.title)}</strong>
+        <span>${esc(item.date||'')} <span class="pill ${item.type}">${item.type}</span></span>
+      </div>
+      <div class="row-actions">
+        <button class="icon-btn del" onclick="deleteMedia(${i})" title="Delete"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join('');
 }
 
-function removeMedia(index) {
-  if (!confirm('Remove this media item?')) return;
-  mediaData.splice(index, 1);
-  renderMediaAdmin();
-  toast('Item removed. Click "Save to GitHub" to apply.', 'success');
+function setMediaType(type) {
+  document.getElementById('imgForm').style.display = type==='image' ? 'block' : 'none';
+  document.getElementById('vidForm').style.display = type==='video' ? 'block' : 'none';
+  document.getElementById('addImgBtn').className = 'btn ' + (type==='image'?'btn-primary':'btn-outline');
+  document.getElementById('addVidBtn').className = 'btn ' + (type==='video'?'btn-primary':'btn-outline');
 }
 
-function handleImageFile(file) {
+function handleImgFile(file) {
   if (!file) return;
-  if (file.size > 5 * 1024 * 1024) return toast('Image too large (max 5 MB).', 'error');
-  pendingImageFile = file;
+  if (file.size > 5*1024*1024) return toast('File too large (max 5 MB).','er');
+  pendingImgFile = file;
   const reader = new FileReader();
   reader.onload = e => {
-    const preview = document.getElementById('imagePreview');
-    preview.src = e.target.result;
-    preview.style.display = 'block';
-    document.getElementById('uploadArea').style.display = 'none';
-    document.getElementById('uploadBtn').disabled = false;
+    const img = document.getElementById('imgPreview');
+    img.src = e.target.result; img.style.display = 'block';
+    document.getElementById('dropZone').style.display = 'none';
+    document.getElementById('uploadImgBtn').disabled = false;
   };
   reader.readAsDataURL(file);
 }
 
-function handleDrop(event) {
-  event.preventDefault();
-  document.getElementById('uploadArea').classList.remove('dragover');
-  const file = event.dataTransfer.files[0];
-  if (file && file.type.startsWith('image/')) handleImageFile(file);
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('dropZone').classList.remove('dragover');
+  const f = e.dataTransfer.files[0];
+  if (f?.type.startsWith('image/')) handleImgFile(f);
 }
 
 async function uploadImage() {
-  if (!pendingImageFile) return toast('No image selected.', 'error');
-  if (!getToken()) return toast('GitHub token not set. Go to Settings.', 'error');
+  if (!pendingImgFile) return toast('No image selected.','er');
+  if (!getToken()) return toast('GitHub token not set — go to Settings.','er');
   const title = document.getElementById('imgTitle').value.trim();
-  if (!title) return toast('Title is required.', 'error');
-
-  const btn = document.getElementById('uploadBtn');
-  btn.innerHTML = '<span class="spinner"></span> Uploading…';
-  btn.disabled = true;
-
+  if (!title) return toast('Title is required.','er');
+  const btn = document.getElementById('uploadImgBtn');
+  btn.innerHTML = '<span class="spin"></span> Uploading…'; btn.disabled = true;
   try {
-    const reader = new FileReader();
-    const base64 = await new Promise((resolve, reject) => {
-      reader.onload = e => resolve(e.target.result.split(',')[1]);
-      reader.onerror = reject;
-      reader.readAsDataURL(pendingImageFile);
+    const b64 = await new Promise((res,rej) => {
+      const r = new FileReader();
+      r.onload = e => res(e.target.result.split(',')[1]);
+      r.onerror = rej;
+      r.readAsDataURL(pendingImgFile);
     });
-
-    const ext      = pendingImageFile.name.split('.').pop().toLowerCase() || 'jpg';
-    const filename = `media_${Date.now()}.${ext}`;
-    const filePath = `assets/img/media/${filename}`;
-
-    /* Check if path exists for SHA */
-    let existingSha;
-    try {
-      const ex = await ghGet(`/repos/${OWNER}/${REPO}/contents/${filePath}`);
-      existingSha = ex.sha;
-    } catch (e) { /* new file */ }
-
-    await ghPutBinary(
-      `/repos/${OWNER}/${REPO}/contents/${filePath}`,
-      base64, existingSha,
-      `Admin: upload media image ${filename}`
-    );
-
-    const url = `https://${OWNER}.github.io/${filePath}`;
-    mediaData.push({
-      id: `img-${Date.now()}`, type: 'image', title,
-      description: document.getElementById('imgDesc').value.trim(),
-      date: document.getElementById('imgDate').value.trim(),
-      url
-    });
+    const ext  = pendingImgFile.name.split('.').pop() || 'jpg';
+    const name = `media_${Date.now()}.${ext}`;
+    const path = `assets/img/media/${name}`;
+    let sha;
+    try { const ex = await ghGet(`/repos/${OWNER}/${REPO}/contents/${path}`); sha = ex.sha; } catch(_){}
+    await ghPutBin(`/repos/${OWNER}/${REPO}/contents/${path}`, b64, sha, `Admin: upload ${name}`);
+    const url = `https://${OWNER}.github.io/${path}`;
+    MEDIA.push({id:`img-${Date.now()}`,type:'image',title,
+      description:document.getElementById('imgDesc').value.trim(),
+      date:document.getElementById('imgDate').value.trim(), url});
     renderMediaAdmin();
-
-    /* Reset form */
-    pendingImageFile = null;
-    document.getElementById('imagePreview').style.display = 'none';
-    document.getElementById('uploadArea').style.display = 'block';
-    document.getElementById('imgTitle').value = '';
-    document.getElementById('imgDesc').value  = '';
-    document.getElementById('imgDate').value  = '';
-    toast('Image uploaded! Click "Save to GitHub" to update gallery.', 'success');
-  } catch (e) {
-    toast(`Upload failed: ${e.message}`, 'error');
-  } finally {
-    btn.innerHTML = '<i class="fas fa-upload"></i> Upload &amp; Add';
-    btn.disabled  = false;
-  }
+    pendingImgFile = null;
+    document.getElementById('imgPreview').style.display = 'none';
+    document.getElementById('dropZone').style.display = 'block';
+    ['imgTitle','imgDesc','imgDate'].forEach(id => { document.getElementById(id).value=''; });
+    toast('Image uploaded! Click Save to update gallery.','ok');
+  } catch(e) { toast(`Upload failed: ${e.message}`,'er'); }
+  finally { btn.innerHTML = '<i class="fas fa-upload"></i> Upload &amp; Add to Gallery'; btn.disabled = false; }
 }
 
 function addVideo() {
-  const url   = document.getElementById('videoUrl').value.trim();
-  const title = document.getElementById('videoTitle').value.trim();
-  if (!url || !title) return toast('URL and title are required.', 'error');
-  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
-  if (!ytMatch) return toast('Please enter a valid YouTube URL.', 'error');
-  mediaData.push({
-    id: `vid-${Date.now()}`, type: 'video', title,
-    description: document.getElementById('videoDesc').value.trim(),
-    date: document.getElementById('videoDate').value.trim(),
-    url
-  });
+  const url   = document.getElementById('vidUrl').value.trim();
+  const title = document.getElementById('vidTitle').value.trim();
+  if (!url||!title) return toast('URL and title are required.','er');
+  if (!/youtube\.com|youtu\.be/.test(url)) return toast('Must be a valid YouTube URL.','er');
+  MEDIA.push({id:`vid-${Date.now()}`,type:'video',title,
+    description:document.getElementById('vidDesc').value.trim(),
+    date:document.getElementById('vidDate').value.trim(), url});
   renderMediaAdmin();
-  document.getElementById('videoUrl').value   = '';
-  document.getElementById('videoTitle').value = '';
-  document.getElementById('videoDesc').value  = '';
-  document.getElementById('videoDate').value  = '';
-  toast('Video added. Click "Save to GitHub" to apply.', 'success');
+  ['vidUrl','vidTitle','vidDesc','vidDate'].forEach(id=>{document.getElementById(id).value='';});
+  toast('Video added. Click Save to apply.','ok');
+}
+
+function deleteMedia(i) {
+  if (!confirm('Delete this item?')) return;
+  MEDIA.splice(i,1);
+  renderMediaAdmin();
+  toast('Removed. Click Save to apply.','ok');
 }
 
 async function saveMedia() {
-  if (!getToken()) return toast('GitHub token not set. Go to Settings.', 'error');
+  if (!getToken()) return toast('GitHub token not set — go to Settings.','er');
   const btn = document.getElementById('saveMediaBtn');
-  btn.innerHTML = '<span class="spinner"></span> Saving…';
-  btn.disabled  = true;
+  btn.innerHTML = '<span class="spin"></span> Saving…'; btn.disabled = true;
   try {
-    if (!mediaSha) {
-      const data = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/media.json`);
-      mediaSha = data.sha;
-    }
-    const result = await ghPut(
-      `/repos/${OWNER}/${REPO}/contents/assets/data/media.json`,
-      { items: mediaData }, mediaSha,
-      'Admin: update media gallery'
-    );
-    mediaSha = result.content.sha;
-    toast('Media gallery saved to GitHub!', 'success');
-  } catch (e) {
-    toast(`Save failed: ${e.message}`, 'error');
-  } finally {
-    btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Save to GitHub';
-    btn.disabled  = false;
-  }
+    if (!mediaSha) { const d = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/media.json`); mediaSha = d.sha; }
+    const res = await ghPut(`/repos/${OWNER}/${REPO}/contents/assets/data/media.json`,
+      {items: MEDIA}, mediaSha, 'Admin: update media gallery');
+    mediaSha = res.content.sha;
+    toast('Media gallery saved!','ok');
+  } catch(e) { toast(`Failed: ${e.message}`,'er'); }
+  finally { btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Save'; btn.disabled = false; }
 }
 
 /* ════════════════════════════════════════════════════════════
-   UI HELPERS
+   CV UPLOAD
 ════════════════════════════════════════════════════════════ */
-function showSection(id) {
-  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
-  const section = document.getElementById(`section-${id}`);
-  if (section) section.classList.add('active');
-  document.querySelectorAll('.sidebar-item').forEach(item => {
-    if (item.getAttribute('onclick')?.includes(id)) item.classList.add('active');
-  });
+function handleCvFile(file) {
+  if (!file) return;
+  if (!file.name.endsWith('.pdf')) return toast('Please select a PDF file.','er');
+  if (file.size > 15*1024*1024) return toast('File too large (max 15 MB).','er');
+  pendingCvFile = file;
+  document.getElementById('cvFileName').textContent = `Selected: ${file.name}`;
+  document.getElementById('cvFileName').style.display = 'block';
+  document.getElementById('uploadCvBtn').disabled = false;
 }
 
-function closeModal(id) {
-  document.getElementById(id).style.display = 'none';
+function handleCvDrop(e) {
+  e.preventDefault();
+  document.getElementById('cvDropZone').classList.remove('dragover');
+  const f = e.dataTransfer.files[0];
+  if (f?.name.endsWith('.pdf')) handleCvFile(f);
 }
 
-function esc(str) {
-  if (!str) return '';
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+async function uploadCv() {
+  if (!pendingCvFile) return toast('No file selected.','er');
+  if (!getToken()) return toast('GitHub token not set — go to Settings.','er');
+  const btn = document.getElementById('uploadCvBtn');
+  btn.innerHTML = '<span class="spin"></span> Uploading…'; btn.disabled = true;
+  try {
+    const b64 = await new Promise((res,rej) => {
+      const r = new FileReader();
+      r.onload = e => res(e.target.result.split(',')[1]);
+      r.onerror = rej;
+      r.readAsDataURL(pendingCvFile);
+    });
+    const fname = pendingCvFile.name;
+    const path  = fname;
+    let sha;
+    try { const ex = await ghGet(`/repos/${OWNER}/${REPO}/contents/${path}`); sha = ex.sha; } catch(_){}
+    await ghPutBin(`/repos/${OWNER}/${REPO}/contents/${path}`, b64, sha, `Admin: upload CV ${fname}`);
+    // Update site-content.json
+    if (!SC) { try { const d = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/site-content.json`); scSha = d.sha; SC = JSON.parse(atob(d.content.replace(/\n/g,''))); } catch(_){} }
+    if (SC) {
+      SC.cv_filename = fname;
+      await commitSC('Admin: update CV filename');
+    }
+    renderCvInfo();
+    document.getElementById('cvFileName').textContent = `Uploaded: ${fname}`;
+    pendingCvFile = null;
+    toast(`CV "${fname}" uploaded and set as active!`,'ok');
+  } catch(e) { toast(`Upload failed: ${e.message}`,'er'); }
+  finally { btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Upload &amp; Set as Active CV'; btn.disabled = false; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   HELPERS
+════════════════════════════════════════════════════════════ */
+function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal('itemModal'); });
+
+function esc(s) {
+  if (!s && s !== 0) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 let toastTimer;
-function toast(msg, type = '') {
+function toast(msg, type='') {
   const el = document.getElementById('toast');
-  el.innerHTML = type === 'success' ? `<i class="fas fa-check-circle"></i> ${msg}`
-               : type === 'error'   ? `<i class="fas fa-exclamation-circle"></i> ${msg}`
-               : msg;
+  const icon = type==='ok'?'fa-check-circle':type==='er'?'fa-exclamation-circle':'fa-info-circle';
+  el.innerHTML = `<i class="fas ${icon}"></i> ${msg}`;
   el.className = `show ${type}`;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { el.className = ''; }, 4000);
+  toastTimer = setTimeout(() => { el.className = ''; }, 4500);
 }
 
-/* ════════════════════════════════════════════════════════════
-   BOOT
-════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', initAuth);
 </script>
 </body>

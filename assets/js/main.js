@@ -1,41 +1,310 @@
 /* ============================================================
    Alawi Alqushaibi – Academic Homepage | main.js
    ============================================================ */
-
 'use strict';
 
-/* ── State ───────────────────────────────────────────────── */
-let allPubs        = [];
-let activeFilter   = 'all';
-let activeSort     = 'citations';
-let searchQuery    = '';
+/* ── State ── */
+let allPubs         = [];
+let activeFilter    = 'all';
+let activeSort      = 'citations';
+let searchQuery     = '';
 let supervisionData = null;
 let fypStatusFilter = 'all';
-let mediaData      = [];
-let mediaFilter    = 'all';
+let mediaData       = [];
+let mediaFilter     = 'all';
+let siteContent     = null;
+let expFilter       = 'all';
 
-/* ── Helpers ─────────────────────────────────────────────── */
-const $ = (sel, ctx = document) => ctx.querySelector(sel);
+/* ── Helpers ── */
+const $  = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+function esc(str) {
+  return String(str ?? '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function highlightAuthor(authorsStr) {
-  const variants = ['A Alqushaibi', 'Alqushaibi A', 'Alawi Alqushaibi'];
-  let result = escapeHtml(authorsStr);
+  const variants = ['A Alqushaibi','Alqushaibi A','Alawi Alqushaibi'];
+  let result = esc(authorsStr);
   variants.forEach(v => {
-    result = result.replace(new RegExp(escapeHtml(v), 'gi'), '<strong>$&</strong>');
+    result = result.replace(new RegExp(esc(v),'gi'),'<strong>$&</strong>');
   });
   return result;
 }
 
-/* ── Data Loading ────────────────────────────────────────── */
+function dots(level) {
+  return Array.from({length:5},(_,i)=>`<span class="dot${i<level?' filled':''}"></span>`).join('');
+}
+
+/* ════════════════════════════════════════════════════════════
+   SITE CONTENT
+════════════════════════════════════════════════════════════ */
+async function loadSiteContent() {
+  try {
+    const res = await fetch('assets/data/site-content.json');
+    siteContent = await res.json();
+    renderBio();
+    renderExperience();
+    renderResearchProjects();
+    renderSkills();
+    renderAwards();
+    renderMemberships();
+    renderLeadership();
+    renderTeaching();
+    renderCvSection();
+  } catch(err) {
+    console.error('Failed to load site content:', err);
+  }
+}
+
+/* ── Bio ── */
+function renderBio() {
+  const c = document.getElementById('bioContent');
+  if (!c || !siteContent) return;
+  const { bio, education, current_positions } = siteContent;
+
+  const eduDotColors = ['','','','#f6ad55'];
+  const eduDotClasses = ['phd','ms','bs',''];
+
+  c.innerHTML = `
+    <div class="about-main">
+      <h2 class="section-title"><span>About Me</span></h2>
+      ${bio.paragraphs.map(p=>`<p>${p}</p>`).join('')}
+      <h3 class="subsection-title">Research Interests</h3>
+      <div class="interest-tags">
+        ${bio.research_interests.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}
+      </div>
+    </div>
+    <div class="about-side">
+      <div class="side-card">
+        <h3><i class="fas fa-graduation-cap"></i> Education</h3>
+        <div class="timeline">
+          ${education.map((e,i)=>`
+            <div class="timeline-item">
+              <div class="timeline-dot ${eduDotClasses[i]||''}" ${e.dot_color?`style="background:${esc(e.dot_color)}"`:''}}></div>
+              <div class="timeline-content">
+                <strong>${esc(e.degree)}</strong>
+                <span>${esc(e.institution)}</span>
+                <span class="timeline-year">${esc(e.period)}</span>
+                ${e.thesis?`<small>${esc(e.thesis)}</small>`:''}
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>
+      <div class="side-card">
+        <h3><i class="fas fa-briefcase"></i> Current Position</h3>
+        ${current_positions.map(p=>`
+          <div class="position-item">
+            <strong>${esc(p.title)}</strong>
+            <span>${esc(p.institution)}</span>
+            <span class="timeline-year">${esc(p.period)}</span>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+/* ── Experience ── */
+function renderExperience() {
+  const c = document.getElementById('expTimeline');
+  if (!c || !siteContent) return;
+  const filtered = expFilter === 'all'
+    ? siteContent.experience
+    : siteContent.experience.filter(e => e.type === expFilter);
+
+  c.innerHTML = filtered.map(e => `
+    <div class="exp-card" data-expcat="${esc(e.type)}">
+      <div class="exp-header">
+        <div class="exp-icon ${esc(e.type)}"><i class="${esc(e.icon)}"></i></div>
+        <div class="exp-title-block">
+          <h3>${esc(e.title)}</h3>
+          <span class="exp-company">${esc(e.company)}</span>
+          <span class="exp-period">${esc(e.period)}</span>
+        </div>
+        <span class="exp-badge ${esc(e.badge_type)}">${esc(e.badge)}</span>
+      </div>
+      <ul class="exp-duties">
+        ${e.duties.map(d=>`<li>${esc(d)}</li>`).join('')}
+      </ul>
+    </div>`).join('');
+}
+
+/* ── Research Projects ── */
+function renderResearchProjects() {
+  const c = document.getElementById('projectsGrid');
+  if (!c || !siteContent) return;
+  c.innerHTML = siteContent.research_projects.map(p => `
+    <div class="project-card">
+      <div class="project-badge">${esc(p.badge)}</div>
+      <h4>${esc(p.title)}</h4>
+      <p>${esc(p.description)}</p>
+    </div>`).join('');
+}
+
+/* ── Skills ── */
+function renderSkills() {
+  const c = document.getElementById('skillsContent');
+  if (!c || !siteContent) return;
+  const { technical_skills, language_skills, reviewer_journals, workshops } = siteContent;
+
+  c.innerHTML = `
+    <div class="skills-grid">
+      <div class="skills-card">
+        <h3><i class="fas fa-language"></i> Languages</h3>
+        ${language_skills.map(s=>`
+          <div class="skill-item">
+            <div class="skill-name"><span>${esc(s.flag)}</span> ${esc(s.name)}</div>
+            <div class="skill-dots">${dots(s.level)}</div>
+            <span class="skill-level-label">${esc(s.label)}</span>
+          </div>`).join('')}
+      </div>
+      <div class="skills-card">
+        <h3><i class="fas fa-code"></i> Technical Skills</h3>
+        ${technical_skills.map(s=>`
+          <div class="skill-item">
+            <div class="skill-name"><i class="${esc(s.icon)}"></i> ${esc(s.name)}</div>
+            <div class="skill-dots">${dots(s.level)}</div>
+            <span class="skill-level-label">${esc(s.label)}</span>
+          </div>`).join('')}
+      </div>
+      <div class="skills-card">
+        <h3><i class="fas fa-check-double"></i> Journal Reviewer</h3>
+        <div class="reviewer-tags">
+          ${reviewer_journals.map(j=>`<span class="reviewer-tag">${esc(j)}</span>`).join('')}
+        </div>
+      </div>
+    </div>
+    <h3 class="subsection-title" style="margin-top:2rem">
+      <i class="fas fa-certificate"></i> Competencies &amp; Workshops
+    </h3>
+    <div class="workshops-grid">
+      ${workshops.map(w=>`
+        <div class="workshop-card">
+          <i class="${esc(w.icon)} workshop-icon"></i>
+          <div>
+            <strong>${esc(w.title)}</strong>
+            <span>${esc(w.institution)} · ${esc(w.year)}</span>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+/* ── Awards ── */
+function renderAwards() {
+  const c = document.getElementById('awardsGrid');
+  if (!c || !siteContent) return;
+  c.innerHTML = siteContent.awards.map(a => `
+    <div class="award-full-card ${esc(a.level)}">
+      <div class="award-icon"><i class="${esc(a.icon)}"></i></div>
+      <div class="award-info">
+        <strong>${esc(a.title)}</strong>
+        <span>${esc(a.issuer)} · ${esc(a.year)}</span>
+        ${a.description?`<small>${esc(a.description)}</small>`:''}
+      </div>
+    </div>`).join('');
+}
+
+/* ── Memberships ── */
+function renderMemberships() {
+  const c = document.getElementById('membershipsGrid');
+  if (!c || !siteContent) return;
+  c.innerHTML = siteContent.memberships.map(m => `
+    <div class="membership-card">
+      <div class="membership-icon"><i class="${esc(m.icon)}"></i></div>
+      <div class="membership-info">
+        <strong>${esc(m.title)}</strong>
+        <span>${esc(m.organization)}</span>
+      </div>
+    </div>`).join('');
+}
+
+/* ── Leadership ── */
+function renderLeadership() {
+  const c = document.getElementById('leadershipTimeline');
+  if (!c || !siteContent) return;
+  c.innerHTML = siteContent.leadership.map(l => `
+    <div class="exp-card">
+      <div class="exp-header">
+        <div class="exp-icon" style="background:${esc(l.icon_gradient)}">
+          <i class="${esc(l.icon)}"></i>
+        </div>
+        <div class="exp-title-block">
+          <h3>${esc(l.title)}</h3>
+          <span class="exp-company">${esc(l.organization)}</span>
+          <span class="exp-period">${esc(l.period)}</span>
+        </div>
+      </div>
+      <ul class="exp-duties">
+        ${l.duties.map(d=>`<li>${esc(d)}</li>`).join('')}
+      </ul>
+    </div>`).join('');
+}
+
+/* ── Teaching ── */
+const TEACH_ICONS = {
+  'ai-data':'fas fa-brain', 'programming':'fas fa-code',
+  'info-systems':'fas fa-sitemap', 'networks-systems':'fas fa-network-wired'
+};
+const TEACH_ICONS_MAP = {
+  'Artificial Intelligence':'fas fa-brain',
+  'Data Science':'fas fa-chart-bar',
+  'Introduction to Programming':'fas fa-code',
+  'Object-Oriented Programming':'fas fa-object-group',
+  'Information Technology Fundamentals':'fas fa-laptop',
+  'Database Management Systems':'fas fa-database',
+  'Information Management':'fas fa-folder-open',
+  'Information System':'fas fa-sitemap',
+  'Wireless Communication':'fas fa-wifi',
+  'Operating Systems':'fas fa-server',
+  'Computer Architecture & Organization':'fas fa-microchip'
+};
+
+function renderTeaching() {
+  const c = document.getElementById('subjectsGrid');
+  if (!c || !siteContent) return;
+  const subjects = siteContent.teaching;
+  updateTeachingFilterCounts(subjects);
+  c.innerHTML = subjects.map(s => {
+    const icon = TEACH_ICONS_MAP[s.title] || TEACH_ICONS[s.category] || 'fas fa-book';
+    return `
+    <div class="subject-card" data-tcat="${esc(s.category)}">
+      <div class="subject-icon ${esc(s.category)}"><i class="${icon}"></i></div>
+      <h4>${esc(s.title)}</h4>
+      <p>${esc(s.description)}</p>
+      <div class="subject-meta">
+        ${s.status==='current'?`<span class="subject-badge current">Currently Teaching</span>`:''}
+        <span class="subject-level">${esc(s.level)}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateTeachingFilterCounts(subjects) {
+  const counts = {};
+  subjects.forEach(s => { counts[s.category] = (counts[s.category]||0)+1; });
+  $$('.tfilter-btn').forEach(btn => {
+    const ct = btn.querySelector('.filter-count');
+    if (!ct) return;
+    const cat = btn.dataset.tcat;
+    ct.textContent = cat === 'all' ? subjects.length : (counts[cat]||0);
+  });
+}
+
+/* ── CV Section ── */
+function renderCvSection() {
+  if (!siteContent) return;
+  const fn = siteContent.cv_filename;
+  const encoded = encodeURIComponent(fn);
+  const dlLink = document.getElementById('cvDownloadLink');
+  const iframe  = document.getElementById('cvIframe');
+  if (dlLink) { dlLink.href = encoded; dlLink.download = fn; }
+  if (iframe)   iframe.src  = encoded;
+}
+
+/* ════════════════════════════════════════════════════════════
+   PUBLICATIONS
+════════════════════════════════════════════════════════════ */
 async function loadData() {
   try {
     const res  = await fetch('assets/data/publications.json');
@@ -45,330 +314,264 @@ async function loadData() {
     renderPublications();
     updateTabBadge(allPubs.length);
     animateCounters();
-  } catch (err) {
+  } catch(err) {
     console.error('Failed to load publications:', err);
-    $('#pubList').innerHTML = '<p style="color:#e53e3e;padding:2rem">Could not load publications data.</p>';
+    const el = document.getElementById('pubList');
+    if (el) el.innerHTML = '<p style="color:#e53e3e;padding:2rem">Could not load publications.</p>';
   }
 }
 
-/* ── Metrics ─────────────────────────────────────────────── */
 function updateMetrics(metrics, lastUpdated) {
   if (!metrics) return;
-  const el = (id, val) => { const e = document.getElementById(id); if (e) { e.dataset.count = val; e.textContent = val.toLocaleString(); } };
-  el('totalCitations',  metrics.citations);
-  el('hIndex',          metrics.h_index);
-  el('i10Index',        metrics.i10_index);
-  el('pubCountMetric',  allPubs.length);
+  const el = (id, val) => { const e=document.getElementById(id); if(e){e.dataset.count=val; e.textContent=val.toLocaleString();} };
+  el('totalCitations', metrics.citations);
+  el('hIndex',         metrics.h_index);
+  el('i10Index',       metrics.i10_index);
+  el('pubCountMetric', allPubs.length);
   const lu = document.getElementById('lastUpdated');
   if (lu && lastUpdated) {
     const d = new Date(lastUpdated);
-    lu.textContent = d.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+    lu.textContent = d.toLocaleDateString('en-US',{year:'numeric',month:'long'});
   }
 }
 
-/* ── Animated Counters ───────────────────────────────────── */
 function animateCounter(el) {
   const target = parseInt(el.dataset.count, 10);
   if (isNaN(target)) return;
-  const duration = 1500;
   const start = performance.now();
-  const easeOut = t => 1 - Math.pow(1 - t, 3);
-  function tick(now) {
-    const elapsed = now - start;
-    const progress = Math.min(elapsed / duration, 1);
-    el.textContent = Math.round(easeOut(progress) * target).toLocaleString();
-    if (progress < 1) requestAnimationFrame(tick);
-  }
+  const ease  = t => 1 - Math.pow(1-t, 3);
+  const tick  = now => {
+    const p = Math.min((now-start)/1500, 1);
+    el.textContent = Math.round(ease(p)*target).toLocaleString();
+    if (p < 1) requestAnimationFrame(tick);
+  };
   requestAnimationFrame(tick);
 }
 
 function animateCounters() {
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        animateCounter(entry.target);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.3 });
-  $$('.metric-value').forEach(el => observer.observe(el));
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ animateCounter(e.target); obs.unobserve(e.target); } });
+  }, { threshold:0.3 });
+  $$('.metric-value').forEach(el => obs.observe(el));
 }
 
-/* ── Publications ────────────────────────────────────────── */
 function getFilteredSorted() {
   let pubs = [...allPubs];
   if (activeFilter !== 'all') pubs = pubs.filter(p => p.type === activeFilter);
   if (searchQuery) {
     const q = searchQuery.toLowerCase();
     pubs = pubs.filter(p =>
-      p.title.toLowerCase().includes(q) ||
-      p.authors.toLowerCase().includes(q) ||
-      p.venue.toLowerCase().includes(q) ||
-      String(p.year).includes(q)
-    );
+      p.title.toLowerCase().includes(q) || p.authors.toLowerCase().includes(q) ||
+      p.venue.toLowerCase().includes(q)  || String(p.year).includes(q));
   }
-  if (activeSort === 'citations')      pubs.sort((a, b) => (b.citations || 0) - (a.citations || 0));
-  else if (activeSort === 'year')      pubs.sort((a, b) => b.year - a.year);
-  else if (activeSort === 'title')     pubs.sort((a, b) => a.title.localeCompare(b.title));
+  if (activeSort==='citations') pubs.sort((a,b)=>(b.citations||0)-(a.citations||0));
+  else if (activeSort==='year') pubs.sort((a,b)=>b.year-a.year);
+  else if (activeSort==='title') pubs.sort((a,b)=>a.title.localeCompare(b.title));
   return pubs;
 }
 
-function typeLabel(type) {
-  const map = { journal: 'Journal Article', conference: 'Conference Paper', book: 'Book Chapter' };
-  return map[type] || type;
-}
-
-function typeBadgeClass(type) {
-  const map = { journal: 'badge-type-journal', conference: 'badge-type-conference', book: 'badge-type-book' };
-  return map[type] || '';
-}
-
-function quartileBadgeClass(q) {
-  if (!q) return '';
-  if (q === 'Q1') return 'badge-q1';
-  if (q === 'Q2') return 'badge-q2';
-  if (q === 'Q3') return 'badge-q3';
-  return 'badge-indexed';
-}
+const typeLabel  = t => ({journal:'Journal Article',conference:'Conference Paper',book:'Book Chapter'}[t]||t);
+const typeClass  = t => ({journal:'badge-type-journal',conference:'badge-type-conference',book:'badge-type-book'}[t]||'');
+const qClass     = q => !q?'':q==='Q1'?'badge-q1':q==='Q2'?'badge-q2':q==='Q3'?'badge-q3':'badge-indexed';
 
 function renderPublications() {
   const list  = document.getElementById('pubList');
   const empty = document.getElementById('pubEmpty');
   const pubs  = getFilteredSorted();
-  if (!pubs.length) {
-    list.innerHTML  = '';
-    empty.style.display = 'block';
-    return;
-  }
+  if (!pubs.length) { list.innerHTML=''; empty.style.display='block'; return; }
   empty.style.display = 'none';
-  list.innerHTML = pubs.map((pub, i) => {
-    const qBadge = pub.quartile
-      ? `<span class="pub-badge ${quartileBadgeClass(pub.quartile)}">${escapeHtml(pub.quartile)}${pub.impact_factor ? ` · IF ${escapeHtml(pub.impact_factor)}` : ''}</span>`
-      : '';
-    const idxBadge = pub.indexed
-      ? `<span class="pub-badge badge-indexed">${escapeHtml(pub.indexed)}</span>`
-      : '';
-    return `
-    <div class="pub-item" data-type="${escapeHtml(pub.type)}" style="animation-delay:${i * 0.03}s">
-      <div class="pub-rank"><span class="pub-rank-num">${i + 1}</span></div>
+  list.innerHTML = pubs.map((pub,i) => `
+    <div class="pub-item" data-type="${esc(pub.type)}" style="animation-delay:${i*.03}s">
+      <div class="pub-rank"><span class="pub-rank-num">${i+1}</span></div>
       <div class="pub-body">
-        <div class="pub-title">${escapeHtml(pub.title)}</div>
+        <div class="pub-title">${esc(pub.title)}</div>
         <div class="pub-authors">${highlightAuthor(pub.authors)}</div>
-        <div class="pub-venue">${escapeHtml(pub.venue)}${pub.volume ? ' ' + escapeHtml(pub.volume) : ''}</div>
+        <div class="pub-venue">${esc(pub.venue)}${pub.volume?' '+esc(pub.volume):''}</div>
         <div class="pub-meta">
           <span class="pub-badge badge-year">${pub.year}</span>
-          <span class="pub-badge ${typeBadgeClass(pub.type)}">${typeLabel(pub.type)}</span>
-          ${qBadge}${idxBadge}
+          <span class="pub-badge ${typeClass(pub.type)}">${typeLabel(pub.type)}</span>
+          ${pub.quartile?`<span class="pub-badge ${qClass(pub.quartile)}">${esc(pub.quartile)}${pub.impact_factor?` · IF ${esc(pub.impact_factor)}`:''}</span>`:''}
+          ${pub.indexed?`<span class="pub-badge badge-indexed">${esc(pub.indexed)}</span>`:''}
         </div>
       </div>
       <div class="pub-citations">
         <i class="fas fa-quote-left citation-icon"></i>
-        <span class="citation-count">${(pub.citations || 0).toLocaleString()}</span>
+        <span class="citation-count">${(pub.citations||0).toLocaleString()}</span>
         <span class="citation-label">Citations</span>
       </div>
-    </div>`.trim();
-  }).join('');
+    </div>`).join('');
 }
 
 function updateTabBadge(count) {
-  const badge = document.getElementById('pubCount');
-  if (badge) badge.textContent = count;
+  const b = document.getElementById('pubCount');
+  if (b) b.textContent = count;
 }
 
-/* ── Supervision ─────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════
+   SUPERVISION
+════════════════════════════════════════════════════════════ */
 async function loadSupervisionData() {
   try {
     const res = await fetch('assets/data/supervision.json');
     supervisionData = await res.json();
     renderSupervision();
-    updateSupervisionBadges();
-  } catch (err) {
-    console.error('Failed to load supervision data:', err);
-  }
+    updateSupBadges();
+  } catch(err) { console.error('Failed to load supervision:', err); }
 }
 
-function updateSupervisionBadges() {
+function updateSupBadges() {
   if (!supervisionData) return;
-  const phdBadge = document.querySelector('.sup-tab-btn[data-suptab="phd"] .tab-badge');
-  const fypBadge = document.querySelector('.sup-tab-btn[data-suptab="fyp"] .tab-badge');
-  if (phdBadge) phdBadge.textContent = supervisionData.phd.length;
-  if (fypBadge) fypBadge.textContent = supervisionData.fyp.length;
+  const pb = document.querySelector('.sup-tab-btn[data-suptab="phd"] .tab-badge');
+  const fb = document.querySelector('.sup-tab-btn[data-suptab="fyp"] .tab-badge');
+  if (pb) pb.textContent = supervisionData.phd.length;
+  if (fb) fb.textContent = supervisionData.fyp.length;
 }
 
 function renderSupervision() {
   if (!supervisionData) return;
-  renderPhd();
-  renderMasters();
-  renderFyp();
+  renderPhd(); renderMasters(); renderFyp();
 }
 
 function renderPhd() {
-  const container = document.getElementById('phdGrid');
-  if (!container) return;
+  const c = document.getElementById('phdGrid');
+  if (!c) return;
   if (!supervisionData.phd.length) {
-    container.innerHTML = '<div class="coming-soon"><i class="fas fa-user-clock"></i><h3>No PhD students yet</h3></div>';
+    c.innerHTML = '<div class="coming-soon"><i class="fas fa-user-clock"></i><h3>No PhD students yet</h3></div>';
     return;
   }
-  container.innerHTML = supervisionData.phd.map(s => `
+  c.innerHTML = supervisionData.phd.map(s => `
     <div class="student-card phd-card">
       <div class="student-header">
         <div class="student-avatar phd-avatar"><i class="fas fa-user-graduate"></i></div>
         <div class="student-title-block">
-          <h3>${escapeHtml(s.name)}</h3>
-          <span class="student-degree">${escapeHtml(s.degree || 'Ph.D. Candidate')}</span>
+          <h3>${esc(s.name)}</h3>
+          <span class="student-degree">${esc(s.degree||'Ph.D. Candidate')}</span>
         </div>
-        <span class="student-status-badge ${s.status}">${s.status === 'current' ? 'Current' : 'Graduated'}</span>
+        <span class="student-status-badge ${esc(s.status)}">${s.status==='current'?'Current':'Graduated'}</span>
       </div>
       <div class="student-details">
-        ${s.university ? `<div class="student-detail-item"><i class="fas fa-university"></i><span>${escapeHtml(s.university)}</span></div>` : ''}
-        ${s.role ? `<div class="student-detail-item"><i class="fas fa-user-tie"></i><span>Role: <strong>${escapeHtml(s.role)}</strong></span></div>` : ''}
-        ${s.research_area ? `<div class="student-detail-item"><i class="fas fa-flask"></i><span>Research area: ${escapeHtml(s.research_area)}</span></div>` : ''}
-        ${s.thesis ? `<div class="student-detail-item"><i class="fas fa-book"></i><span>Thesis: <strong>${escapeHtml(s.thesis)}</strong></span></div>` : ''}
+        ${s.university?`<div class="student-detail-item"><i class="fas fa-university"></i><span>${esc(s.university)}</span></div>`:''}
+        ${s.role?`<div class="student-detail-item"><i class="fas fa-user-tie"></i><span>Role: <strong>${esc(s.role)}</strong></span></div>`:''}
+        ${s.research_area?`<div class="student-detail-item"><i class="fas fa-flask"></i><span>${esc(s.research_area)}</span></div>`:''}
+        ${s.thesis?`<div class="student-detail-item"><i class="fas fa-book"></i><span><strong>${esc(s.thesis)}</strong></span></div>`:''}
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 function renderMasters() {
-  const container = document.getElementById('mastersGrid');
-  if (!container) return;
-  if (!supervisionData.masters || !supervisionData.masters.length) {
-    container.innerHTML = `<div class="coming-soon">
-      <i class="fas fa-user-clock"></i>
-      <h3>Master Students</h3>
-      <p>Master student supervision details will be added soon.</p>
-    </div>`;
+  const c = document.getElementById('mastersGrid');
+  if (!c) return;
+  if (!supervisionData.masters?.length) {
+    c.innerHTML = '<div class="coming-soon"><i class="fas fa-user-clock"></i><h3>Master Students</h3><p>Details will be added soon.</p></div>';
     return;
   }
-  container.innerHTML = `<div class="students-grid">` + supervisionData.masters.map(s => `
+  c.innerHTML = `<div class="students-grid">`+supervisionData.masters.map(s=>`
     <div class="student-card phd-card">
       <div class="student-header">
         <div class="student-avatar phd-avatar"><i class="fas fa-graduation-cap"></i></div>
         <div class="student-title-block">
-          <h3>${escapeHtml(s.name)}</h3>
-          <span class="student-degree">${escapeHtml(s.degree || "Master's Candidate")}</span>
+          <h3>${esc(s.name)}</h3>
+          <span class="student-degree">${esc(s.degree||"Master's Candidate")}</span>
         </div>
-        <span class="student-status-badge ${s.status}">${s.status === 'current' ? 'Current' : 'Graduated'}</span>
+        <span class="student-status-badge ${esc(s.status)}">${s.status==='current'?'Current':'Graduated'}</span>
       </div>
       <div class="student-details">
-        ${s.university ? `<div class="student-detail-item"><i class="fas fa-university"></i><span>${escapeHtml(s.university)}</span></div>` : ''}
-        ${s.role ? `<div class="student-detail-item"><i class="fas fa-user-tie"></i><span>Role: <strong>${escapeHtml(s.role)}</strong></span></div>` : ''}
-        ${s.research_area ? `<div class="student-detail-item"><i class="fas fa-flask"></i><span>Research area: ${escapeHtml(s.research_area)}</span></div>` : ''}
+        ${s.university?`<div class="student-detail-item"><i class="fas fa-university"></i><span>${esc(s.university)}</span></div>`:''}
+        ${s.role?`<div class="student-detail-item"><i class="fas fa-user-tie"></i><span>Role: <strong>${esc(s.role)}</strong></span></div>`:''}
+        ${s.research_area?`<div class="student-detail-item"><i class="fas fa-flask"></i><span>${esc(s.research_area)}</span></div>`:''}
       </div>
-    </div>
-  `).join('') + `</div>`;
+    </div>`).join('')+`</div>`;
 }
 
 function renderFyp() {
-  const container = document.getElementById('fypGrid');
-  if (!container || !supervisionData) return;
-  const allFyp = supervisionData.fyp;
-  const filtered = fypStatusFilter === 'all' ? allFyp : allFyp.filter(s => s.status === fypStatusFilter);
-  const countAll       = allFyp.length;
-  const countCompleted = allFyp.filter(s => s.status === 'completed').length;
-  const countCurrent   = allFyp.filter(s => s.status === 'current').length;
+  const c = document.getElementById('fypGrid');
+  if (!c || !supervisionData) return;
+  const all      = supervisionData.fyp;
+  const filtered = fypStatusFilter==='all' ? all : all.filter(s=>s.status===fypStatusFilter);
   $$('.fyp-filter-btn').forEach(btn => {
-    const countEl = btn.querySelector('.filter-count');
-    if (!countEl) return;
-    if (btn.dataset.fypstatus === 'all')       countEl.textContent = countAll;
-    if (btn.dataset.fypstatus === 'completed') countEl.textContent = countCompleted;
-    if (btn.dataset.fypstatus === 'current')   countEl.textContent = countCurrent;
+    const ct = btn.querySelector('.filter-count');
+    if (!ct) return;
+    const st = btn.dataset.fypstatus;
+    ct.textContent = st==='all' ? all.length : all.filter(s=>s.status===st).length;
   });
-  if (!filtered.length) {
-    container.innerHTML = '<p style="color:var(--text-muted);padding:2rem 0">No students match this filter.</p>';
-    return;
-  }
-  container.innerHTML = filtered.map(s => `
-    <div class="student-card fyp-card" data-fypstatus="${escapeHtml(s.status)}">
+  if (!filtered.length) { c.innerHTML='<p style="color:var(--text-muted);padding:2rem 0">No students match this filter.</p>'; return; }
+  c.innerHTML = filtered.map(s=>`
+    <div class="student-card fyp-card" data-fypstatus="${esc(s.status)}">
       <div class="student-header">
-        <div class="student-avatar fyp-avatar ${s.status}">
-          <i class="fas ${s.status === 'completed' ? 'fa-check-circle' : 'fa-spinner'}"></i>
+        <div class="student-avatar fyp-avatar ${esc(s.status)}">
+          <i class="fas ${s.status==='completed'?'fa-check-circle':'fa-spinner'}"></i>
         </div>
         <div class="student-title-block">
-          <h3>${escapeHtml(s.name)}</h3>
+          <h3>${esc(s.name)}</h3>
           <span class="student-degree">Final Year Project</span>
         </div>
-        <span class="student-status-badge ${s.status}">${s.status === 'current' ? 'Current' : 'Completed'}</span>
+        <span class="student-status-badge ${esc(s.status)}">${s.status==='current'?'Current':'Completed'}</span>
       </div>
       <div class="student-details">
-        <div class="student-detail-item">
-          <i class="fas fa-project-diagram"></i>
-          <span>Title: <strong>${escapeHtml(s.title)}</strong></span>
-        </div>
-        <div class="student-detail-item">
-          <i class="fas fa-user-tie"></i>
-          <span>Role: <strong>${escapeHtml(s.role)}</strong></span>
-        </div>
+        <div class="student-detail-item"><i class="fas fa-project-diagram"></i><span>Title: <strong>${esc(s.title)}</strong></span></div>
+        <div class="student-detail-item"><i class="fas fa-user-tie"></i><span>Role: <strong>${esc(s.role)}</strong></span></div>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
-/* ── Media ───────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════
+   MEDIA
+════════════════════════════════════════════════════════════ */
 async function loadMediaData() {
   try {
     const res = await fetch('assets/data/media.json');
     const data = await res.json();
     mediaData = data.items || [];
     renderMedia();
-  } catch (err) {
-    console.error('Failed to load media data:', err);
-  }
+  } catch(err) { console.error('Failed to load media:', err); }
 }
 
 function renderMedia() {
   const grid  = document.getElementById('mediaGrid');
   const empty = document.getElementById('mediaEmpty');
   if (!grid) return;
-  const items = mediaFilter === 'all' ? mediaData : mediaData.filter(i => i.type === mediaFilter);
-  if (!items.length) {
-    grid.innerHTML = '';
-    if (empty) empty.style.display = 'block';
-    return;
-  }
+  const items = mediaFilter==='all' ? mediaData : mediaData.filter(i=>i.type===mediaFilter);
+  if (!items.length) { grid.innerHTML=''; if(empty) empty.style.display='block'; return; }
   if (empty) empty.style.display = 'none';
-  grid.innerHTML = items.map((item, idx) => {
-    if (item.type === 'video') {
-      const videoId = getYouTubeId(item.url);
-      const thumb = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
+  grid.innerHTML = items.map(item => {
+    if (item.type==='video') {
+      const vid   = getYTId(item.url);
+      const thumb = vid ? `https://img.youtube.com/vi/${vid}/hqdefault.jpg` : '';
       return `
         <div class="media-card" data-type="video">
-          <div class="media-thumb video-thumb" onclick="openVideo('${escapeHtml(item.url)}')">
-            ${thumb
-              ? `<img src="${thumb}" alt="${escapeHtml(item.title)}" loading="lazy">`
-              : '<div class="media-placeholder"><i class="fas fa-video"></i></div>'}
+          <div class="media-thumb video-thumb" onclick="openVideo('${esc(item.url)}')">
+            ${thumb?`<img src="${thumb}" alt="${esc(item.title)}" loading="lazy">`:'<div class="media-placeholder"><i class="fas fa-video"></i></div>'}
             <div class="media-play-btn"><i class="fas fa-play"></i></div>
           </div>
           <div class="media-info">
-            <h4>${escapeHtml(item.title)}</h4>
-            ${item.description ? `<p>${escapeHtml(item.description)}</p>` : ''}
+            <h4>${esc(item.title)}</h4>
+            ${item.description?`<p>${esc(item.description)}</p>`:''}
             <div class="media-meta">
-              ${item.date ? `<span class="media-date"><i class="fas fa-calendar-alt"></i> ${escapeHtml(item.date)}</span>` : ''}
+              ${item.date?`<span class="media-date"><i class="fas fa-calendar-alt"></i> ${esc(item.date)}</span>`:''}
               <span class="media-type-badge video"><i class="fas fa-video"></i> Video</span>
             </div>
           </div>
         </div>`;
-    } else {
-      return `
-        <div class="media-card" data-type="image">
-          <div class="media-thumb" onclick="openLightbox('${escapeHtml(item.url)}', '${escapeHtml(item.title)}')">
-            <img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.title)}" loading="lazy">
-            <div class="media-zoom-btn"><i class="fas fa-search-plus"></i></div>
-          </div>
-          <div class="media-info">
-            <h4>${escapeHtml(item.title)}</h4>
-            ${item.description ? `<p>${escapeHtml(item.description)}</p>` : ''}
-            <div class="media-meta">
-              ${item.date ? `<span class="media-date"><i class="fas fa-calendar-alt"></i> ${escapeHtml(item.date)}</span>` : ''}
-              <span class="media-type-badge image"><i class="fas fa-image"></i> Image</span>
-            </div>
-          </div>
-        </div>`;
     }
+    return `
+      <div class="media-card" data-type="image">
+        <div class="media-thumb" onclick="openLightbox('${esc(item.url)}','${esc(item.title)}')">
+          <img src="${esc(item.url)}" alt="${esc(item.title)}" loading="lazy">
+          <div class="media-zoom-btn"><i class="fas fa-search-plus"></i></div>
+        </div>
+        <div class="media-info">
+          <h4>${esc(item.title)}</h4>
+          ${item.description?`<p>${esc(item.description)}</p>`:''}
+          <div class="media-meta">
+            ${item.date?`<span class="media-date"><i class="fas fa-calendar-alt"></i> ${esc(item.date)}</span>`:''}
+            <span class="media-type-badge image"><i class="fas fa-image"></i> Image</span>
+          </div>
+        </div>
+      </div>`;
   }).join('');
 }
 
-function getYouTubeId(url) {
+function getYTId(url) {
   if (!url) return null;
   const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
   return m ? m[1] : null;
@@ -384,11 +587,11 @@ function openLightbox(url, title) {
 }
 
 function openVideo(url) {
-  const videoId = getYouTubeId(url);
-  if (!videoId) { window.open(url, '_blank'); return; }
+  const vid = getYTId(url);
+  if (!vid) { window.open(url,'_blank'); return; }
   const vm = document.getElementById('videoModal');
   if (!vm) return;
-  vm.querySelector('iframe').src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+  vm.querySelector('iframe').src = `https://www.youtube.com/embed/${vid}?autoplay=1`;
   vm.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 }
@@ -397,74 +600,62 @@ function closeLightbox() {
   const lb = document.getElementById('lightbox');
   const vm = document.getElementById('videoModal');
   if (lb) lb.style.display = 'none';
-  if (vm) {
-    vm.style.display = 'none';
-    vm.querySelector('iframe').src = '';
-  }
+  if (vm) { vm.style.display='none'; vm.querySelector('iframe').src=''; }
   document.body.style.overflow = '';
 }
 
-/* ── Tab Switching ───────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════
+   TAB SWITCHING
+════════════════════════════════════════════════════════════ */
 function initTabs() {
   const btns     = $$('.tab-btn');
   const contents = $$('.tab-content');
-  const validTabs = ['about', 'teaching', 'supervision', 'publications', 'media', 'cv'];
+  const valid    = ['about','teaching','supervision','publications','media','cv'];
 
   function activate(tabId) {
-    if (!validTabs.includes(tabId)) tabId = 'about';
-    btns.forEach(b     => b.classList.toggle('active', b.dataset.tab === tabId));
-    contents.forEach(c => c.classList.toggle('active', c.id === `tab-${tabId}`));
-    $$('.nav-link[data-tab]').forEach(l => l.classList.toggle('active', l.dataset.tab === tabId));
-    history.replaceState(null, '', `#${tabId}`);
+    if (!valid.includes(tabId)) tabId = 'about';
+    btns.forEach(b     => b.classList.toggle('active', b.dataset.tab===tabId));
+    contents.forEach(c => c.classList.toggle('active', c.id===`tab-${tabId}`));
+    $$('.nav-link[data-tab]').forEach(l => l.classList.toggle('active', l.dataset.tab===tabId));
+    history.replaceState(null,'',`#${tabId}`);
     const nav = document.getElementById('tabNav');
-    if (nav) window.scrollTo({ top: nav.offsetTop - 64, behavior: 'smooth' });
-    if (tabId === 'publications') renderPublications();
+    if (nav) window.scrollTo({top:nav.offsetTop-64, behavior:'smooth'});
+    if (tabId==='publications') renderPublications();
   }
 
-  btns.forEach(btn => btn.addEventListener('click', () => activate(btn.dataset.tab)));
+  btns.forEach(btn => btn.addEventListener('click', ()=>activate(btn.dataset.tab)));
   $$('.nav-link[data-tab]').forEach(link => {
-    link.addEventListener('click', e => { e.preventDefault(); activate(link.dataset.tab); });
+    link.addEventListener('click', e=>{ e.preventDefault(); activate(link.dataset.tab); });
   });
-
-  const hash = location.hash.replace('#', '');
-  if (validTabs.includes(hash)) activate(hash);
+  const hash = location.hash.replace('#','');
+  if (valid.includes(hash)) activate(hash);
 }
 
-/* ── Section Nav (About sub-sections) ───────────────────── */
+/* ── Section Nav ── */
 function initSectionNav() {
   const btns   = $$('.snav-btn');
   const panels = $$('.section-panel');
-
-  function showSection(id) {
-    btns.forEach(b   => b.classList.toggle('active', b.dataset.section === id));
-    panels.forEach(p => p.classList.toggle('active', p.id === `section-${id}`));
-    /* Scroll so section nav bar is just visible at top */
-    const snavBar = document.querySelector('.section-nav-bar');
-    if (snavBar) {
-      const y = snavBar.getBoundingClientRect().top + window.scrollY - 70;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
-  }
-
-  btns.forEach(btn => btn.addEventListener('click', () => showSection(btn.dataset.section)));
+  btns.forEach(btn => btn.addEventListener('click', () => {
+    btns.forEach(b   => b.classList.toggle('active', b.dataset.section===btn.dataset.section));
+    panels.forEach(p => p.classList.toggle('active', p.id===`section-${btn.dataset.section}`));
+    const bar = document.querySelector('.section-nav-bar');
+    if (bar) window.scrollTo({top: bar.getBoundingClientRect().top+window.scrollY-70, behavior:'smooth'});
+  }));
 }
 
-/* ── Experience Filter ───────────────────────────────────── */
+/* ── Experience Filter ── */
 function initExpFilter() {
   $$('.exp-filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       $$('.exp-filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      const cat = btn.dataset.expcat;
-      /* Only filter cards inside the experience section */
-      $$('#section-experience .exp-card').forEach(card => {
-        card.style.display = (cat === 'all' || card.dataset.expcat === cat) ? '' : 'none';
-      });
+      expFilter = btn.dataset.expcat;
+      renderExperience();
     });
   });
 }
 
-/* ── Teaching Filter ─────────────────────────────────────── */
+/* ── Teaching Filter ── */
 function initTeachingFilter() {
   $$('.tfilter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -472,20 +663,18 @@ function initTeachingFilter() {
       btn.classList.add('active');
       const cat = btn.dataset.tcat;
       $$('.subject-card').forEach(card => {
-        card.style.display = (cat === 'all' || card.dataset.tcat === cat) ? '' : 'none';
+        card.style.display = (cat==='all'||card.dataset.tcat===cat) ? '' : 'none';
       });
     });
   });
 }
 
-/* ── Supervision Sub-tabs ────────────────────────────────── */
+/* ── Supervision Tabs ── */
 function initSupervisionTabs() {
-  const btns     = $$('.sup-tab-btn');
-  const contents = $$('.suptab-content');
-  btns.forEach(btn => {
+  $$('.sup-tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      btns.forEach(b     => b.classList.remove('active'));
-      contents.forEach(c => c.classList.remove('active'));
+      $$('.sup-tab-btn').forEach(b  => b.classList.remove('active'));
+      $$('.suptab-content').forEach(c => c.classList.remove('active'));
       btn.classList.add('active');
       const el = document.getElementById(`suptab-${btn.dataset.suptab}`);
       if (el) el.classList.add('active');
@@ -493,7 +682,7 @@ function initSupervisionTabs() {
   });
 }
 
-/* ── FYP Filter ──────────────────────────────────────────── */
+/* ── FYP Filter ── */
 function initFypFilter() {
   $$('.fyp-filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -505,7 +694,7 @@ function initFypFilter() {
   });
 }
 
-/* ── Filters & Search (Publications) ────────────────────── */
+/* ── Publications Controls ── */
 function initControls() {
   $$('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -515,23 +704,13 @@ function initControls() {
       renderPublications();
     });
   });
-  const searchInput = document.getElementById('pubSearch');
-  if (searchInput) {
-    searchInput.addEventListener('input', () => {
-      searchQuery = searchInput.value.trim();
-      renderPublications();
-    });
-  }
-  const sortSelect = document.getElementById('pubSort');
-  if (sortSelect) {
-    sortSelect.addEventListener('change', () => {
-      activeSort = sortSelect.value;
-      renderPublications();
-    });
-  }
+  const si = document.getElementById('pubSearch');
+  if (si) si.addEventListener('input', () => { searchQuery=si.value.trim(); renderPublications(); });
+  const ss = document.getElementById('pubSort');
+  if (ss) ss.addEventListener('change', () => { activeSort=ss.value; renderPublications(); });
 }
 
-/* ── Media Filter ────────────────────────────────────────── */
+/* ── Media Filter ── */
 function initMediaFilter() {
   $$('.media-filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -543,32 +722,31 @@ function initMediaFilter() {
   });
 }
 
-/* ── Mobile Nav ──────────────────────────────────────────── */
+/* ── Mobile Nav ── */
 function initMobileNav() {
   const toggle = document.getElementById('navToggle');
   const links  = document.getElementById('navLinks');
   if (toggle && links) {
-    toggle.addEventListener('click', () => links.classList.toggle('open'));
-    $$('.nav-link').forEach(l => l.addEventListener('click', () => links.classList.remove('open')));
+    toggle.addEventListener('click', ()=>links.classList.toggle('open'));
+    $$('.nav-link').forEach(l=>l.addEventListener('click',()=>links.classList.remove('open')));
   }
 }
 
-/* ── Sticky Navbar ───────────────────────────────────────── */
+/* ── Sticky Nav shadow ── */
 function initStickyNav() {
   const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.style.boxShadow = window.scrollY > 10
-      ? '0 4px 20px rgba(0,0,0,0.25)'
-      : '0 2px 16px rgba(0,0,0,0.18)';
-  }, { passive: true });
+  window.addEventListener('scroll', ()=>{
+    navbar.style.boxShadow = window.scrollY>10
+      ? '0 4px 20px rgba(0,0,0,0.25)' : '0 2px 16px rgba(0,0,0,0.18)';
+  }, {passive:true});
 }
 
-/* ── Keyboard shortcut for lightbox ─────────────────────── */
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeLightbox();
-});
+/* ── Keyboard ── */
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
 
-/* ── Init ────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════
+   BOOT
+════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
   initTabs();
   initSectionNav();
@@ -581,6 +759,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileNav();
   initStickyNav();
   loadData();
+  loadSiteContent();
   loadSupervisionData();
   loadMediaData();
 });

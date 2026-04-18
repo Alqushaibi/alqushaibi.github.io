@@ -182,614 +182,63 @@
       </div>
     </div>
 
-    <!-- ── BIO SECTION ─────────────────────────────────────────────── -->
+    <!-- ── BIO SECTION – rendered from site-content.json ─────────── -->
     <section class="section-panel active" id="section-bio">
-      <div class="section-container two-col">
-        <div class="about-main">
-          <h2 class="section-title"><span>About Me</span></h2>
-          <p>Currently serving as <strong>Program Coordinator</strong> for the Information Technology program at MAHSA University, with responsibilities in curriculum oversight, academic coordination, and quality assurance. A reliable and competent <strong>PhD graduate</strong> with over <strong>8 years</strong> of combined experience in teaching, research and development, and student supervision.</p>
-          <p>Expertise in <strong>Machine Learning</strong>, <strong>Deep Learning</strong>, and <strong>Data Science</strong>, backed by a strong publication record in Q1/Q2 journals and international conferences. My research spans Generative AI, Medical Image Processing, Metaheuristic Optimization, and Computer Vision, with work published in <em>IEEE Access</em>, <em>Heliyon</em>, <em>Sustainability</em>, and more.</p>
-          <p>Proven ability to design and deliver engaging curricula for courses including Advanced Databases, Data Science Fundamentals, and Structured Programming. Skilled in fostering student-centered learning through workshops such as Computer Vision with MATLAB and AI micro-credential programs.</p>
-
-          <h3 class="subsection-title">Research Interests</h3>
-          <div class="interest-tags">
-            <span class="tag">Machine Learning</span>
-            <span class="tag">Deep Learning</span>
-            <span class="tag">Artificial Intelligence</span>
-            <span class="tag">Generative AI</span>
-            <span class="tag">Image Processing</span>
-            <span class="tag">Data Science</span>
-            <span class="tag">Optimization</span>
-            <span class="tag">Metaheuristics</span>
-            <span class="tag">Computer Vision</span>
-            <span class="tag">Medical Imaging</span>
-            <span class="tag">GANs</span>
-            <span class="tag">Reinforcement Learning</span>
-          </div>
-        </div>
-        <div class="about-side">
-          <div class="side-card">
-            <h3><i class="fas fa-graduation-cap"></i> Education</h3>
-            <div class="timeline">
-              <div class="timeline-item">
-                <div class="timeline-dot phd"></div>
-                <div class="timeline-content">
-                  <strong>Ph.D. in Information Technology</strong>
-                  <span>Universiti Teknologi PETRONAS, Malaysia</span>
-                  <span class="timeline-year">Jan 2022 – May 2025</span>
-                  <small>Optimization of Pix2pix GANs via Gradient Penalty Sine Cosine Algorithm</small>
-                </div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-dot ms"></div>
-                <div class="timeline-content">
-                  <strong>M.S. in IT, by Research</strong>
-                  <span>Universiti Teknologi PETRONAS, Malaysia</span>
-                  <span class="timeline-year">Jul 2019 – Aug 2021</span>
-                  <small>Enhanced Weight Optimized RNN Based on Sine Cosine Algorithm</small>
-                </div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-dot bs"></div>
-                <div class="timeline-content">
-                  <strong>B.S. in Computer Science</strong>
-                  <span>Universiti Teknologi Malaysia</span>
-                  <span class="timeline-year">Jul 2008 – Mar 2012</span>
-                  <small>Computer Network and Security · CGPA 3.10/4 (2nd Upper)</small>
-                </div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-dot" style="background:#f6ad55"></div>
-                <div class="timeline-content">
-                  <strong>AWS re/Start Program</strong>
-                  <span>Amazon Web Services (AWS) Training Program</span>
-                  <span class="timeline-year">Dec 2025 – Mar 2026</span>
-                  <small>Cloud Architecture, DevOps, Security, AI/ML on AWS</small>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="side-card">
-            <h3><i class="fas fa-briefcase"></i> Current Position</h3>
-            <div class="position-item">
-              <strong>Program Coordinator – Information Technology</strong>
-              <span>MAHSA University</span>
-              <span class="timeline-year">Jan 2026 – Present</span>
-            </div>
-            <div class="position-item">
-              <strong>Lecturer in Artificial Intelligence</strong>
-              <span>MAHSA University</span>
-              <span class="timeline-year">Jul 2025 – Present</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div id="bioContent" class="section-container two-col"></div>
     </section>
 
-    <!-- ── EXPERIENCE SECTION ─────────────────────────────────────── -->
+    <!-- ── EXPERIENCE SECTION – rendered from site-content.json ──── -->
     <section class="section-panel" id="section-experience">
       <div class="section-container">
         <h2 class="section-title"><span>Experience</span></h2>
-
-        <!-- Sub-filter for experience type -->
         <div class="exp-filter-row">
           <button class="exp-filter-btn active" data-expcat="all">All</button>
           <button class="exp-filter-btn" data-expcat="academic">Academic</button>
           <button class="exp-filter-btn" data-expcat="industry">Industry</button>
         </div>
+        <div class="exp-timeline" id="expTimeline">
 
-        <div class="exp-timeline">
-
-          <!-- Academic -->
-          <div class="exp-card" data-expcat="academic">
-            <div class="exp-header">
-              <div class="exp-icon academic"><i class="fas fa-university"></i></div>
-              <div class="exp-title-block">
-                <h3>Program Coordinator – Information Technology</h3>
-                <span class="exp-company">MAHSA University</span>
-                <span class="exp-period">Jan 2026 – Present</span>
-              </div>
-              <span class="exp-badge current">Current</span>
-            </div>
-            <ul class="exp-duties">
-              <li>Coordinate academic and administrative operations of the IT program</li>
-              <li>Oversee curriculum planning, course mapping, and syllabus alignment with MQF and accreditation standards</li>
-              <li>Coordinate course offerings, teaching assignments, and semester scheduling</li>
-              <li>Liaise with faculty members, Dean/Deputy, and university management on program matters</li>
-              <li>Monitor course delivery quality and learning outcomes achievement</li>
-              <li>Support accreditation, audit, and quality assurance documentation</li>
-              <li>Handle student academic issues, progression matters, and program-level advising</li>
-              <li>Review and improve assessment methods and moderation processes</li>
-              <li>Assist in strategic planning and continuous improvement initiatives for the IT program</li>
-            </ul>
-          </div>
-
-          <div class="exp-card" data-expcat="academic">
-            <div class="exp-header">
-              <div class="exp-icon academic"><i class="fas fa-chalkboard-teacher"></i></div>
-              <div class="exp-title-block">
-                <h3>Lecturer in Artificial Intelligence</h3>
-                <span class="exp-company">MAHSA University</span>
-                <span class="exp-period">Jul 2025 – Present</span>
-              </div>
-              <span class="exp-badge current">Current</span>
-            </div>
-            <ul class="exp-duties">
-              <li>IT Lecturer, Faculty of Engineering, Built Environment and Information Technology, MAHSA University</li>
-              <li>Teach undergraduate courses: Data Science, Artificial Intelligence, Wireless Communication, IT Fundamentals, Operating Systems, DBMS, Information Management, Information System, Introduction to Programming, OOP, and Computer Architecture &amp; Organization</li>
-              <li>Design, prepare, and update lecture materials, tutorials, assignments, and assessments</li>
-              <li>Design, prepare, and teach Standalone Micro Credential Programs</li>
-              <li>Supervise PhD students, co-supervise PhD students, co-supervisor postdoctoral projects, and supervise FYP students</li>
-              <li>Conduct lectures, tutorials, and practical sessions using active and student-centered learning approaches</li>
-              <li>Evaluate student performance through continuous assessment and final examinations</li>
-              <li>Participate in curriculum development and course review</li>
-              <li>Engage in academic research and publish findings in peer-reviewed journals and conferences</li>
-              <li>Provide academic advising and mentoring to students</li>
-              <li>Support institutional activities, accreditation, and quality assurance processes</li>
-            </ul>
-          </div>
-
-          <div class="exp-card" data-expcat="academic">
-            <div class="exp-header">
-              <div class="exp-icon academic"><i class="fas fa-school"></i></div>
-              <div class="exp-title-block">
-                <h3>Lecturer of Computer Science</h3>
-                <span class="exp-company">Yemeni Military College</span>
-                <span class="exp-period">Jul 2012 – May 2018</span>
-              </div>
-              <span class="exp-badge past">6 Years</span>
-            </div>
-            <ul class="exp-duties">
-              <li>Plan, prepare and conduct C++ and Java lectures</li>
-              <li>Apply interactive teaching methods to boost engagement</li>
-              <li>Trainer for the International ICDL Course</li>
-              <li>Undergraduate lab demonstration and CS lecturing</li>
-              <li>Supervised and mentored Bachelor's degree students</li>
-              <li>Facilitated hands-on technical workshops and labs</li>
-            </ul>
-          </div>
-
-          <!-- Industry -->
-          <div class="exp-card" data-expcat="industry">
-            <div class="exp-header">
-              <div class="exp-icon industry"><i class="fas fa-laptop"></i></div>
-              <div class="exp-title-block">
-                <h3>Information Technology Support</h3>
-                <span class="exp-company">ML Company for Training and Logistic Services</span>
-                <span class="exp-period">Jun 2018 – Jun 2019</span>
-              </div>
-              <span class="exp-badge past">1 Year</span>
-            </div>
-            <ul class="exp-duties">
-              <li>Preparing and writing daily reports and financial support administration</li>
-              <li>Hard and soft copy archiving for company and project documents</li>
-              <li>Plan and manage timelines to ensure goals are met on time</li>
-              <li>Recording the attendance of trainees</li>
-              <li>Preparing and translating course slides (English to Arabic) and crane user manuals</li>
-              <li>Designing, printing, and processing official certificates</li>
-              <li>Communicating with port departments and providing comprehensive logistical support</li>
-            </ul>
-          </div>
-
-          <div class="exp-card" data-expcat="industry">
-            <div class="exp-header">
-              <div class="exp-icon industry"><i class="fas fa-server"></i></div>
-              <div class="exp-title-block">
-                <h3>System Administrator Assistant (Part Time)</h3>
-                <span class="exp-company">Sabafon Company, Yemen</span>
-                <span class="exp-period">Jun 2013 – May 2018</span>
-              </div>
-              <span class="exp-badge past">5 Years</span>
-            </div>
-            <ul class="exp-duties">
-              <li>Install, manage and upgrade Windows Server 2008/2012/2016 and apply patches</li>
-              <li>Create domain users and manage existing user properties</li>
-              <li>Manage hardware installation and maintenance of Intel servers (Disk, CPU/Memory, PCI, HBA, SAS)</li>
-              <li>Manage and configure Windows DNS/DHCP service</li>
-              <li>Physical installation of server racks, KVM, switches and rack mount keyboards</li>
-              <li>LAN, WAN, WLAN – Installation, Configuration, and Troubleshooting</li>
-            </ul>
-          </div>
-
-          <div class="exp-card" data-expcat="industry">
-            <div class="exp-header">
-              <div class="exp-icon industry"><i class="fas fa-headset"></i></div>
-              <div class="exp-title-block">
-                <h3>Customer Care Consultant (Part Time)</h3>
-                <span class="exp-company">Sabafon Company, Yemen</span>
-                <span class="exp-period">Jul 2012 – Jun 2013</span>
-              </div>
-              <span class="exp-badge past">1 Year</span>
-            </div>
-            <ul class="exp-duties">
-              <li>Provide user-level technical support</li>
-              <li>Give suggestions contributing to high customer satisfaction</li>
-              <li>Solve customer problems or escalate to concerned departments</li>
-              <li>Promote the company's products and services</li>
-            </ul>
-          </div>
-
-          <div class="exp-card" data-expcat="industry">
-            <div class="exp-header">
-              <div class="exp-icon industry"><i class="fas fa-tools"></i></div>
-              <div class="exp-title-block">
-                <h3>Practical Training (Bachelor Degree)</h3>
-                <span class="exp-company">Ecosensa Technologies Sdn. Bhd, Malaysia</span>
-                <span class="exp-period">Jul 2011 – Dec 2011</span>
-              </div>
-              <span class="exp-badge past">6 Months</span>
-            </div>
-            <ul class="exp-duties">
-              <li>Installing RFID devices, configuring routers, and troubleshooting gantry problems</li>
-              <li>Requirements gathering, development planning, designing, workshops, documentation, and MySQL database maintenance</li>
-              <li>Promote company products and services and convince customers to sign contracts</li>
-            </ul>
-          </div>
-
-        </div>
+        </div><!-- #expTimeline rendered by JS -->
       </div>
     </section>
 
-    <!-- ── RESEARCH PROJECTS SECTION ──────────────────────────────── -->
+    <!-- ── RESEARCH PROJECTS – rendered from site-content.json ───── -->
     <section class="section-panel" id="section-research">
       <div class="section-container">
         <h2 class="section-title"><span>Research Projects</span></h2>
-        <div class="projects-grid">
-          <div class="project-card">
-            <div class="project-badge">Active · 2025–Present</div>
-            <h4>AI-Powered Gamma Radiation Classification</h4>
-            <p>Deep learning framework for nuclear scanning equipment — material classification (gas, liquid, air, solid). Collaboration with the Malaysian Nuclear Agency.</p>
-          </div>
-          <div class="project-card">
-            <div class="project-badge">Active · 2025–Present</div>
-            <h4>Deep Learning Teeth Age Prediction from Dental Radiographs</h4>
-            <p>AI model for biological age estimation from dental X-rays. Cross-faculty collaboration with MAHSA Medic (IT &amp; Dentistry).</p>
-          </div>
-          <div class="project-card">
-            <div class="project-badge">Active · 2025–Present</div>
-            <h4>FOEBEIT Academic Planner</h4>
-            <p>Timetable Generation and Human Resource Planning System for the Faculty of Engineering, Built Environment and IT – MAHSA University.</p>
-          </div>
-          <div class="project-card">
-            <div class="project-badge">Active · 2025–Present</div>
-            <h4>PaperDirect Conference Management System</h4>
-            <p>Full-lifecycle platform: paper submission, blind peer review, editorial decisions, QR attendance, badges, and digital certificates. Hosting MISEBEIT 2026.</p>
-          </div>
-          <div class="project-card">
-            <div class="project-badge">Active · 2023–Present</div>
-            <h4>Autonomous Underwater Defect Detection</h4>
-            <p>CNN-based detection of structural defects (corrosion, cracks, biofilm) in offshore oil &amp; gas platforms. Collaboration with UTP.</p>
-          </div>
-          <div class="project-card">
-            <div class="project-badge">Completed · 2023–2025</div>
-            <h4>Head &amp; Neck Tumor Segmentation in PET-CT</h4>
-            <p>Transformer-based segmentation for radiotherapy planning. Published in IEEE Access, Diagnostics, and CMES. (Project ID: RG-23137)</p>
-          </div>
-          <div class="project-card">
-            <div class="project-badge">Completed · 2022–2024</div>
-            <h4>Scalable Automated Data Preprocessing Framework</h4>
-            <p>For Very Big Data Stream in Oil Platform Equipment's Time to Failure Prediction Model – UTP.</p>
-          </div>
-          <div class="project-card">
-            <div class="project-badge">Completed · 2022–2024</div>
-            <h4>Supervised ML for Offshore Defect Mapping</h4>
-            <p>Fundamental study of supervised machine learning techniques for autonomous defect mapping of offshore structures – UTP.</p>
-          </div>
-          <div class="project-card">
-            <div class="project-badge">Completed · 2019–2021</div>
-            <h4>Digital Twin for Structural Asset Monitoring</h4>
-            <p>Solution and decision making for onshore facilities – UTP.</p>
-          </div>
-          <div class="project-card">
-            <div class="project-badge">Completed · 2019–2021</div>
-            <h4>Assessment of Structural Steel Riser-Guard Load Capacities</h4>
-            <p>Resultant impact assessment on offshore structures loading – UTP.</p>
-          </div>
-        </div>
+        <div class="projects-grid" id="projectsGrid"></div>
       </div>
     </section>
 
-    <!-- ── SKILLS SECTION ─────────────────────────────────────────── -->
+    <!-- ── SKILLS – rendered from site-content.json ─────────────── -->
     <section class="section-panel" id="section-skills">
       <div class="section-container">
         <h2 class="section-title"><span>Skills &amp; Competencies</span></h2>
-
-        <div class="skills-grid">
-
-          <!-- Languages -->
-          <div class="skills-card">
-            <h3><i class="fas fa-language"></i> Languages</h3>
-            <div class="skill-item">
-              <div class="skill-name"><span class="fi">🇾🇪</span> Arabic</div>
-              <div class="skill-dots">
-                <span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span>
-              </div>
-              <span class="skill-level-label">Native</span>
-            </div>
-            <div class="skill-item">
-              <div class="skill-name"><span class="fi">🇬🇧</span> English</div>
-              <div class="skill-dots">
-                <span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span>
-              </div>
-              <span class="skill-level-label">Fluent</span>
-            </div>
-            <div class="skill-item">
-              <div class="skill-name"><span class="fi">🇲🇾</span> Malay</div>
-              <div class="skill-dots">
-                <span class="dot filled"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
-              </div>
-              <span class="skill-level-label">Basic</span>
-            </div>
-          </div>
-
-          <!-- Technical Skills -->
-          <div class="skills-card">
-            <h3><i class="fas fa-code"></i> Technical Skills</h3>
-            <div class="skill-item">
-              <div class="skill-name"><i class="fas fa-chart-area"></i> MATLAB</div>
-              <div class="skill-dots">
-                <span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span><span class="dot"></span>
-              </div>
-              <span class="skill-level-label">Proficient</span>
-            </div>
-            <div class="skill-item">
-              <div class="skill-name"><i class="fab fa-python"></i> Python</div>
-              <div class="skill-dots">
-                <span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span>
-              </div>
-              <span class="skill-level-label">Advanced</span>
-            </div>
-            <div class="skill-item">
-              <div class="skill-name"><i class="fas fa-database"></i> SQL</div>
-              <div class="skill-dots">
-                <span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span><span class="dot"></span>
-              </div>
-              <span class="skill-level-label">Proficient</span>
-            </div>
-            <div class="skill-item">
-              <div class="skill-name"><i class="fab fa-linux"></i> Linux</div>
-              <div class="skill-dots">
-                <span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span>
-              </div>
-              <span class="skill-level-label">Advanced</span>
-            </div>
-            <div class="skill-item">
-              <div class="skill-name"><i class="fab fa-aws"></i> AWS Cloud</div>
-              <div class="skill-dots">
-                <span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span>
-              </div>
-              <span class="skill-level-label">Advanced</span>
-            </div>
-          </div>
-
-          <!-- Review Records -->
-          <div class="skills-card">
-            <h3><i class="fas fa-check-double"></i> Journal Reviewer</h3>
-            <div class="reviewer-tags">
-              <span class="reviewer-tag">Computers, Materials &amp; Continua</span>
-              <span class="reviewer-tag">IEEE Access</span>
-              <span class="reviewer-tag">PLOS ONE</span>
-              <span class="reviewer-tag">Computer Systems Science &amp; Engineering</span>
-              <span class="reviewer-tag">Franklin Open</span>
-              <span class="reviewer-tag">International Journal of Computer Mathematics</span>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Competencies / Workshops -->
-        <h3 class="subsection-title" style="margin-top:2rem"><i class="fas fa-certificate"></i> Competencies &amp; Workshops</h3>
-        <div class="workshops-grid">
-          <div class="workshop-card">
-            <i class="fas fa-chalkboard-teacher workshop-icon"></i>
-            <div>
-              <strong>Student-Centered Learning: Engaging Learners through Active Learning</strong>
-              <span>Universiti Teknologi PETRONAS · 2024</span>
-            </div>
-          </div>
-          <div class="workshop-card">
-            <i class="fas fa-eye workshop-icon"></i>
-            <div>
-              <strong>Computer Vision with MATLAB</strong>
-              <span>Universiti Teknologi PETRONAS · 2022</span>
-            </div>
-          </div>
-          <div class="workshop-card">
-            <i class="fas fa-brain workshop-icon"></i>
-            <div>
-              <strong>Introduction to Artificial Intelligence</strong>
-              <span>Yemeni Student Union – Malaysia · 2020</span>
-            </div>
-          </div>
-          <div class="workshop-card">
-            <i class="fas fa-chart-bar workshop-icon"></i>
-            <div>
-              <strong>How To Be A Data Scientist</strong>
-              <span>Yemeni Student Union – Malaysia · 2020</span>
-            </div>
-          </div>
-          <div class="workshop-card">
-            <i class="fab fa-microsoft workshop-icon"></i>
-            <div>
-              <strong>AI-100T01: Designing &amp; Implementing an Azure AI Solution (3 days)</strong>
-              <span>Universiti Teknologi PETRONAS · 2020</span>
-            </div>
-          </div>
-          <div class="workshop-card">
-            <i class="fas fa-mobile-alt workshop-icon"></i>
-            <div>
-              <strong>Diploma of Maintenance and Programming Mobile</strong>
-              <span>Science and Life Institution · 2018</span>
-            </div>
-          </div>
-          <div class="workshop-card">
-            <i class="fas fa-briefcase workshop-icon"></i>
-            <div>
-              <strong>Professional Skills</strong>
-              <span>Universiti Teknologi Malaysia · 2012</span>
-            </div>
-          </div>
-          <div class="workshop-card">
-            <i class="fas fa-globe workshop-icon"></i>
-            <div>
-              <strong>International Student Leaders Conference 2010 (7 days)</strong>
-              <span>Ministry of Higher Education Malaysia · 2010</span>
-            </div>
-          </div>
-        </div>
-
+        <div id="skillsContent"></div>
       </div>
     </section>
 
-    <!-- ── AWARDS SECTION ─────────────────────────────────────────── -->
+    <!-- ── AWARDS – rendered from site-content.json ──────────────── -->
     <section class="section-panel" id="section-awards">
       <div class="section-container">
         <h2 class="section-title"><span>Awards &amp; Recognition</span></h2>
-        <div class="awards-grid">
-          <div class="award-full-card gold">
-            <div class="award-icon"><i class="fas fa-medal"></i></div>
-            <div class="award-info">
-              <strong>Graduate on Time (GOT) Award – PhD</strong>
-              <span>Universiti Teknologi PETRONAS (UTP) · 2025</span>
-              <small>For completion of PhD in the stipulated time of 42 months</small>
-            </div>
-          </div>
-          <div class="award-full-card gold">
-            <div class="award-icon"><i class="fas fa-medal"></i></div>
-            <div class="award-info">
-              <strong>Graduate on Time (GOT) Award – M.S.</strong>
-              <span>Universiti Teknologi PETRONAS (UTP) · 2021</span>
-              <small>For completion of M.S. in the stipulated time of 24 months</small>
-            </div>
-          </div>
-          <div class="award-full-card silver">
-            <div class="award-icon"><i class="fas fa-trophy"></i></div>
-            <div class="award-info">
-              <strong>Best Paper Award – International Conference</strong>
-              <span>Pimpri Chinchwad College of Engineering, Pune, India · 2024</span>
-              <small>Recognition for outstanding research paper</small>
-            </div>
-          </div>
-          <div class="award-full-card silver">
-            <div class="award-icon"><i class="fas fa-star"></i></div>
-            <div class="award-info">
-              <strong>Publication Achievement Recognition</strong>
-              <span>Universiti Teknologi PETRONAS (UTP) · 2024</span>
-              <small>For outstanding publication record during doctoral studies</small>
-            </div>
-          </div>
-          <div class="award-full-card bronze">
-            <div class="award-icon"><i class="fas fa-globe-asia"></i></div>
-            <div class="award-info">
-              <strong>International Students Leadership Conference</strong>
-              <span>Ministry of Higher Education Malaysia · 2010</span>
-            </div>
-          </div>
-          <div class="award-full-card bronze">
-            <div class="award-icon"><i class="fas fa-award"></i></div>
-            <div class="award-info">
-              <strong>Yemen Scholarship for Outstanding Students</strong>
-              <span>Ministry of Higher Education, Yemen · 2007</span>
-              <small>Awarded for bachelor's degree studies abroad</small>
-            </div>
-          </div>
-        </div>
+        <div class="awards-grid" id="awardsGrid"></div>
       </div>
     </section>
 
-    <!-- ── MEMBERSHIPS SECTION ────────────────────────────────────── -->
+    <!-- ── MEMBERSHIPS – rendered from site-content.json ────────── -->
     <section class="section-panel" id="section-memberships">
       <div class="section-container">
         <h2 class="section-title"><span>Professional Memberships</span></h2>
-        <div class="memberships-grid">
-          <div class="membership-card">
-            <div class="membership-icon"><i class="fas fa-id-badge"></i></div>
-            <div class="membership-info">
-              <strong>Professional Technologist (Ts.)</strong>
-              <span>Malaysia Board of Technologists (MBOT)</span>
-            </div>
-          </div>
-          <div class="membership-card">
-            <div class="membership-icon"><i class="fas fa-id-card"></i></div>
-            <div class="membership-info">
-              <strong>Graduate Technologist</strong>
-              <span>Malaysia Board of Technologists (MBOT)</span>
-            </div>
-          </div>
-          <div class="membership-card">
-            <div class="membership-icon"><i class="fas fa-microscope"></i></div>
-            <div class="membership-info">
-              <strong>Centre for Research in Data Science (CERDAS)</strong>
-              <span>Universiti Teknologi PETRONAS</span>
-            </div>
-          </div>
-          <div class="membership-card">
-            <div class="membership-icon"><i class="fas fa-cogs"></i></div>
-            <div class="membership-info">
-              <strong>International Association of Engineers (IAENG)</strong>
-              <span>Member</span>
-            </div>
-          </div>
-        </div>
+        <div class="memberships-grid" id="membershipsGrid"></div>
       </div>
     </section>
 
-    <!-- ── LEADERSHIP SECTION ─────────────────────────────────────── -->
+    <!-- ── LEADERSHIP – rendered from site-content.json ─────────── -->
     <section class="section-panel" id="section-leadership">
       <div class="section-container">
         <h2 class="section-title"><span>Leadership &amp; Volunteer Experience</span></h2>
-        <div class="exp-timeline">
-          <div class="exp-card" data-expcat="all">
-            <div class="exp-header">
-              <div class="exp-icon" style="background:linear-gradient(135deg,#667eea,#764ba2)"><i class="fas fa-users"></i></div>
-              <div class="exp-title-block">
-                <h3>President – Association of International Students (Yemen Chapter)</h3>
-                <span class="exp-company">Universiti Teknologi PETRONAS, Malaysia</span>
-                <span class="exp-period">2023 – 2025</span>
-              </div>
-            </div>
-            <ul class="exp-duties">
-              <li>Represented the chapter in all internal and external matters; led executive committee meetings and activities</li>
-              <li>Served as main liaison between the Yemen Chapter and the main association body and university</li>
-              <li>Set short-term and long-term goals; oversaw planning and implementation of annual programs and cultural events</li>
-              <li>Supervised and supported all executive members; delegated responsibilities and ensured deadlines are met</li>
-              <li>Addressed academic, social, and cultural concerns of Yemeni students; provided guidance to new arrivals</li>
-              <li>Advocated for inclusion, diversity, and student welfare within the university</li>
-            </ul>
-          </div>
-          <div class="exp-card" data-expcat="all">
-            <div class="exp-header">
-              <div class="exp-icon" style="background:linear-gradient(135deg,#f093fb,#f5576c)"><i class="fas fa-user-tie"></i></div>
-              <div class="exp-title-block">
-                <h3>Vice President – Yemeni Student Society</h3>
-                <span class="exp-company">Universiti Teknologi Malaysia (UTM)</span>
-                <span class="exp-period">Jan 2009 – Mar 2010</span>
-              </div>
-            </div>
-            <ul class="exp-duties">
-              <li>Co-established the Yemeni Student Society at UTM</li>
-              <li>Managed regular meetings, planned activities and trips for society members</li>
-              <li>Solved student problems and followed up with concerned university departments</li>
-              <li>Participated in orientation week and convocation festival; managed Yemeni cultural activities</li>
-            </ul>
-          </div>
-          <div class="exp-card" data-expcat="all">
-            <div class="exp-header">
-              <div class="exp-icon" style="background:linear-gradient(135deg,#4facfe,#00f2fe)"><i class="fas fa-hands-helping"></i></div>
-              <div class="exp-title-block">
-                <h3>Member – AIESEC</h3>
-                <span class="exp-company">AIESEC in Universiti Teknologi Malaysia</span>
-                <span class="exp-period">May 2010 – May 2012</span>
-              </div>
-            </div>
-            <ul class="exp-duties">
-              <li>Social service and conference preparation</li>
-              <li>Hosted international guests, arranged airport pickup and accommodation in Malaysia</li>
-              <li>Educated people about HIV/AIDS prevention in lectures and community outreach</li>
-              <li>Worked in special needs schools helping disabled students</li>
-            </ul>
-          </div>
-        </div>
+        <div class="exp-timeline" id="leadershipTimeline"></div>
       </div>
     </section>
 
@@ -815,120 +264,8 @@
           <button class="tfilter-btn" data-tcat="networks-systems"><i class="fas fa-network-wired"></i> Networks &amp; Systems <span class="filter-count">3</span></button>
         </div>
 
-        <!-- Subject cards -->
-        <div class="subjects-grid" id="subjectsGrid">
-
-          <div class="subject-card" data-tcat="ai-data">
-            <div class="subject-icon ai-data"><i class="fas fa-brain"></i></div>
-            <h4>Artificial Intelligence</h4>
-            <p>ML fundamentals, search algorithms, neural networks, intelligent systems, and AI applications</p>
-            <div class="subject-meta">
-              <span class="subject-badge current">Currently Teaching</span>
-              <span class="subject-level">Undergraduate</span>
-            </div>
-          </div>
-
-          <div class="subject-card" data-tcat="ai-data">
-            <div class="subject-icon ai-data"><i class="fas fa-chart-bar"></i></div>
-            <h4>Data Science</h4>
-            <p>Data analysis, visualization, statistical modeling, machine learning pipelines, and Python tools</p>
-            <div class="subject-meta">
-              <span class="subject-badge current">Currently Teaching</span>
-              <span class="subject-level">Undergraduate</span>
-            </div>
-          </div>
-
-          <div class="subject-card" data-tcat="programming">
-            <div class="subject-icon programming"><i class="fas fa-code"></i></div>
-            <h4>Introduction to Programming</h4>
-            <p>Fundamentals of programming logic, algorithms, problem solving, and coding using modern languages</p>
-            <div class="subject-meta">
-              <span class="subject-badge current">Currently Teaching</span>
-              <span class="subject-level">Undergraduate</span>
-            </div>
-          </div>
-
-          <div class="subject-card" data-tcat="programming">
-            <div class="subject-icon programming"><i class="fas fa-object-group"></i></div>
-            <h4>Object-Oriented Programming</h4>
-            <p>OOP concepts, classes, inheritance, polymorphism, encapsulation, and design patterns</p>
-            <div class="subject-meta">
-              <span class="subject-badge current">Currently Teaching</span>
-              <span class="subject-level">Undergraduate</span>
-            </div>
-          </div>
-
-          <div class="subject-card" data-tcat="info-systems">
-            <div class="subject-icon info-systems"><i class="fas fa-laptop"></i></div>
-            <h4>Information Technology Fundamentals</h4>
-            <p>Core IT concepts, hardware, software, networking basics, and digital literacy foundations</p>
-            <div class="subject-meta">
-              <span class="subject-badge current">Currently Teaching</span>
-              <span class="subject-level">Undergraduate</span>
-            </div>
-          </div>
-
-          <div class="subject-card" data-tcat="info-systems">
-            <div class="subject-icon info-systems"><i class="fas fa-database"></i></div>
-            <h4>Database Management Systems</h4>
-            <p>Relational databases, SQL, ER modeling, normalization, transactions, and database administration</p>
-            <div class="subject-meta">
-              <span class="subject-badge current">Currently Teaching</span>
-              <span class="subject-level">Undergraduate</span>
-            </div>
-          </div>
-
-          <div class="subject-card" data-tcat="info-systems">
-            <div class="subject-icon info-systems"><i class="fas fa-folder-open"></i></div>
-            <h4>Information Management</h4>
-            <p>Information lifecycle, knowledge management, digital information systems, and organizational information strategy</p>
-            <div class="subject-meta">
-              <span class="subject-badge current">Currently Teaching</span>
-              <span class="subject-level">Undergraduate</span>
-            </div>
-          </div>
-
-          <div class="subject-card" data-tcat="info-systems">
-            <div class="subject-icon info-systems"><i class="fas fa-sitemap"></i></div>
-            <h4>Information System</h4>
-            <p>Systems analysis, design, implementation, and evaluation of enterprise information systems</p>
-            <div class="subject-meta">
-              <span class="subject-badge current">Currently Teaching</span>
-              <span class="subject-level">Undergraduate</span>
-            </div>
-          </div>
-
-          <div class="subject-card" data-tcat="networks-systems">
-            <div class="subject-icon networks-systems"><i class="fas fa-wifi"></i></div>
-            <h4>Wireless Communication</h4>
-            <p>Wireless networks, protocols, 4G/5G, IoT connectivity, signal propagation, and mobile systems</p>
-            <div class="subject-meta">
-              <span class="subject-badge current">Currently Teaching</span>
-              <span class="subject-level">Undergraduate</span>
-            </div>
-          </div>
-
-          <div class="subject-card" data-tcat="networks-systems">
-            <div class="subject-icon networks-systems"><i class="fas fa-server"></i></div>
-            <h4>Operating Systems</h4>
-            <p>Process management, memory management, file systems, scheduling, concurrency, and Linux administration</p>
-            <div class="subject-meta">
-              <span class="subject-badge current">Currently Teaching</span>
-              <span class="subject-level">Undergraduate</span>
-            </div>
-          </div>
-
-          <div class="subject-card" data-tcat="networks-systems">
-            <div class="subject-icon networks-systems"><i class="fas fa-microchip"></i></div>
-            <h4>Computer Architecture &amp; Organization</h4>
-            <p>CPU design, memory hierarchy, instruction sets, pipelining, I/O systems, and computer performance</p>
-            <div class="subject-meta">
-              <span class="subject-badge current">Currently Teaching</span>
-              <span class="subject-level">Undergraduate</span>
-            </div>
-          </div>
-
-        </div>
+        <!-- Subject cards – rendered from site-content.json -->
+        <div class="subjects-grid" id="subjectsGrid"></div>
       </div>
     </section>
   </div><!-- /#tab-teaching -->
@@ -1071,13 +408,13 @@
       <div class="section-container">
         <h2 class="section-title"><span>Curriculum Vitae</span></h2>
         <div class="cv-actions">
-          <a href="Alaw%20Alqushaibi%20CV%2017-04-2026.pdf" download class="cv-btn download">
+          <a id="cvDownloadLink" href="#" download class="cv-btn download">
             <i class="fas fa-download"></i> Download CV (PDF)
           </a>
         </div>
         <div class="cv-embed">
-          <iframe src="Alaw%20Alqushaibi%20CV%2017-04-2026.pdf" width="100%" height="920px" title="Ts. Dr. Alawi Alqushaibi – Curriculum Vitae">
-            <p>Your browser does not support PDF embedding. <a href="Alaw%20Alqushaibi%20CV%2017-04-2026.pdf">Download the CV here</a>.</p>
+          <iframe id="cvIframe" src="" width="100%" height="920px" title="Ts. Dr. Alawi Alqushaibi – Curriculum Vitae">
+            <p>Your browser does not support PDF embedding.</p>
           </iframe>
         </div>
       </div>
