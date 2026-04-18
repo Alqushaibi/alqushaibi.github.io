@@ -199,30 +199,101 @@ function updateTabBadge(count) {
 function initTabs() {
   const btns     = $$('.tab-btn');
   const contents = $$('.tab-content');
+  const validTabs = ['about', 'teaching', 'supervision', 'publications', 'cv'];
 
   function activate(tabId) {
+    if (!validTabs.includes(tabId)) tabId = 'about';
     btns.forEach(b     => b.classList.toggle('active', b.dataset.tab === tabId));
     contents.forEach(c => c.classList.toggle('active', c.id === `tab-${tabId}`));
+    $$('.nav-link[data-tab]').forEach(l => l.classList.toggle('active', l.dataset.tab === tabId));
     history.replaceState(null, '', `#${tabId}`);
-    window.scrollTo({ top: document.getElementById('tabNav').offsetTop - 64, behavior: 'smooth' });
+    const nav = document.getElementById('tabNav');
+    if (nav) window.scrollTo({ top: nav.offsetTop - 64, behavior: 'smooth' });
     if (tabId === 'publications') renderPublications();
   }
 
   btns.forEach(btn => btn.addEventListener('click', () => activate(btn.dataset.tab)));
 
-  // Navbar links
   $$('.nav-link[data-tab]').forEach(link => {
     link.addEventListener('click', e => {
       e.preventDefault();
       activate(link.dataset.tab);
-      $$('.nav-link').forEach(l => l.classList.remove('active'));
-      link.classList.add('active');
     });
   });
 
-  // Hash routing
   const hash = location.hash.replace('#', '');
-  if (['about', 'publications', 'cv'].includes(hash)) activate(hash);
+  if (validTabs.includes(hash)) activate(hash);
+}
+
+/* ── Section Nav (About sub-sections) ───────────────────── */
+function initSectionNav() {
+  const btns   = $$('.snav-btn');
+  const panels = $$('.section-panel');
+
+  function showSection(id) {
+    btns.forEach(b   => b.classList.toggle('active', b.dataset.section === id));
+    panels.forEach(p => p.classList.toggle('active', p.id === `section-${id}`));
+  }
+
+  btns.forEach(btn => btn.addEventListener('click', () => showSection(btn.dataset.section)));
+}
+
+/* ── Experience Filter ───────────────────────────────────── */
+function initExpFilter() {
+  $$('.exp-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.exp-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.expcat;
+      $$('.exp-card').forEach(card => {
+        card.style.display = (cat === 'all' || card.dataset.expcat === cat) ? '' : 'none';
+      });
+    });
+  });
+}
+
+/* ── Teaching Filter ─────────────────────────────────────── */
+function initTeachingFilter() {
+  $$('.tfilter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.tfilter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.tcat;
+      $$('.subject-card').forEach(card => {
+        card.style.display = (cat === 'all' || card.dataset.tcat === cat) ? '' : 'none';
+      });
+    });
+  });
+}
+
+/* ── Supervision Sub-tabs ────────────────────────────────── */
+function initSupervisionTabs() {
+  const btns     = $$('.sup-tab-btn');
+  const contents = $$('.suptab-content');
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b     => b.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      const el = document.getElementById(`suptab-${btn.dataset.suptab}`);
+      if (el) el.classList.add('active');
+    });
+  });
+}
+
+/* ── FYP Filter ──────────────────────────────────────────── */
+function initFypFilter() {
+  $$('.fyp-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.fyp-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const status = btn.dataset.fypstatus;
+      $$('.fyp-card').forEach(card => {
+        card.style.display = (status === 'all' || card.dataset.fypstatus === status) ? '' : 'none';
+      });
+    });
+  });
 }
 
 /* ── Filters & Search ────────────────────────────────────── */
@@ -276,6 +347,11 @@ function initStickyNav() {
 /* ── Init ────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   initTabs();
+  initSectionNav();
+  initExpFilter();
+  initTeachingFilter();
+  initSupervisionTabs();
+  initFypFilter();
   initControls();
   initMobileNav();
   initStickyNav();
