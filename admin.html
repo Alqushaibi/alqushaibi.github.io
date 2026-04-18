@@ -97,6 +97,10 @@
     /* ── Save bar ── */
     .save-bar{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.25rem;display:flex;align-items:center;gap:1rem;margin-top:1.25rem}
     .save-bar span{flex:1;font-size:.83rem;color:var(--muted)}
+    /* ── Token banner ── */
+    #tokenBanner{background:#fffbeb;border-bottom:2px solid var(--warn);padding:.65rem 1.5rem;display:flex;align-items:center;gap:.75rem;font-size:.85rem;color:#744210}
+    #tokenBanner a{color:var(--s);font-weight:600;cursor:pointer;text-decoration:underline}
+    #tokenBanner .tb-close{margin-left:auto;background:none;border:none;cursor:pointer;color:#744210;font-size:.9rem;padding:.2rem}
     /* ── Toast ── */
     #toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;background:var(--txt);color:#fff;padding:.8rem 1.3rem;border-radius:var(--rs);font-size:.86rem;font-weight:500;box-shadow:var(--sh);transform:translateY(80px);opacity:0;transition:all .3s;display:flex;align-items:center;gap:.5rem}
     #toast.show{transform:translateY(0);opacity:1}
@@ -146,10 +150,16 @@
   <header class="adm-hdr">
     <h1><i class="fas fa-cog"></i> Admin Panel</h1>
     <div class="adm-hdr-r">
+      <span id="hdrTokenStatus" style="font-size:.78rem;opacity:.8"></span>
       <a href="index.html" class="btn btn-outline btn-sm" style="color:#fff;border-color:rgba(255,255,255,.3)" target="_blank"><i class="fas fa-eye"></i> View Site</a>
       <button class="btn btn-outline btn-sm" style="color:#fff;border-color:rgba(255,255,255,.3)" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
   </header>
+  <div id="tokenBanner" style="display:none">
+    <i class="fas fa-exclamation-triangle"></i>
+    <span><strong>GitHub token not set.</strong> You can browse content but cannot save changes until you add your token. &nbsp;<a onclick="gotoSettings()">Go to Settings →</a></span>
+    <button class="tb-close" onclick="this.parentElement.style.display='none'" title="Dismiss"><i class="fas fa-times"></i></button>
+  </div>
 
   <div class="adm-layout">
     <nav class="adm-sidebar" id="sidebar">
@@ -515,7 +525,10 @@ function saveToken() {
   document.getElementById('tokenOk').style.display = 'inline';
   const w = document.getElementById('supTokenWarn');
   if (w) w.style.display = 'none';
-  toast('Token saved!','ok');
+  updateTokenUI();
+  toast('Token saved! You can now save changes.','ok');
+  // Reload data now that we have a token (gets proper SHAs for saving)
+  Promise.all([loadSC(), loadSup(), loadMedia()]);
 }
 
 const ghHeaders = () => ({
@@ -566,23 +579,43 @@ let pendingCvFile  = null;
 let editingType = null;
 let editingIdx  = -1;
 
+function navToSection(name) {
+  document.querySelectorAll('.sb-item').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
+  const item = document.querySelector(`.sb-item[data-sec="${name}"]`);
+  if (item) item.classList.add('active');
+  const sec = document.getElementById(`sec-${name}`);
+  if (sec) sec.classList.add('active');
+}
+
+function gotoSettings() { navToSection('settings'); }
+
+function updateTokenUI() {
+  const has = !!getToken();
+  const banner = document.getElementById('tokenBanner');
+  const hdrStatus = document.getElementById('hdrTokenStatus');
+  if (banner) banner.style.display = has ? 'none' : 'flex';
+  if (hdrStatus) hdrStatus.innerHTML = has
+    ? '<i class="fas fa-check-circle" style="color:#68d391"></i> Token set'
+    : '<i class="fas fa-exclamation-circle" style="color:#fc8181"></i> No token';
+}
+
 async function showApp() {
   document.getElementById('authGate').style.display = 'none';
   document.getElementById('adminApp').style.display = 'block';
   // Sidebar navigation
   document.querySelectorAll('.sb-item').forEach(item => {
-    item.addEventListener('click', () => {
-      document.querySelectorAll('.sb-item').forEach(s => s.classList.remove('active'));
-      document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
-      item.classList.add('active');
-      const sec = document.getElementById(`sec-${item.dataset.sec}`);
-      if (sec) sec.classList.add('active');
-    });
+    item.addEventListener('click', () => { navToSection(item.dataset.sec); });
   });
   // Token status
   if (getToken()) document.getElementById('tokenOk').style.display = 'inline';
   if (localStorage.getItem('gh_token') && document.getElementById('rememberToken'))
     document.getElementById('rememberToken').checked = true;
+  updateTokenUI();
+  // Auto-navigate to settings if no token
+  if (!getToken()) {
+    navToSection('settings');
+  }
   await Promise.all([loadSC(), loadSup(), loadMedia()]);
 }
 
