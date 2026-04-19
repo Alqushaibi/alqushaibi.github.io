@@ -166,6 +166,7 @@
     <nav class="adm-sidebar" id="sidebar">
       <div class="sb-group">About</div>
       <div class="sb-item active" data-sec="bio"><i class="fas fa-user"></i> Bio &amp; Interests</div>
+      <div class="sb-item" data-sec="education"><i class="fas fa-graduation-cap"></i> Education</div>
       <div class="sb-item" data-sec="experience"><i class="fas fa-briefcase"></i> Experience</div>
       <div class="sb-item" data-sec="projects"><i class="fas fa-flask"></i> Research Projects</div>
       <div class="sb-item" data-sec="skills"><i class="fas fa-tools"></i> Skills &amp; Languages</div>
@@ -198,6 +199,23 @@
         </div>
         <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>assets/data/site-content.json</code></span>
           <button class="btn btn-ok" id="saveBioBtn" onclick="saveSection('bio')"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
+      </div>
+
+      <!-- ════ EDUCATION ════ -->
+      <div class="sec" id="sec-education">
+        <div class="sec-hdr"><h2><i class="fas fa-graduation-cap"></i> Education</h2><p>Manage degree entries and current positions.</p></div>
+        <div class="card">
+          <h3><i class="fas fa-university"></i> Degrees</h3>
+          <div id="eduList"></div>
+          <button class="btn btn-outline btn-sm" style="margin-top:.75rem" onclick="openEduModal()"><i class="fas fa-plus"></i> Add Degree</button>
+        </div>
+        <div class="card">
+          <h3><i class="fas fa-id-badge"></i> Current Positions</h3>
+          <div id="posList"></div>
+          <button class="btn btn-outline btn-sm" style="margin-top:.75rem" onclick="openPosModal()"><i class="fas fa-plus"></i> Add Position</button>
+        </div>
+        <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>site-content.json</code></span>
+          <button class="btn btn-ok" onclick="saveSection('education')"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
       </div>
 
       <!-- ════ EXPERIENCE ════ -->
@@ -657,6 +675,8 @@ function renderSC() {
   if (it) it.value = (SC.research_interests||SC.bio?.research_interests||[]).join('\n');
 
   /* Lists */
+  renderSimpleList('eduList',      SC.education||[],          itemEduHtml);
+  renderSimpleList('posList',      SC.current_positions||[],  itemPosHtml);
   renderSimpleList('expList',      SC.experience,       itemExpHtml);
   renderSimpleList('projList',     SC.research_projects, itemProjHtml);
   renderSimpleList('wsList',       SC.workshops,         itemWsHtml);
@@ -723,6 +743,8 @@ function renderSimpleList(id, arr, htmlFn) {
     </div>`).join('');
 }
 
+const itemEduHtml   = e => `<strong>${esc(e.degree)}</strong><br><span>${esc(e.institution)} · ${esc(e.period)}</span>`;
+const itemPosHtml   = p => `<strong>${esc(p.title)}</strong><br><span>${esc(p.institution)} · ${esc(p.period)}</span>`;
 const itemExpHtml   = e => `<strong>${esc(e.title)}</strong> <span>${esc(e.company)}</span> <span class="badge ${esc(e.badge_type)}">${esc(e.badge)}</span>`;
 const itemProjHtml  = p => `<strong>${esc(p.title)}</strong><br><span>${esc(p.badge)}</span>`;
 const itemWsHtml    = w => `<strong>${esc(w.title)}</strong><br><span>${esc(w.institution)} · ${esc(w.year)}</span>`;
@@ -772,6 +794,7 @@ async function commitSC(msg) {
    MODAL (universal item editor)
 ════════════════════════════════════════════════════════════ */
 const LIST_MAP = {
+  eduList:'education', posList:'current_positions',
   expList:'experience', projList:'research_projects', wsList:'workshops',
   awardList:'awards', memList:'memberships', leadList:'leadership', teachList:'teaching',
   techSkillList:'technical_skills', langSkillList:'language_skills'
@@ -796,6 +819,7 @@ function deleteItem(listId, idx) {
 function openModalFor(type, item) {
   document.getElementById('itemModal').style.display = 'flex';
   const title = {
+    education:'Education Entry', current_positions:'Current Position',
     experience:'Experience Entry', research_projects:'Research Project',
     workshops:'Workshop', awards:'Award', memberships:'Membership',
     leadership:'Leadership Entry', teaching:'Teaching Subject',
@@ -814,6 +838,16 @@ function buildModalForm(type, d) {
     `<div class="fg"><label>${label}</label><select id="mf_${id}">${opts.map(([v,t])=>`<option value="${v}"${v===val?' selected':''}>${t}</option>`).join('')}</select></div>`;
 
   switch(type) {
+    case 'education': return `
+      ${f('Degree / Qualification *','degree', d.degree, 'placeholder="e.g. Ph.D. in Information Technology"')}
+      ${f('Institution *','institution', d.institution, 'placeholder="University name, Country"')}
+      <div class="two-col">${f('Period','period', d.period, 'placeholder="Jan 2022 – May 2025"')}${f('Dot colour (optional)','dot_color', d.dot_color||'', 'placeholder="#f6ad55 or leave blank"')}</div>
+      ${f('Thesis / Specialisation','thesis', d.thesis||'', 'placeholder="Thesis title or field focus"')}`;
+
+    case 'current_positions': return `
+      ${f('Position Title *','title', d.title, 'placeholder="e.g. Lecturer in Artificial Intelligence"')}
+      <div class="two-col">${f('Institution *','institution', d.institution, 'placeholder="University / Organisation"')}${f('Period','period', d.period, 'placeholder="Jan 2026 – Present"')}</div>`;
+
     case 'experience': return `
       ${f('Title *','title', d.title)}
       <div class="two-col">${f('Company *','company', d.company)}${f('Period','period', d.period)}</div>
@@ -884,6 +918,15 @@ function saveModalItem() {
   const type = editingType;
   let item;
   switch(type) {
+    case 'education':
+      if (!gv('degree')||!gv('institution')) return toast('Degree and Institution are required.','er');
+      item = {id:`edu-${Date.now()}`, degree:gv('degree'), institution:gv('institution'),
+              period:gv('period'), thesis:gv('thesis'), dot_color:gv('dot_color')};
+      break;
+    case 'current_positions':
+      if (!gv('title')||!gv('institution')) return toast('Title and Institution are required.','er');
+      item = {id:`pos-${Date.now()}`, title:gv('title'), institution:gv('institution'), period:gv('period')};
+      break;
     case 'experience':
       if (!gv('title')||!gv('company')) return toast('Title and Company are required.','er');
       item = {id:`exp-${Date.now()}`,title:gv('title'),company:gv('company'),period:gv('period'),
@@ -942,6 +985,8 @@ function saveModalItem() {
 }
 
 /* open helpers */
+function openEduModal()   { editingType='education';         editingIdx=-1; openModalFor('education');         }
+function openPosModal()   { editingType='current_positions'; editingIdx=-1; openModalFor('current_positions'); }
 function openExpModal()   { editingType='experience';        editingIdx=-1; openModalFor('experience');        }
 function openProjModal()  { editingType='research_projects'; editingIdx=-1; openModalFor('research_projects'); }
 function openWsModal()    { editingType='workshops';         editingIdx=-1; openModalFor('workshops');         }
