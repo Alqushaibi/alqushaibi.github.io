@@ -473,9 +473,9 @@
   "leadership": [
     {
       "id": "lead-1",
-      "title": "President Ã¢ÂÂ Association of International Students (Yemen Chapter)",
+      "title": "President: Association of International Students (Yemen Chapter)",
       "organization": "Universiti Teknologi PETRONAS, Malaysia",
-      "period": "2023 Ã¢ÂÂ 2025",
+      "period": "2023 - 2025",
       "icon": "fas fa-users",
       "icon_gradient": "linear-gradient(135deg,#667eea,#764ba2)",
       "duties": [
@@ -489,9 +489,9 @@
     },
     {
       "id": "lead-2",
-      "title": "Vice President Ã¢ÂÂ Yemeni Student Society",
+      "title": "Vice President : Yemeni Student Society",
       "organization": "Universiti Teknologi Malaysia (UTM)",
-      "period": "Jan 2009 Ã¢ÂÂ Mar 2010",
+      "period": "Jan 2009 - Mar 2010",
       "icon": "fas fa-user-tie",
       "icon_gradient": "linear-gradient(135deg,#f093fb,#f5576c)",
       "duties": [
@@ -503,9 +503,9 @@
     },
     {
       "id": "lead-3",
-      "title": "Member Ã¢ÂÂ AIESEC",
+      "title": "Member : AIESEC",
       "organization": "AIESEC in Universiti Teknologi Malaysia",
-      "period": "May 2010 Ã¢ÂÂ May 2012",
+      "period": "May 2010 - May 2012",
       "icon": "fas fa-hands-helping",
       "icon_gradient": "linear-gradient(135deg,#4facfe,#00f2fe)",
       "duties": [
