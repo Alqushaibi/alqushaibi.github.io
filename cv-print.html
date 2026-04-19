@@ -356,8 +356,8 @@ function renderSC(sc){
   /* Photo */
   const ph = document.getElementById('photoPh');
   const img = new Image();
-  img.onload = () => { const el=document.createElement('img'); el.src='assets/img/profile.jpg'; el.className='hdr-photo'; el.alt='Photo'; ph.replaceWith(el); };
-  img.src='assets/img/profile.jpg';
+  img.onload = () => { const el=document.createElement('img'); el.src='assets/img/profile.jpeg'; el.className='hdr-photo'; el.alt='Photo'; ph.replaceWith(el); };
+  img.src='assets/img/profile.jpeg';
 
   /* Header title */
   if(sc.current_positions?.length)
