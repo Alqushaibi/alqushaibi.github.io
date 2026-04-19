@@ -43,7 +43,7 @@ function dots(level) {
 ════════════════════════════════════════════════════════════ */
 async function loadSiteContent() {
   try {
-    const res = await fetch('assets/data/site-content.json?v=' + Date.now());
+    const res = await fetch('assets/data/site-content.json', { cache: 'no-store' });
     siteContent = await res.json();
     renderBio();
     renderExperience();
@@ -307,7 +307,7 @@ function renderCvSection() {
 ════════════════════════════════════════════════════════════ */
 async function loadData() {
   try {
-    const res  = await fetch('assets/data/publications.json?v=' + Date.now());
+    const res  = await fetch('assets/data/publications.json', { cache: 'no-store' });
     const data = await res.json();
     allPubs = data.publications;
     updateMetrics(data.metrics, data.last_updated);
@@ -412,7 +412,7 @@ function updateTabBadge(count) {
 ════════════════════════════════════════════════════════════ */
 async function loadSupervisionData() {
   try {
-    const res = await fetch('assets/data/supervision.json?v=' + Date.now());
+    const res = await fetch('assets/data/supervision.json', { cache: 'no-store' });
     supervisionData = await res.json();
     renderSupervision();
     updateSupBadges();
@@ -519,7 +519,7 @@ function renderFyp() {
 ════════════════════════════════════════════════════════════ */
 async function loadMediaData() {
   try {
-    const res = await fetch('assets/data/media.json?v=' + Date.now());
+    const res = await fetch('assets/data/media.json', { cache: 'no-store' });
     const data = await res.json();
     mediaData = data.items || [];
     renderMedia();

@@ -734,7 +734,6 @@ const itemTeachHtml = t => `<strong>${esc(t.title)}</strong> <span class="badge 
 /* ─── Save sections ─── */
 async function saveSection(field) {
   if (!getToken()) return toast('GitHub token not set — go to Settings.','er');
-  // sync textarea-based fields
   if (field === 'bio') {
     SC.bio.research_interests = document.getElementById('interestTags').value
       .split('\n').map(s=>s.trim()).filter(Boolean);
@@ -743,17 +742,30 @@ async function saveSection(field) {
     SC.reviewer_journals = document.getElementById('reviewerJournals').value
       .split('\n').map(s=>s.trim()).filter(Boolean);
   }
-  await commitSC(`Admin: update ${field}`);
+  // Find the clicked save button and show spinner
+  const btn = event?.target?.closest('button');
+  const orig = btn ? btn.innerHTML : null;
+  if (btn) { btn.innerHTML = '<span class="spin"></span> Saving…'; btn.disabled = true; }
+  try {
+    await commitSC(`Admin: update ${field}`);
+  } catch(e) {
+    toast(`Save failed: ${e.message}`, 'er');
+  } finally {
+    if (btn) { btn.innerHTML = orig; btn.disabled = false; }
+  }
 }
 
 async function commitSC(msg) {
-  if (!scSha) {
-    try { const d = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/site-content.json`); scSha = d.sha; }
-    catch(_) {}
+  // Always fetch the latest SHA before writing to avoid conflicts
+  try {
+    const d = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/site-content.json`);
+    scSha = d.sha;
+  } catch(e) {
+    if (!scSha) throw new Error(`Cannot get file SHA: ${e.message}`);
   }
   const result = await ghPut(`/repos/${OWNER}/${REPO}/contents/assets/data/site-content.json`, SC, scSha, msg);
   scSha = result.content.sha;
-  toast('Saved to GitHub!','ok');
+  toast('Saved to GitHub! Changes will appear on the site within ~60 seconds.', 'ok');
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -1041,10 +1053,11 @@ async function saveSupervision() {
   const btn = document.getElementById('saveSupBtn');
   btn.innerHTML = '<span class="spin"></span> Saving…'; btn.disabled = true;
   try {
-    if (!supSha) { const d = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/supervision.json`); supSha = d.sha; }
+    const d2 = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/supervision.json`);
+    supSha = d2.sha;
     const res = await ghPut(`/repos/${OWNER}/${REPO}/contents/assets/data/supervision.json`, SUP, supSha, 'Admin: update supervision');
     supSha = res.content.sha;
-    toast('Supervision saved!','ok');
+    toast('Supervision saved! Changes appear on site within ~60 seconds.','ok');
   } catch(e) { toast(`Failed: ${e.message}`,'er'); }
   finally { btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Save'; btn.disabled = false; }
 }
@@ -1195,7 +1208,8 @@ async function saveMedia() {
   const btn = document.getElementById('saveMediaBtn');
   btn.innerHTML = '<span class="spin"></span> Saving…'; btn.disabled = true;
   try {
-    if (!mediaSha) { const d = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/media.json`); mediaSha = d.sha; }
+    const dm = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/media.json`);
+    mediaSha = dm.sha;
     const res = await ghPut(`/repos/${OWNER}/${REPO}/contents/assets/data/media.json`,
       {items: MEDIA}, mediaSha, 'Admin: update media gallery');
     mediaSha = res.content.sha;
