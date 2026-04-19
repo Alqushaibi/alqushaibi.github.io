@@ -608,6 +608,12 @@ function b64utf(str) {
   return btoa(bin);
 }
 
+function atobUtf8(b64) {
+  const bin = atob(b64.replace(/\n/g, ''));
+  const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
 /* ════════════════════════════════════════════════════════════
    DATA STATE
 ════════════════════════════════════════════════════════════ */
@@ -667,7 +673,7 @@ async function loadSC() {
   try {
     const d = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/site-content.json`);
     scSha = d.sha;
-    SC = JSON.parse(atob(d.content.replace(/\n/g,'')));
+    SC = JSON.parse(atobUtf8(d.content));
   } catch(e) {
     try { const r = await fetch('assets/data/site-content.json'); SC = await r.json(); } catch(_) {}
   }
@@ -1022,7 +1028,7 @@ async function loadSup() {
   try {
     const d = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/supervision.json`);
     supSha = d.sha;
-    SUP = JSON.parse(atob(d.content.replace(/\n/g,'')));
+    SUP = JSON.parse(atobUtf8(d.content));
   } catch(e) {
     try { const r = await fetch('assets/data/supervision.json'); SUP = await r.json(); } catch(_) {}
   }
@@ -1133,7 +1139,7 @@ async function loadMedia() {
   try {
     const d = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/media.json`);
     mediaSha = d.sha;
-    MEDIA = JSON.parse(atob(d.content.replace(/\n/g,''))).items || [];
+    MEDIA = JSON.parse(atobUtf8(d.content)).items || [];
   } catch(e) {
     try { const r = await fetch('assets/data/media.json'); const j = await r.json(); MEDIA = j.items||[]; } catch(_){}
   }
@@ -1320,7 +1326,7 @@ async function uploadCv() {
     try { const ex = await ghGet(`/repos/${OWNER}/${REPO}/contents/${path}`); sha = ex.sha; } catch(_){}
     await ghPutBin(`/repos/${OWNER}/${REPO}/contents/${path}`, b64, sha, `Admin: upload CV ${fname}`);
     // Update site-content.json
-    if (!SC) { try { const d = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/site-content.json`); scSha = d.sha; SC = JSON.parse(atob(d.content.replace(/\n/g,''))); } catch(_){} }
+    if (!SC) { try { const d = await ghGet(`/repos/${OWNER}/${REPO}/contents/assets/data/site-content.json`); scSha = d.sha; SC = JSON.parse(atobUtf8(d.content)); } catch(_){} }
     if (SC) {
       SC.cv_filename = fname;
       await commitSC('Admin: update CV filename');
