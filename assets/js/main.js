@@ -526,6 +526,12 @@ async function loadMediaData() {
   } catch(err) { console.error('Failed to load media:', err); }
 }
 
+const SOCIAL_META = {
+  linkedin:  { icon: 'fab fa-linkedin',  label: 'LinkedIn',  btnClass: 'linkedin' },
+  facebook:  { icon: 'fab fa-facebook',  label: 'Facebook',  btnClass: 'facebook' },
+  instagram: { icon: 'fab fa-instagram', label: 'Instagram', btnClass: 'instagram' },
+};
+
 function renderMedia() {
   const grid  = document.getElementById('mediaGrid');
   const empty = document.getElementById('mediaEmpty');
@@ -549,6 +555,25 @@ function renderMedia() {
             <div class="media-meta">
               ${item.date?`<span class="media-date"><i class="fas fa-calendar-alt"></i> ${esc(item.date)}</span>`:''}
               <span class="media-type-badge video"><i class="fas fa-video"></i> Video</span>
+            </div>
+          </div>
+        </div>`;
+    }
+    if (item.type==='social') {
+      const m = SOCIAL_META[item.platform] || { icon:'fas fa-share-alt', label: item.platform||'Social', btnClass:'linkedin' };
+      return `
+        <div class="media-card social" data-type="social">
+          <a class="media-thumb" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">
+            <i class="${m.icon} social-platform-icon ${esc(item.platform)}"></i>
+            <span class="social-platform-label">${m.label}</span>
+            <span class="social-view-btn ${m.btnClass}"><i class="fas fa-external-link-alt"></i> View Post</span>
+          </a>
+          <div class="media-info">
+            <h4>${esc(item.title)}</h4>
+            ${item.description?`<p>${esc(item.description)}</p>`:''}
+            <div class="media-meta">
+              ${item.date?`<span class="media-date"><i class="fas fa-calendar-alt"></i> ${esc(item.date)}</span>`:''}
+              <span class="media-type-badge social"><i class="fas fa-share-alt"></i> ${m.label}</span>
             </div>
           </div>
         </div>`;

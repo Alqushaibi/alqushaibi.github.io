@@ -118,6 +118,7 @@
     .pill{display:inline-block;padding:.12rem .55rem;border-radius:50px;font-size:.69rem;font-weight:700}
     .pill.image{background:#ebf8ff;color:#2b6cb0}
     .pill.video{background:#fef3c7;color:#92400e}
+    .pill.social,.pill.linkedin,.pill.facebook,.pill.instagram{background:#f0fdf4;color:#166534}
     @media(max-width:680px){.adm-sidebar{display:none}.two-col,.three-col{grid-template-columns:1fr}}
   </style>
 </head>
@@ -297,6 +298,7 @@
           <div style="display:flex;gap:.6rem;margin-bottom:1.1rem">
             <button class="btn btn-outline" id="addImgBtn" onclick="setMediaType('image')" style="flex:1"><i class="fas fa-image"></i> Image</button>
             <button class="btn btn-outline" id="addVidBtn" onclick="setMediaType('video')" style="flex:1"><i class="fab fa-youtube"></i> YouTube</button>
+            <button class="btn btn-outline" id="addSocBtn" onclick="setMediaType('social')" style="flex:1"><i class="fas fa-share-alt"></i> Social Post</button>
           </div>
           <div id="imgForm" style="display:none">
             <div class="upload-zone" id="dropZone" onclick="document.getElementById('imgFile').click()"
@@ -323,6 +325,23 @@
             </div>
             <div class="fg"><label>Description</label><textarea id="vidDesc" rows="2" placeholder="Short description (optional)"></textarea></div>
             <button class="btn btn-ok" onclick="addVideo()"><i class="fas fa-plus"></i> Add Video</button>
+          </div>
+          <div id="socForm" style="display:none">
+            <div class="fg">
+              <label>Platform *</label>
+              <select id="socPlatform">
+                <option value="linkedin"><i class="fab fa-linkedin"></i> LinkedIn</option>
+                <option value="facebook">Facebook</option>
+                <option value="instagram">Instagram</option>
+              </select>
+            </div>
+            <div class="fg"><label>Post URL *</label><input type="url" id="socUrl" placeholder="https://www.linkedin.com/posts/..."></div>
+            <div class="two-col">
+              <div class="fg"><label>Title *</label><input type="text" id="socTitle" placeholder="Post caption or title"></div>
+              <div class="fg"><label>Date</label><input type="text" id="socDate" placeholder="e.g. April 2025"></div>
+            </div>
+            <div class="fg"><label>Description</label><textarea id="socDesc" rows="2" placeholder="Short description (optional)"></textarea></div>
+            <button class="btn btn-ok" onclick="addSocial()"><i class="fas fa-plus"></i> Add Social Post</button>
           </div>
         </div>
         <div class="card"><h3><i class="fas fa-list"></i> Gallery Items</h3><div id="mediaList"></div></div>
@@ -1048,14 +1067,18 @@ function renderMediaAdmin() {
   const c = document.getElementById('mediaList');
   if (!c) return;
   if (!MEDIA.length) { c.innerHTML = '<div class="empty"><i class="fas fa-images"></i><p>No items yet.</p></div>'; return; }
+  const socIcon = {linkedin:'fab fa-linkedin',facebook:'fab fa-facebook',instagram:'fab fa-instagram'};
+  const socColor = {linkedin:'#0077b5',facebook:'#1877f2',instagram:'#e1306c'};
   c.innerHTML = MEDIA.map((item,i) => `
     <div class="item-row">
       <div style="width:48px;height:32px;border-radius:6px;overflow:hidden;background:var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center">
-        ${item.type==='video' ? `<i class="fab fa-youtube" style="color:#ff0000"></i>` : `<img src="${esc(item.url)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`}
+        ${item.type==='video'  ? `<i class="fab fa-youtube" style="color:#ff0000"></i>`
+        : item.type==='social' ? `<i class="${socIcon[item.platform]||'fas fa-share-alt'}" style="color:${socColor[item.platform]||'#4a5568'};font-size:1.1rem"></i>`
+        : `<img src="${esc(item.url)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`}
       </div>
       <div class="item-row-main">
         <strong>${esc(item.title)}</strong>
-        <span>${esc(item.date||'')} <span class="pill ${item.type}">${item.type}</span></span>
+        <span>${esc(item.date||'')} <span class="pill ${item.type}">${item.type==='social'?(item.platform||'social'):item.type}</span></span>
       </div>
       <div class="row-actions">
         <button class="icon-btn del" onclick="deleteMedia(${i})" title="Delete"><i class="fas fa-trash"></i></button>
@@ -1064,10 +1087,12 @@ function renderMediaAdmin() {
 }
 
 function setMediaType(type) {
-  document.getElementById('imgForm').style.display = type==='image' ? 'block' : 'none';
-  document.getElementById('vidForm').style.display = type==='video' ? 'block' : 'none';
-  document.getElementById('addImgBtn').className = 'btn ' + (type==='image'?'btn-primary':'btn-outline');
-  document.getElementById('addVidBtn').className = 'btn ' + (type==='video'?'btn-primary':'btn-outline');
+  document.getElementById('imgForm').style.display = type==='image'  ? 'block' : 'none';
+  document.getElementById('vidForm').style.display = type==='video'  ? 'block' : 'none';
+  document.getElementById('socForm').style.display = type==='social' ? 'block' : 'none';
+  document.getElementById('addImgBtn').className = 'btn ' + (type==='image' ?'btn-primary':'btn-outline');
+  document.getElementById('addVidBtn').className = 'btn ' + (type==='video' ?'btn-primary':'btn-outline');
+  document.getElementById('addSocBtn').className = 'btn ' + (type==='social'?'btn-primary':'btn-outline');
 }
 
 function handleImgFile(file) {
@@ -1136,6 +1161,26 @@ function addVideo() {
   renderMediaAdmin();
   ['vidUrl','vidTitle','vidDesc','vidDate'].forEach(id=>{document.getElementById(id).value='';});
   toast('Video added. Click Save to apply.','ok');
+}
+
+function addSocial() {
+  const url      = document.getElementById('socUrl').value.trim();
+  const title    = document.getElementById('socTitle').value.trim();
+  const platform = document.getElementById('socPlatform').value;
+  if (!url || !title) return toast('URL and title are required.','er');
+  const urlLower = url.toLowerCase();
+  if (platform==='linkedin'  && !urlLower.includes('linkedin.com'))  return toast('URL does not look like a LinkedIn link.','er');
+  if (platform==='facebook'  && !urlLower.includes('facebook.com'))  return toast('URL does not look like a Facebook link.','er');
+  if (platform==='instagram' && !urlLower.includes('instagram.com')) return toast('URL does not look like an Instagram link.','er');
+  MEDIA.push({
+    id: `soc-${Date.now()}`, type: 'social', platform,
+    title, url,
+    description: document.getElementById('socDesc').value.trim(),
+    date:        document.getElementById('socDate').value.trim()
+  });
+  renderMediaAdmin();
+  ['socUrl','socTitle','socDesc','socDate'].forEach(id => { document.getElementById(id).value = ''; });
+  toast('Social post added. Click Save to apply.','ok');
 }
 
 function deleteMedia(i) {
