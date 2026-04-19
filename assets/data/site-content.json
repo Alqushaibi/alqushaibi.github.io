@@ -303,21 +303,21 @@
     {
       "id": "lang-1",
       "name": "Arabic",
-      "flag": "Ã°ÂÂÂ¾Ã°ÂÂÂª",
+      "flag": "",
       "level": 5,
       "label": "Native"
     },
     {
       "id": "lang-2",
       "name": "English",
-      "flag": "Ã°ÂÂÂ¬Ã°ÂÂÂ§",
+      "flag": "",
       "level": 5,
       "label": "Fluent"
     },
     {
       "id": "lang-3",
       "name": "Malay",
-      "flag": "Ã°ÂÂÂ²Ã°ÂÂÂ¾",
+      "flag": "",
       "level": 1,
       "label": "Basic"
     }
