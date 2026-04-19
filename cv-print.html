@@ -50,15 +50,17 @@
     .hdr-meta{display:flex;flex-wrap:wrap;gap:.3rem .9rem;margin-top:.6rem}
     .hdr-meta span{font-size:7.5pt;color:rgba(255,255,255,.72);display:flex;align-items:center;gap:.28rem}
     .hdr-meta i{font-size:7pt;color:var(--accent)}
+    .hdr-link{color:rgba(255,255,255,.85);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.3)}
+    .hdr-link:hover{color:#fff;border-bottom-color:#fff}
     .hdr-metrics{z-index:1;flex-shrink:0;display:flex;flex-direction:column;gap:.4rem;justify-content:center}
     .m-box{text-align:center;background:rgba(255,255,255,.1);border-radius:8px;padding:.38rem .65rem;min-width:54px}
     .m-box .val{font-size:12.5pt;font-weight:800;color:#fff;line-height:1}
     .m-box .lbl{font-size:6pt;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.05em;margin-top:.1rem}
 
     /* ═══ BODY (sidebar + main) ═══ */
-    .cv-body{display:flex;flex:1}
-    .cv-sidebar{width:64mm;background:var(--sidebar-bg);padding:1.1rem 1rem;border-right:1px solid var(--border);flex-shrink:0}
-    .cv-main{flex:1;padding:1.1rem 1.3rem}
+    .cv-body{display:flex;flex:1;overflow:hidden}
+    .cv-sidebar{width:64mm;min-width:64mm;background:var(--sidebar-bg);padding:1.1rem 1rem;border-right:1px solid var(--border);flex-shrink:0;overflow:hidden;word-break:break-word;overflow-wrap:break-word}
+    .cv-main{flex:1;min-width:0;padding:1.1rem 1.3rem;overflow:hidden;word-break:break-word;overflow-wrap:break-word}
 
     /* ── Section title ── */
     .st{font-size:7pt;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--blue);border-bottom:1.5px solid var(--accent);padding-bottom:.18rem;margin-bottom:.55rem;display:flex;align-items:center;gap:.35rem}
@@ -118,7 +120,14 @@
     .exp-ul li::before{content:'•';position:absolute;left:0;color:var(--accent)}
 
     /* ── Profile text ── */
-    .profile-txt{font-size:8pt;color:var(--muted);line-height:1.65}
+    .profile-txt{font-size:8pt;color:var(--muted);line-height:1.65;overflow-wrap:break-word}
+
+    /* ── General overflow guards ── */
+    .pub-title,.exp-t,.lead-t,.proj-t,.ws-t,.edu-deg,.aw-t{overflow-wrap:break-word;word-break:break-word}
+    .pub-authors,.edu-inst,.exp-co,.mlist li{overflow-wrap:break-word}
+    .sup-table td,.sup-table th{word-break:break-word;overflow-wrap:break-word}
+    .teach-grid{overflow:hidden}
+    .hdr-meta{overflow-wrap:break-word}
 
     /* ── Publications ── */
     .pub{margin-bottom:.55rem;padding-left:.55rem;border-left:2px solid #e2e8f0;page-break-inside:avoid}
@@ -190,8 +199,11 @@
       body{background:#fff;font-size:8.8pt}
       #dlBar{display:none!important}
       #pageWrap{padding:0}
-      .cv-page{box-shadow:none;width:100%;margin:0}
+      .cv-page{box-shadow:none;width:100%;margin:0;overflow:hidden}
+      .cv-body{overflow:hidden}
       .exp,.aw,.pub,.proj,.teach-card,.ws,.lead{page-break-inside:avoid}
+      a{color:inherit}
+      .hdr-link{color:rgba(255,255,255,.85)!important}
     }
   </style>
 </head>
@@ -214,9 +226,10 @@
       <div class="hdr-name">Ts. Dr. Alawi Alqushaibi</div>
       <div class="hdr-title" id="hdrTitle">Lecturer in Artificial Intelligence · Program Coordinator – IT</div>
       <div class="hdr-meta">
-        <span><i class="fas fa-envelope"></i> alawi.alqushaibi@gmail.com</span>
-        <span><i class="fas fa-globe"></i> alqushaibi.github.io</span>
-        <span><i class="fas fa-graduation-cap"></i> scholar.google.com · 7B_-M3YAAAAJ</span>
+        <span><i class="fas fa-envelope"></i> <a href="mailto:alawi.alqushaibi@gmail.com" class="hdr-link">alawi.alqushaibi@gmail.com</a></span>
+        <span id="hdrPhone" style="display:none"><i class="fab fa-whatsapp"></i> <a id="phoneLink" href="#" class="hdr-link"></a></span>
+        <span><i class="fas fa-globe"></i> <a href="https://alqushaibi.github.io" target="_blank" class="hdr-link">alqushaibi.github.io</a></span>
+        <span><i class="fas fa-graduation-cap"></i> <a href="https://scholar.google.com/citations?user=7B_-M3YAAAAJ" target="_blank" class="hdr-link">Google Scholar</a></span>
         <span><i class="fas fa-university"></i> MAHSA University, Malaysia</span>
       </div>
     </div>
@@ -367,6 +380,16 @@ function renderSC(sc){
   /* Header title */
   if(sc.current_positions?.length)
     document.getElementById('hdrTitle').textContent = sc.current_positions.map(p=>p.title).join(' · ');
+
+  /* Phone / WhatsApp */
+  if(sc.phone){
+    const digits = sc.phone.replace(/\D/g,'');
+    const link = document.getElementById('phoneLink');
+    link.textContent = sc.phone;
+    link.href = `https://wa.me/${digits}`;
+    link.target = '_blank';
+    document.getElementById('hdrPhone').style.display = 'flex';
+  }
 
   /* Education */
   document.getElementById('sEdu').innerHTML = (sc.education||[]).map(e=>`

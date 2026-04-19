@@ -411,6 +411,12 @@
           <span id="tokenOk" style="margin-left:.75rem;font-size:.83rem;color:var(--ok);display:none"><i class="fas fa-check-circle"></i> Token saved</span>
         </div>
         <div class="card">
+          <h3><i class="fas fa-phone"></i> Contact Details</h3>
+          <div class="info-box"><i class="fas fa-info-circle"></i> Phone number is shown in the PDF CV with a WhatsApp link. Include country code, e.g. <code>+60123456789</code></div>
+          <div class="fg"><label>WhatsApp / Phone number</label><input type="tel" id="phoneInput" placeholder="+60123456789"></div>
+          <button class="btn btn-primary" onclick="savePhone()"><i class="fas fa-save"></i> Save Phone</button>
+        </div>
+        <div class="card">
           <h3><i class="fas fa-lock"></i> Change Password</h3>
           <div class="two-col">
             <div class="fg"><label>Current password</label><input type="password" id="curPw"></div>
@@ -726,6 +732,19 @@ function renderCvInfo() {
   if (el) el.textContent = fn || '(none)';
   const lnk = document.getElementById('cvPreviewLink');
   if (lnk) { lnk.href = fn ? encodeURIComponent(fn) : '#'; }
+  const ph = document.getElementById('phoneInput');
+  if (ph) ph.value = SC.phone || '';
+}
+
+async function savePhone() {
+  if (!getToken()) return toast('GitHub token not set — go to Settings.','er');
+  const val = document.getElementById('phoneInput').value.trim();
+  SC.phone = val;
+  try {
+    await commitSC('Admin: update phone number');
+  } catch(e) {
+    toast(`Save failed: ${e.message}`, 'er');
+  }
 }
 
 /* ─── Generic list renderer ─── */
