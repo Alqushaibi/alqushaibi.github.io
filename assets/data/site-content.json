@@ -204,62 +204,62 @@
     {
       "id": "proj-1",
       "title": "AI-Powered Gamma Radiation Classification",
-      "description": "Deep learning framework for nuclear scanning equipment Ã¢ÂÂ material classification (gas, liquid, air, solid). Collaboration with the Malaysian Nuclear Agency.",
-      "badge": "Active ÃÂ· 2025Ã¢ÂÂPresent"
+      "badge": "Active : 2025-Present",
+      "description": "Deep learning framework for nuclear scanning equipment: material classification (gas, liquid, air, solid). Collaboration with the Malaysian Nuclear Agency."
     },
     {
       "id": "proj-2",
       "title": "Deep Learning Teeth Age Prediction from Dental Radiographs",
-      "description": "AI model for biological age estimation from dental X-rays. Cross-faculty collaboration with MAHSA Medic (IT & Dentistry).",
-      "badge": "Active ÃÂ· 2025Ã¢ÂÂPresent"
+      "badge": "Active : 2025-Present",
+      "description": "AI model for biological age estimation from dental X-rays. Cross-faculty collaboration with MAHSA Medic (IT & Dentistry)."
     },
     {
       "id": "proj-3",
       "title": "FOEBEIT Academic Planner",
-      "description": "Timetable Generation and Human Resource Planning System for the Faculty of Engineering, Built Environment and IT Ã¢ÂÂ MAHSA University.",
-      "badge": "Active ÃÂ· 2025Ã¢ÂÂPresent"
+      "badge": "Active : 2025-Present",
+      "description": "Timetable Generation and Human Resource Planning System for the Faculty of Engineering, Built Environment and IT :MAHSA University."
     },
     {
       "id": "proj-4",
       "title": "PaperDirect Conference Management System",
-      "description": "Full-lifecycle platform: paper submission, blind peer review, editorial decisions, QR attendance, badges, and digital certificates. Hosting MISEBEIT 2026.",
-      "badge": "Active ÃÂ· 2025Ã¢ÂÂPresent"
+      "badge": "Active : 2025 -Present",
+      "description": "Full-lifecycle platform: paper submission, blind peer review, editorial decisions, QR attendance, badges, and digital certificates. Hosting MISEBEIT 2026. \nwww.paperdirect.online"
     },
     {
       "id": "proj-5",
       "title": "Autonomous Underwater Defect Detection",
-      "description": "CNN-based detection of structural defects (corrosion, cracks, biofilm) in offshore oil & gas platforms. Collaboration with UTP.",
-      "badge": "Active ÃÂ· 2023Ã¢ÂÂPresent"
+      "badge": "Active: 2023-Present",
+      "description": "CNN-based detection of structural defects (corrosion, cracks, biofilm) in offshore oil & gas platforms. Collaboration with UTP."
     },
     {
       "id": "proj-6",
       "title": "Head & Neck Tumor Segmentation in PET-CT",
-      "description": "Transformer-based segmentation for radiotherapy planning. Published in IEEE Access, Diagnostics, and CMES. (Project ID: RG-23137)",
-      "badge": "Completed ÃÂ· 2023Ã¢ÂÂ2025"
+      "badge": "Completed: 2023-2025",
+      "description": "Transformer-based segmentation for radiotherapy planning. Published in IEEE Access, Diagnostics, and CMES. (Project ID: RG-23137)"
     },
     {
       "id": "proj-7",
       "title": "Scalable Automated Data Preprocessing Framework",
-      "description": "For Very Big Data Stream in Oil Platform Equipment's Time to Failure Prediction Model Ã¢ÂÂ UTP.",
-      "badge": "Completed ÃÂ· 2022Ã¢ÂÂ2024"
+      "badge": "Completed: 2022-2024",
+      "description": "For Very Big Data Stream in Oil Platform Equipment's Time to Failure Prediction Model: UTP."
     },
     {
       "id": "proj-8",
       "title": "Supervised ML for Offshore Defect Mapping",
-      "description": "Fundamental study of supervised machine learning techniques for autonomous defect mapping of offshore structures Ã¢ÂÂ UTP.",
-      "badge": "Completed ÃÂ· 2022Ã¢ÂÂ2024"
+      "badge": "Completed: 2022-2024",
+      "description": "Fundamental study of supervised machine learning techniques for autonomous defect mapping of offshore structures: UTP."
     },
     {
       "id": "proj-9",
       "title": "Digital Twin for Structural Asset Monitoring",
-      "description": "Solution and decision making for onshore facilities Ã¢ÂÂ UTP.",
-      "badge": "Completed ÃÂ· 2019Ã¢ÂÂ2021"
+      "badge": "Completed: 2019-2021",
+      "description": "Solution and decision making for onshore facilities: UTP."
     },
     {
       "id": "proj-10",
       "title": "Assessment of Structural Steel Riser-Guard Load Capacities",
-      "description": "Resultant impact assessment on offshore structures loading Ã¢ÂÂ UTP.",
-      "badge": "Completed ÃÂ· 2019Ã¢ÂÂ2021"
+      "badge": "Completed: 2019-2021",
+      "description": "Resultant impact assessment on offshore structures loading: UTP."
     }
   ],
   "technical_skills": [
