@@ -333,17 +333,22 @@
 </div><!-- #pageWrap -->
 
 <script>
-const ts = '?v=' + Date.now();
-
 function esc(s){ if(!s&&s!==0) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function stripHtml(s){ return String(s||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim(); }
 function dots(n){ let h='<div class="ldots">'; for(let i=1;i<=5;i++) h+=`<span class="dot${i<=n?' on':''}"></span>`; return h+'</div>'; }
 
+async function ghFetch(path) {
+  const r = await fetch(`https://api.github.com/repos/alqushaibi/alqushaibi.github.io/contents/${path}`,
+    { headers: { Accept: 'application/vnd.github.v3+json' } });
+  const d = await r.json();
+  return JSON.parse(atob(d.content.replace(/\n/g,'')));
+}
+
 async function loadAll(){
   const [sc, pubData, supData] = await Promise.all([
-    fetch('assets/data/site-content.json'+ts).then(r=>r.json()).catch(()=>null),
-    fetch('assets/data/publications.json'+ts).then(r=>r.json()).catch(()=>null),
-    fetch('assets/data/supervision.json'+ts).then(r=>r.json()).catch(()=>null)
+    ghFetch('assets/data/site-content.json').catch(()=>null),
+    ghFetch('assets/data/publications.json').catch(()=>null),
+    ghFetch('assets/data/supervision.json').catch(()=>null)
   ]);
   if(sc)      renderSC(sc);
   if(pubData) renderPubs(pubData);

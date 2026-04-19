@@ -19,6 +19,16 @@ let expFilter       = 'all';
 const $  = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
+/* Fetch a data file directly from the GitHub API so the site always
+   shows the latest saved content without waiting for Pages CDN to clear. */
+async function fetchData(repoPath) {
+  const url = `https://api.github.com/repos/alqushaibi/alqushaibi.github.io/contents/${repoPath}`;
+  const res = await fetch(url, { headers: { Accept: 'application/vnd.github.v3+json' } });
+  if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+  const d = await res.json();
+  return JSON.parse(atob(d.content.replace(/\n/g, '')));
+}
+
 function esc(str) {
   return String(str ?? '')
     .replace(/&/g,'&amp;').replace(/</g,'&lt;')
@@ -43,8 +53,7 @@ function dots(level) {
 ════════════════════════════════════════════════════════════ */
 async function loadSiteContent() {
   try {
-    const res = await fetch('assets/data/site-content.json', { cache: 'no-store' });
-    siteContent = await res.json();
+    siteContent = await fetchData('assets/data/site-content.json');
     renderBio();
     renderExperience();
     renderResearchProjects();
@@ -307,8 +316,7 @@ function renderCvSection() {
 ════════════════════════════════════════════════════════════ */
 async function loadData() {
   try {
-    const res  = await fetch('assets/data/publications.json', { cache: 'no-store' });
-    const data = await res.json();
+    const data = await fetchData('assets/data/publications.json');
     allPubs = data.publications;
     updateMetrics(data.metrics, data.last_updated);
     renderPublications();
@@ -412,8 +420,7 @@ function updateTabBadge(count) {
 ════════════════════════════════════════════════════════════ */
 async function loadSupervisionData() {
   try {
-    const res = await fetch('assets/data/supervision.json', { cache: 'no-store' });
-    supervisionData = await res.json();
+    supervisionData = await fetchData('assets/data/supervision.json');
     renderSupervision();
     updateSupBadges();
   } catch(err) { console.error('Failed to load supervision:', err); }
@@ -519,8 +526,7 @@ function renderFyp() {
 ════════════════════════════════════════════════════════════ */
 async function loadMediaData() {
   try {
-    const res = await fetch('assets/data/media.json', { cache: 'no-store' });
-    const data = await res.json();
+    const data = await fetchData('assets/data/media.json');
     mediaData = data.items || [];
     renderMedia();
   } catch(err) { console.error('Failed to load media:', err); }
