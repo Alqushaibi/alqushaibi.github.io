@@ -137,21 +137,29 @@ def main():
     print(f" Data file  : {DATA_FILE}")
     print("=" * 60)
 
-    current_data = load_current_data()
-    author       = fetch_scholar_data()
+    try:
+        current_data = load_current_data()
+    except Exception as e:
+        print(f"[✗] Could not load {DATA_FILE}: {e}")
+        print("[i] Nothing to update. Exiting cleanly.")
+        return
+
+    author = fetch_scholar_data()
 
     if author is None:
         print("[✗] Could not fetch Scholar data. Keeping existing data unchanged.")
+        print("[i] This is normal when GitHub Actions IPs are blocked by Google.")
         return
 
-    update_metrics(author, current_data)
-    update_publication_citations(author, current_data)
-
-    # Update timestamp
-    current_data["last_updated"] = datetime.date.today().isoformat()
-
-    save_data(current_data)
-    print("\n[✓] Update complete!")
+    try:
+        update_metrics(author, current_data)
+        update_publication_citations(author, current_data)
+        current_data["last_updated"] = datetime.date.today().isoformat()
+        save_data(current_data)
+        print("\n[✓] Update complete!")
+    except Exception as e:
+        print(f"[✗] Error during update: {e}")
+        print("[i] Keeping existing data unchanged.")
 
 
 if __name__ == "__main__":
