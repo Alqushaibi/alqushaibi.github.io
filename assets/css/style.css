@@ -148,6 +148,16 @@ p:last-child { margin-bottom: 0; }
   color: #fff;
   background: rgba(255,255,255,0.12);
 }
+.nav-pdf-btn {
+  background: rgba(0,180,216,0.25);
+  color: #fff !important;
+  border: 1px solid rgba(0,180,216,0.5);
+  display: flex; align-items: center; gap: 0.35rem;
+}
+.nav-pdf-btn:hover {
+  background: rgba(0,180,216,0.45) !important;
+  border-color: #00b4d8;
+}
 
 .nav-toggle {
   display: none;
