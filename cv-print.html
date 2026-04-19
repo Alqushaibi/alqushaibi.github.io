@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>CV – Ts. Dr. Alawi Alqushaibi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root{
+      --navy:#1e3a5f; --blue:#0077b6; --accent:#00b4d8;
+      --navy-light:#e8f2fb; --sidebar-bg:#f0f4f8;
+      --text:#1a202c; --muted:#4a5568; --border:#d1dce8;
+      --gold:#c8962b; --silver:#718096; --page:210mm;
+    }
+
+    /* ── Reset ── */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',sans-serif;font-size:9.5pt;color:var(--text);background:#e2e8f0;line-height:1.5}
+
+    /* ── Download bar (hidden on print) ── */
+    #dlBar{
+      position:fixed;top:0;left:0;right:0;z-index:100;
+      background:var(--navy);color:#fff;
+      display:flex;align-items:center;justify-content:center;gap:1rem;
+      padding:.7rem 1.5rem;box-shadow:0 2px 12px rgba(0,0,0,.3);
+    }
+    #dlBar p{font-size:.88rem;opacity:.85}
+    #dlBar .btn{
+      display:inline-flex;align-items:center;gap:.45rem;
+      padding:.48rem 1.3rem;border-radius:8px;border:none;cursor:pointer;
+      font-family:'Inter',sans-serif;font-size:.87rem;font-weight:600;
+      background:#00b4d8;color:#fff;transition:background .15s;
+    }
+    #dlBar .btn:hover{background:#0096b7}
+    #dlBar .btn-outline{background:transparent;border:1.5px solid rgba(255,255,255,.4);color:#fff}
+    #dlBar .btn-outline:hover{background:rgba(255,255,255,.1)}
+
+    /* ── Page wrapper ── */
+    #pageWrap{padding:4.5rem 1.5rem 2rem}
+    .cv-page{
+      width:var(--page);
+      min-height:297mm;
+      margin:0 auto;
+      background:#fff;
+      box-shadow:0 8px 40px rgba(0,0,0,.18);
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+
+    /* ── Header ── */
+    .cv-header{
+      background:linear-gradient(135deg, var(--navy) 0%, #0d2a4a 60%, #0a3060 100%);
+      color:#fff;
+      padding:1.6rem 2rem 1.4rem;
+      display:flex;
+      align-items:flex-start;
+      gap:1.5rem;
+      position:relative;
+      overflow:hidden;
+    }
+    .cv-header::before{
+      content:'';position:absolute;right:-40px;top:-40px;
+      width:200px;height:200px;border-radius:50%;
+      background:rgba(255,255,255,.04);
+    }
+    .cv-header::after{
+      content:'';position:absolute;right:40px;bottom:-60px;
+      width:150px;height:150px;border-radius:50%;
+      background:rgba(0,180,216,.1);
+    }
+    .hdr-photo{
+      width:80px;height:80px;border-radius:50%;
+      border:3px solid rgba(255,255,255,.3);
+      object-fit:cover;flex-shrink:0;
+      background:rgba(255,255,255,.1);
+    }
+    .hdr-photo-placeholder{
+      width:80px;height:80px;border-radius:50%;
+      border:3px solid rgba(255,255,255,.3);
+      background:rgba(255,255,255,.1);
+      display:flex;align-items:center;justify-content:center;
+      font-size:2rem;color:rgba(255,255,255,.5);flex-shrink:0;
+    }
+    .hdr-info{flex:1;z-index:1}
+    .hdr-name{font-size:19pt;font-weight:800;letter-spacing:-.3px;line-height:1.1}
+    .hdr-title{font-size:10.5pt;color:#90cdf4;font-weight:500;margin-top:.25rem}
+    .hdr-meta{
+      display:flex;flex-wrap:wrap;gap:.35rem 1.1rem;
+      margin-top:.7rem;
+    }
+    .hdr-meta span{
+      font-size:7.8pt;color:rgba(255,255,255,.75);
+      display:flex;align-items:center;gap:.3rem;
+    }
+    .hdr-meta i{font-size:7.5pt;color:var(--accent)}
+    .hdr-metrics{
+      display:flex;gap:1rem;z-index:1;flex-shrink:0;
+      flex-direction:column;justify-content:center;align-items:flex-end;
+    }
+    .metric-box{text-align:center;background:rgba(255,255,255,.1);border-radius:8px;padding:.4rem .7rem;min-width:52px}
+    .metric-box .val{font-size:13pt;font-weight:800;color:#fff;line-height:1}
+    .metric-box .lbl{font-size:6.5pt;color:rgba(255,255,255,.6);margin-top:.1rem;text-transform:uppercase;letter-spacing:.05em}
+
+    /* ── Two-column body ── */
+    .cv-body{display:flex;flex:1}
+
+    /* ── Sidebar ── */
+    .cv-sidebar{
+      width:66mm;background:var(--sidebar-bg);
+      padding:1.2rem 1.1rem;
+      border-right:1px solid var(--border);
+      flex-shrink:0;
+    }
+
+    /* ── Main ── */
+    .cv-main{flex:1;padding:1.2rem 1.4rem}
+
+    /* ── Section heading ── */
+    .sec-title{
+      font-size:7.5pt;font-weight:700;text-transform:uppercase;
+      letter-spacing:.1em;color:var(--blue);
+      border-bottom:1.5px solid var(--accent);
+      padding-bottom:.2rem;margin-bottom:.65rem;
+      display:flex;align-items:center;gap:.4rem;
+    }
+    .sec-title i{font-size:7.5pt}
+
+    .section{margin-bottom:1.1rem}
+
+    /* ── Education ── */
+    .edu-item{margin-bottom:.7rem}
+    .edu-degree{font-size:8.5pt;font-weight:700;color:var(--navy);line-height:1.3}
+    .edu-inst{font-size:8pt;color:var(--muted)}
+    .edu-period{font-size:7.5pt;color:var(--blue);font-weight:500}
+    .edu-thesis{font-size:7pt;color:var(--muted);font-style:italic;margin-top:.1rem;line-height:1.4}
+
+    /* ── Skills ── */
+    .skill-item{margin-bottom:.4rem}
+    .skill-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.2rem}
+    .skill-name{font-size:8pt;font-weight:600;color:var(--text)}
+    .skill-lbl{font-size:7pt;color:var(--muted)}
+    .skill-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+    .skill-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--blue),var(--accent))}
+
+    /* ── Language ── */
+    .lang-item{display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem}
+    .lang-name{font-size:8pt;font-weight:600}
+    .lang-dots{display:flex;gap:2px}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--border)}
+    .dot.filled{background:var(--blue)}
+
+    /* ── Memberships / Journals (list) ── */
+    .mini-list{list-style:none;padding:0}
+    .mini-list li{
+      font-size:7.8pt;color:var(--muted);
+      padding:.18rem 0 .18rem .85rem;
+      position:relative;border-bottom:1px dotted #d1dce8;
+    }
+    .mini-list li::before{content:'›';position:absolute;left:0;color:var(--blue);font-weight:700}
+    .mini-list li:last-child{border-bottom:none}
+
+    /* ── Tags ── */
+    .tag-wrap{display:flex;flex-wrap:wrap;gap:.28rem}
+    .tag{
+      font-size:7pt;padding:.15rem .45rem;border-radius:50px;
+      background:#dbeafe;color:#1e40af;font-weight:600;
+    }
+
+    /* ── Awards ── */
+    .award-item{display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.5rem}
+    .award-icon{font-size:9pt;margin-top:.1rem;flex-shrink:0}
+    .award-icon.gold{color:var(--gold)}
+    .award-icon.silver{color:var(--silver)}
+    .award-icon.bronze{color:#b7791f}
+    .award-body .award-title{font-size:8pt;font-weight:700;color:var(--navy);line-height:1.3}
+    .award-body .award-sub{font-size:7.5pt;color:var(--muted)}
+
+    /* ── Experience ── */
+    .exp-item{margin-bottom:.9rem;padding-left:.8rem;border-left:2px solid var(--accent);position:relative}
+    .exp-item::before{
+      content:'';position:absolute;left:-5px;top:4px;
+      width:8px;height:8px;border-radius:50%;
+      background:var(--blue);border:1.5px solid #fff;
+    }
+    .exp-title{font-size:9pt;font-weight:700;color:var(--navy);line-height:1.3}
+    .exp-meta{font-size:8pt;color:var(--blue);font-weight:500;display:flex;align-items:center;gap:.5rem}
+    .exp-period{font-size:7.5pt;color:var(--muted)}
+    .exp-badge{
+      font-size:6.5pt;padding:.1rem .45rem;border-radius:50px;font-weight:700;
+    }
+    .exp-badge.current{background:#c6f6d5;color:#276749}
+    .exp-badge.past{background:#e2e8f0;color:#4a5568}
+    .exp-duties{list-style:none;padding:0;margin-top:.3rem}
+    .exp-duties li{
+      font-size:7.8pt;color:var(--muted);
+      padding:.1rem 0 .1rem .75rem;position:relative;
+    }
+    .exp-duties li::before{content:'•';position:absolute;left:0;color:var(--accent)}
+
+    /* ── Publications ── */
+    .pub-item{margin-bottom:.6rem;padding-left:.6rem;border-left:2px solid #e2e8f0}
+    .pub-title{font-size:8.2pt;font-weight:600;color:var(--navy);line-height:1.4}
+    .pub-venue{font-size:7.5pt;color:var(--muted)}
+    .pub-tags{display:flex;gap:.3rem;margin-top:.2rem;flex-wrap:wrap}
+    .pub-tag{font-size:6.5pt;padding:.1rem .35rem;border-radius:4px;font-weight:600}
+    .pub-tag.q1{background:#c6f6d5;color:#276749}
+    .pub-tag.q2{background:#bee3f8;color:#2c5282}
+    .pub-tag.cite{background:#fef3c7;color:#92400e}
+
+    /* ── Research Projects ── */
+    .proj-item{margin-bottom:.55rem}
+    .proj-title{font-size:8.5pt;font-weight:700;color:var(--navy)}
+    .proj-badge{font-size:7pt;color:var(--blue);font-weight:500}
+    .proj-desc{font-size:7.5pt;color:var(--muted);margin-top:.1rem}
+
+    /* ── Footer ── */
+    .cv-footer{
+      background:var(--navy);color:rgba(255,255,255,.6);
+      font-size:7pt;padding:.55rem 2rem;
+      display:flex;justify-content:space-between;align-items:center;
+    }
+
+    /* ── Print ── */
+    @media print{
+      @page{size:A4;margin:0}
+      body{background:#fff}
+      #dlBar{display:none!important}
+      #pageWrap{padding:0}
+      .cv-page{box-shadow:none;width:100%;margin:0}
+    }
+  </style>
+</head>
+<body>
+
+<!-- Download bar -->
+<div id="dlBar">
+  <p><i class="fas fa-file-pdf"></i> Ready to export — click Download or use Ctrl+P</p>
+  <button class="btn" onclick="window.print()"><i class="fas fa-download"></i> Download PDF</button>
+  <a href="index.html" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back to Site</a>
+</div>
+
+<div id="pageWrap">
+<div class="cv-page" id="cvPage">
+
+  <!-- HEADER (rendered by JS) -->
+  <header class="cv-header" id="cvHeader">
+    <div class="hdr-photo-placeholder"><i class="fas fa-user"></i></div>
+    <div class="hdr-info">
+      <div class="hdr-name">Ts. Dr. Alawi Alqushaibi</div>
+      <div class="hdr-title" id="hdrTitle">Lecturer in AI · Program Coordinator</div>
+      <div class="hdr-meta" id="hdrMeta">
+        <span><i class="fas fa-envelope"></i> alawi.alqushaibi@gmail.com</span>
+        <span><i class="fas fa-globe"></i> alqushaibi.github.io</span>
+        <span><i class="fas fa-graduation-cap"></i> Google Scholar</span>
+        <span><i class="fab fa-linkedin"></i> linkedin.com/in/alawi</span>
+      </div>
+    </div>
+    <div class="hdr-metrics" id="hdrMetrics">
+      <div class="metric-box"><div class="val" id="mCite">—</div><div class="lbl">Citations</div></div>
+      <div class="metric-box"><div class="val" id="mH">—</div><div class="lbl">h-index</div></div>
+      <div class="metric-box"><div class="val" id="mI10">—</div><div class="lbl">i10-index</div></div>
+    </div>
+  </header>
+
+  <!-- BODY -->
+  <div class="cv-body">
+
+    <!-- SIDEBAR -->
+    <aside class="cv-sidebar">
+
+      <!-- Education -->
+      <div class="section">
+        <div class="sec-title"><i class="fas fa-graduation-cap"></i> Education</div>
+        <div id="sideEdu"></div>
+      </div>
+
+      <!-- Skills -->
+      <div class="section">
+        <div class="sec-title"><i class="fas fa-tools"></i> Technical Skills</div>
+        <div id="sideSkills"></div>
+      </div>
+
+      <!-- Languages -->
+      <div class="section">
+        <div class="sec-title"><i class="fas fa-language"></i> Languages</div>
+        <div id="sideLangs"></div>
+      </div>
+
+      <!-- Awards -->
+      <div class="section">
+        <div class="sec-title"><i class="fas fa-trophy"></i> Awards</div>
+        <div id="sideAwards"></div>
+      </div>
+
+      <!-- Memberships -->
+      <div class="section">
+        <div class="sec-title"><i class="fas fa-id-card"></i> Memberships</div>
+        <ul class="mini-list" id="sideMem"></ul>
+      </div>
+
+      <!-- Reviewer -->
+      <div class="section">
+        <div class="sec-title"><i class="fas fa-search"></i> Journal Reviewer</div>
+        <ul class="mini-list" id="sideJournals"></ul>
+      </div>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="cv-main">
+
+      <!-- Profile -->
+      <div class="section">
+        <div class="sec-title"><i class="fas fa-user"></i> Profile</div>
+        <p id="mainProfile" style="font-size:8.3pt;color:var(--muted);line-height:1.6"></p>
+      </div>
+
+      <!-- Research Interests -->
+      <div class="section">
+        <div class="sec-title"><i class="fas fa-flask"></i> Research Interests</div>
+        <div class="tag-wrap" id="mainInterests"></div>
+      </div>
+
+      <!-- Experience -->
+      <div class="section">
+        <div class="sec-title"><i class="fas fa-briefcase"></i> Professional Experience</div>
+        <div id="mainExp"></div>
+      </div>
+
+      <!-- Selected Publications -->
+      <div class="section">
+        <div class="sec-title"><i class="fas fa-book-open"></i> Selected Publications</div>
+        <div id="mainPubs"></div>
+        <p id="pubsNote" style="font-size:7pt;color:var(--blue);margin-top:.4rem;font-style:italic"></p>
+      </div>
+
+      <!-- Research Projects -->
+      <div class="section">
+        <div class="sec-title"><i class="fas fa-microscope"></i> Research Projects</div>
+        <div id="mainProj"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="cv-footer">
+    <span id="footerLeft">Ts. Dr. Alawi Alqushaibi · Academic CV</span>
+    <span id="footerRight">Generated <span id="genDate"></span> · alqushaibi.github.io</span>
+  </footer>
+
+</div><!-- .cv-page -->
+</div><!-- #pageWrap -->
+
+<script>
+const ts = '?v=' + Date.now();
+
+function esc(s){
+  if(!s && s!==0) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function stripHtml(s){ return String(s||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim(); }
+
+function dots(level){
+  let h='<div class="lang-dots">';
+  for(let i=1;i<=5;i++) h+=`<span class="dot${i<=level?' filled':''}"></span>`;
+  return h+'</div>';
+}
+
+async function loadAll(){
+  const [sc, pubData] = await Promise.all([
+    fetch('assets/data/site-content.json'+ts).then(r=>r.json()).catch(()=>null),
+    fetch('assets/data/publications.json'+ts).then(r=>r.json()).catch(()=>null)
+  ]);
+  if(sc)  renderFromSC(sc);
+  if(pubData) renderPubs(pubData);
+  document.getElementById('genDate').textContent = new Date().toLocaleDateString('en-GB',{year:'numeric',month:'long',day:'numeric'});
+}
+
+function renderFromSC(sc){
+  /* ── Photo ── */
+  const hdr = document.getElementById('cvHeader');
+  const ph = hdr.querySelector('.hdr-photo-placeholder');
+  const img = new Image();
+  img.onload = () => { const el=document.createElement('img'); el.src='assets/img/profile.jpg'; el.className='hdr-photo'; el.alt='Profile'; ph.replaceWith(el); };
+  img.src='assets/img/profile.jpg';
+
+  /* ── Title from current positions ── */
+  if(sc.current_positions?.length){
+    document.getElementById('hdrTitle').textContent = sc.current_positions.map(p=>p.title).join(' · ');
+  }
+
+  /* ── Metrics (will be overridden by publications fetch) ── */
+
+  /* ── Education ── */
+  const eduEl = document.getElementById('sideEdu');
+  eduEl.innerHTML = (sc.education||[]).map(e=>`
+    <div class="edu-item">
+      <div class="edu-degree">${esc(e.degree)}</div>
+      <div class="edu-inst">${esc(e.institution)}</div>
+      <div class="edu-period">${esc(e.period)}</div>
+      ${e.thesis?`<div class="edu-thesis">${esc(e.thesis)}</div>`:''}
+    </div>`).join('');
+
+  /* ── Technical Skills ── */
+  document.getElementById('sideSkills').innerHTML = (sc.technical_skills||[]).map(s=>`
+    <div class="skill-item">
+      <div class="skill-top"><span class="skill-name">${esc(s.name)}</span><span class="skill-lbl">${esc(s.label)}</span></div>
+      <div class="skill-bar"><div class="skill-fill" style="width:${s.level*20}%"></div></div>
+    </div>`).join('');
+
+  /* ── Languages ── */
+  document.getElementById('sideLangs').innerHTML = (sc.language_skills||[]).map(l=>`
+    <div class="lang-item">
+      <span class="lang-name">${esc(l.flag)} ${esc(l.name)}</span>
+      ${dots(l.level)}
+    </div>`).join('');
+
+  /* ── Awards ── */
+  document.getElementById('sideAwards').innerHTML = (sc.awards||[]).map(a=>`
+    <div class="award-item">
+      <i class="${esc(a.icon)} award-icon ${esc(a.level)}"></i>
+      <div class="award-body">
+        <div class="award-title">${esc(a.title)}</div>
+        <div class="award-sub">${esc(a.issuer)} · ${esc(a.year)}</div>
+      </div>
+    </div>`).join('');
+
+  /* ── Memberships ── */
+  document.getElementById('sideMem').innerHTML = (sc.memberships||[]).map(m=>`
+    <li>${esc(m.title)} – <em>${esc(m.organization)}</em></li>`).join('');
+
+  /* ── Reviewer Journals ── */
+  document.getElementById('sideJournals').innerHTML = (sc.reviewer_journals||[]).map(j=>`
+    <li>${esc(j)}</li>`).join('');
+
+  /* ── Profile ── */
+  const paras = sc.bio?.paragraphs||[];
+  document.getElementById('mainProfile').innerHTML = paras.map(p=>stripHtml(p)).join(' ');
+
+  /* ── Research Interests ── */
+  document.getElementById('mainInterests').innerHTML = (sc.bio?.research_interests||[]).map(t=>`
+    <span class="tag">${esc(t)}</span>`).join('');
+
+  /* ── Experience ── */
+  document.getElementById('mainExp').innerHTML = (sc.experience||[]).map(e=>`
+    <div class="exp-item">
+      <div class="exp-title">${esc(e.title)}</div>
+      <div class="exp-meta">
+        <span>${esc(e.company)}</span>
+        <span class="exp-badge ${esc(e.badge_type)}">${esc(e.badge)}</span>
+      </div>
+      <div class="exp-period">${esc(e.period)}</div>
+      ${(e.duties||[]).length?`<ul class="exp-duties">${(e.duties||[]).slice(0,3).map(d=>`<li>${esc(d)}</li>`).join('')}</ul>`:''}
+    </div>`).join('');
+
+  /* ── Research Projects ── */
+  document.getElementById('mainProj').innerHTML = (sc.research_projects||[]).map(p=>`
+    <div class="proj-item">
+      <span class="proj-title">${esc(p.title)}</span>
+      <span class="proj-badge"> · ${esc(p.badge)}</span>
+      ${p.description?`<div class="proj-desc">${esc(p.description)}</div>`:''}
+    </div>`).join('');
+}
+
+function renderPubs(data){
+  /* Metrics */
+  const m = data.metrics||{};
+  document.getElementById('mCite').textContent = m.citations!=null ? m.citations.toLocaleString() : '—';
+  document.getElementById('mH').textContent    = m.h_index   ?? '—';
+  document.getElementById('mI10').textContent  = m.i10_index ?? '—';
+
+  /* Top 8 by citations */
+  const pubs = [...(data.publications||[])].sort((a,b)=>(b.citations||0)-(a.citations||0)).slice(0,8);
+  document.getElementById('mainPubs').innerHTML = pubs.map(p=>`
+    <div class="pub-item">
+      <div class="pub-title">${esc(p.title)}</div>
+      <div class="pub-venue"><em>${esc(p.venue)}</em> ${p.volume?`${esc(p.volume)}, `:''}${p.year||''}</div>
+      <div class="pub-tags">
+        ${p.quartile?`<span class="pub-tag ${p.quartile.toLowerCase()}">${esc(p.quartile)}</span>`:''}
+        ${p.impact_factor?`<span class="pub-tag q2">IF ${esc(p.impact_factor)}</span>`:''}
+        ${p.citations?`<span class="pub-tag cite"><i class="fas fa-quote-right" style="font-size:5.5pt"></i> ${p.citations}</span>`:''}
+      </div>
+    </div>`).join('');
+
+  const total = (data.publications||[]).length;
+  if(total>8){
+    document.getElementById('pubsNote').textContent =
+      `Showing top 8 of ${total} publications by citations. Full list: alqushaibi.github.io`;
+  }
+}
+
+loadAll();
+</script>
+</body>
+</html>
