@@ -354,7 +354,9 @@ async function ghFetch(path) {
   const r = await fetch(`https://api.github.com/repos/alqushaibi/alqushaibi.github.io/contents/${path}`,
     { headers: { Accept: 'application/vnd.github.v3+json' } });
   const d = await r.json();
-  return JSON.parse(atob(d.content.replace(/\n/g,'')));
+  const bin = atob(d.content.replace(/\n/g,''));
+  const text = new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0)));
+  return JSON.parse(text);
 }
 
 async function loadAll(){

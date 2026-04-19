@@ -26,7 +26,9 @@ async function fetchData(repoPath) {
   const res = await fetch(url, { headers: { Accept: 'application/vnd.github.v3+json' } });
   if (!res.ok) throw new Error(`GitHub API ${res.status}`);
   const d = await res.json();
-  return JSON.parse(atob(d.content.replace(/\n/g, '')));
+  const bin = atob(d.content.replace(/\n/g, ''));
+  const text = new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0)));
+  return JSON.parse(text);
 }
 
 function esc(str) {
