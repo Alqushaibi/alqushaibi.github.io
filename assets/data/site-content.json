@@ -25,7 +25,7 @@
       "id": "edu-1",
       "degree": "Ph.D. in Information Technology",
       "institution": "Universiti Teknologi PETRONAS, Malaysia",
-      "period": "Jan 2022 â May 2025",
+      "period": "Jan 2022 Ã¢ÂÂ May 2025",
       "thesis": "Optimization of Pix2pix GANs via Gradient Penalty Sine Cosine Algorithm",
       "dot_color": ""
     },
@@ -33,7 +33,7 @@
       "id": "edu-2",
       "degree": "M.S. in IT, by Research",
       "institution": "Universiti Teknologi PETRONAS, Malaysia",
-      "period": "Jul 2019 â Aug 2021",
+      "period": "Jul 2019 Ã¢ÂÂ Aug 2021",
       "thesis": "Enhanced Weight Optimized RNN Based on Sine Cosine Algorithm",
       "dot_color": ""
     },
@@ -41,15 +41,15 @@
       "id": "edu-3",
       "degree": "B.S. in Computer Science",
       "institution": "Universiti Teknologi Malaysia",
-      "period": "Jul 2008 â Mar 2012",
-      "thesis": "Computer Network and Security Â· CGPA 3.10/4 (2nd Upper)",
+      "period": "Jul 2008 Ã¢ÂÂ Mar 2012",
+      "thesis": "Computer Network and Security ÃÂ· CGPA 3.10/4 (2nd Upper)",
       "dot_color": ""
     },
     {
       "id": "edu-4",
       "degree": "AWS re/Start Program",
       "institution": "Amazon Web Services (AWS) Training Program",
-      "period": "Dec 2025 â Mar 2026",
+      "period": "Dec 2025 Ã¢ÂÂ Mar 2026",
       "thesis": "Cloud Architecture, DevOps, Security, AI/ML on AWS",
       "dot_color": "#f6ad55"
     }
@@ -57,23 +57,23 @@
   "current_positions": [
     {
       "id": "pos-1",
-      "title": "Program Coordinator â Information Technology",
+      "title": "Program Coordinator Ã¢ÂÂ Information Technology",
       "institution": "MAHSA University",
-      "period": "Jan 2026 â Present"
+      "period": "Jan 2026 Ã¢ÂÂ Present"
     },
     {
       "id": "pos-2",
       "title": "Lecturer in Artificial Intelligence",
       "institution": "MAHSA University",
-      "period": "Jul 2025 â Present"
+      "period": "Jul 2025 Ã¢ÂÂ Present"
     }
   ],
   "experience": [
     {
       "id": "exp-1",
-      "title": "Program Coordinator â Information Technology",
+      "title": "Program Coordinator Ã¢ÂÂ Information Technology",
       "company": "MAHSA University",
-      "period": "Jan 2026 â Present",
+      "period": "Jan 2026 Ã¢ÂÂ Present",
       "type": "academic",
       "badge": "Current",
       "badge_type": "current",
@@ -94,7 +94,7 @@
       "id": "exp-2",
       "title": "Lecturer in Artificial Intelligence",
       "company": "MAHSA University",
-      "period": "Jul 2025 â Present",
+      "period": "Jul 2025 Ã¢ÂÂ Present",
       "type": "academic",
       "badge": "Current",
       "badge_type": "current",
@@ -117,7 +117,7 @@
       "id": "exp-3",
       "title": "Lecturer of Computer Science",
       "company": "Yemeni Military College",
-      "period": "Jul 2012 â May 2018",
+      "period": "Jul 2012 Ã¢ÂÂ May 2018",
       "type": "academic",
       "badge": "6 Years",
       "badge_type": "past",
@@ -135,7 +135,7 @@
       "id": "exp-4",
       "title": "Information Technology Support",
       "company": "ML Company for Training and Logistic Services",
-      "period": "Jun 2018 â Jun 2019",
+      "period": "Jun 2018 Ã¢ÂÂ Jun 2019",
       "type": "industry",
       "badge": "1 Year",
       "badge_type": "past",
@@ -154,7 +154,7 @@
       "id": "exp-5",
       "title": "System Administrator Assistant (Part Time)",
       "company": "Sabafon Company, Yemen",
-      "period": "Jun 2013 â May 2018",
+      "period": "Jun 2013 Ã¢ÂÂ May 2018",
       "type": "industry",
       "badge": "5 Years",
       "badge_type": "past",
@@ -165,14 +165,14 @@
         "Manage hardware installation and maintenance of Intel servers (Disk, CPU/Memory, PCI, HBA, SAS)",
         "Manage and configure Windows DNS/DHCP service",
         "Physical installation of server racks, KVM, switches and rack mount keyboards",
-        "LAN, WAN, WLAN â Installation, Configuration, and Troubleshooting"
+        "LAN, WAN, WLAN Ã¢ÂÂ Installation, Configuration, and Troubleshooting"
       ]
     },
     {
       "id": "exp-6",
       "title": "Customer Care Consultant (Part Time)",
       "company": "Sabafon Company, Yemen",
-      "period": "Jul 2012 â Jun 2013",
+      "period": "Jul 2012 Ã¢ÂÂ Jun 2013",
       "type": "industry",
       "badge": "1 Year",
       "badge_type": "past",
@@ -188,7 +188,7 @@
       "id": "exp-7",
       "title": "Practical Training (Bachelor Degree)",
       "company": "Ecosensa Technologies Sdn. Bhd, Malaysia",
-      "period": "Jul 2011 â Dec 2011",
+      "period": "Jul 2011 Ã¢ÂÂ Dec 2011",
       "type": "industry",
       "badge": "6 Months",
       "badge_type": "past",
@@ -204,62 +204,62 @@
     {
       "id": "proj-1",
       "title": "AI-Powered Gamma Radiation Classification",
-      "description": "Deep learning framework for nuclear scanning equipment â material classification (gas, liquid, air, solid). Collaboration with the Malaysian Nuclear Agency.",
-      "badge": "Active Â· 2025âPresent"
+      "description": "Deep learning framework for nuclear scanning equipment Ã¢ÂÂ material classification (gas, liquid, air, solid). Collaboration with the Malaysian Nuclear Agency.",
+      "badge": "Active ÃÂ· 2025Ã¢ÂÂPresent"
     },
     {
       "id": "proj-2",
       "title": "Deep Learning Teeth Age Prediction from Dental Radiographs",
       "description": "AI model for biological age estimation from dental X-rays. Cross-faculty collaboration with MAHSA Medic (IT & Dentistry).",
-      "badge": "Active Â· 2025âPresent"
+      "badge": "Active ÃÂ· 2025Ã¢ÂÂPresent"
     },
     {
       "id": "proj-3",
       "title": "FOEBEIT Academic Planner",
-      "description": "Timetable Generation and Human Resource Planning System for the Faculty of Engineering, Built Environment and IT â MAHSA University.",
-      "badge": "Active Â· 2025âPresent"
+      "description": "Timetable Generation and Human Resource Planning System for the Faculty of Engineering, Built Environment and IT Ã¢ÂÂ MAHSA University.",
+      "badge": "Active ÃÂ· 2025Ã¢ÂÂPresent"
     },
     {
       "id": "proj-4",
       "title": "PaperDirect Conference Management System",
       "description": "Full-lifecycle platform: paper submission, blind peer review, editorial decisions, QR attendance, badges, and digital certificates. Hosting MISEBEIT 2026.",
-      "badge": "Active Â· 2025âPresent"
+      "badge": "Active ÃÂ· 2025Ã¢ÂÂPresent"
     },
     {
       "id": "proj-5",
       "title": "Autonomous Underwater Defect Detection",
       "description": "CNN-based detection of structural defects (corrosion, cracks, biofilm) in offshore oil & gas platforms. Collaboration with UTP.",
-      "badge": "Active Â· 2023âPresent"
+      "badge": "Active ÃÂ· 2023Ã¢ÂÂPresent"
     },
     {
       "id": "proj-6",
       "title": "Head & Neck Tumor Segmentation in PET-CT",
       "description": "Transformer-based segmentation for radiotherapy planning. Published in IEEE Access, Diagnostics, and CMES. (Project ID: RG-23137)",
-      "badge": "Completed Â· 2023â2025"
+      "badge": "Completed ÃÂ· 2023Ã¢ÂÂ2025"
     },
     {
       "id": "proj-7",
       "title": "Scalable Automated Data Preprocessing Framework",
-      "description": "For Very Big Data Stream in Oil Platform Equipment's Time to Failure Prediction Model â UTP.",
-      "badge": "Completed Â· 2022â2024"
+      "description": "For Very Big Data Stream in Oil Platform Equipment's Time to Failure Prediction Model Ã¢ÂÂ UTP.",
+      "badge": "Completed ÃÂ· 2022Ã¢ÂÂ2024"
     },
     {
       "id": "proj-8",
       "title": "Supervised ML for Offshore Defect Mapping",
-      "description": "Fundamental study of supervised machine learning techniques for autonomous defect mapping of offshore structures â UTP.",
-      "badge": "Completed Â· 2022â2024"
+      "description": "Fundamental study of supervised machine learning techniques for autonomous defect mapping of offshore structures Ã¢ÂÂ UTP.",
+      "badge": "Completed ÃÂ· 2022Ã¢ÂÂ2024"
     },
     {
       "id": "proj-9",
       "title": "Digital Twin for Structural Asset Monitoring",
-      "description": "Solution and decision making for onshore facilities â UTP.",
-      "badge": "Completed Â· 2019â2021"
+      "description": "Solution and decision making for onshore facilities Ã¢ÂÂ UTP.",
+      "badge": "Completed ÃÂ· 2019Ã¢ÂÂ2021"
     },
     {
       "id": "proj-10",
       "title": "Assessment of Structural Steel Riser-Guard Load Capacities",
-      "description": "Resultant impact assessment on offshore structures loading â UTP.",
-      "badge": "Completed Â· 2019â2021"
+      "description": "Resultant impact assessment on offshore structures loading Ã¢ÂÂ UTP.",
+      "badge": "Completed ÃÂ· 2019Ã¢ÂÂ2021"
     }
   ],
   "technical_skills": [
@@ -303,21 +303,21 @@
     {
       "id": "lang-1",
       "name": "Arabic",
-      "flag": "ð¾ðª",
+      "flag": "Ã°ÂÂÂ¾Ã°ÂÂÂª",
       "level": 5,
       "label": "Native"
     },
     {
       "id": "lang-2",
       "name": "English",
-      "flag": "ð¬ð§",
+      "flag": "Ã°ÂÂÂ¬Ã°ÂÂÂ§",
       "level": 5,
       "label": "Fluent"
     },
     {
       "id": "lang-3",
       "name": "Malay",
-      "flag": "ð²ð¾",
+      "flag": "Ã°ÂÂÂ²Ã°ÂÂÂ¾",
       "level": 1,
       "label": "Basic"
     }
@@ -348,14 +348,14 @@
     {
       "id": "ws-3",
       "title": "Introduction to Artificial Intelligence",
-      "institution": "Yemeni Student Union â Malaysia",
+      "institution": "Yemeni Student Union Ã¢ÂÂ Malaysia",
       "year": "2020",
       "icon": "fas fa-brain"
     },
     {
       "id": "ws-4",
       "title": "How To Be A Data Scientist",
-      "institution": "Yemeni Student Union â Malaysia",
+      "institution": "Yemeni Student Union Ã¢ÂÂ Malaysia",
       "year": "2020",
       "icon": "fas fa-chart-bar"
     },
@@ -391,7 +391,7 @@
   "awards": [
     {
       "id": "aw-1",
-      "title": "Graduate on Time (GOT) Award â PhD",
+      "title": "Graduate on Time (GOT) Award Ã¢ÂÂ PhD",
       "issuer": "Universiti Teknologi PETRONAS (UTP)",
       "year": "2025",
       "description": "For completion of PhD in the stipulated time of 42 months",
@@ -400,7 +400,7 @@
     },
     {
       "id": "aw-2",
-      "title": "Graduate on Time (GOT) Award â M.S.",
+      "title": "Graduate on Time (GOT) Award Ã¢ÂÂ M.S.",
       "issuer": "Universiti Teknologi PETRONAS (UTP)",
       "year": "2021",
       "description": "For completion of M.S. in the stipulated time of 24 months",
@@ -409,7 +409,7 @@
     },
     {
       "id": "aw-3",
-      "title": "Best Paper Award â International Conference",
+      "title": "Best Paper Award Ã¢ÂÂ International Conference",
       "issuer": "Pimpri Chinchwad College of Engineering, Pune, India",
       "year": "2024",
       "description": "Recognition for outstanding research paper",
@@ -473,9 +473,9 @@
   "leadership": [
     {
       "id": "lead-1",
-      "title": "President â Association of International Students (Yemen Chapter)",
+      "title": "President Ã¢ÂÂ Association of International Students (Yemen Chapter)",
       "organization": "Universiti Teknologi PETRONAS, Malaysia",
-      "period": "2023 â 2025",
+      "period": "2023 Ã¢ÂÂ 2025",
       "icon": "fas fa-users",
       "icon_gradient": "linear-gradient(135deg,#667eea,#764ba2)",
       "duties": [
@@ -489,9 +489,9 @@
     },
     {
       "id": "lead-2",
-      "title": "Vice President â Yemeni Student Society",
+      "title": "Vice President Ã¢ÂÂ Yemeni Student Society",
       "organization": "Universiti Teknologi Malaysia (UTM)",
-      "period": "Jan 2009 â Mar 2010",
+      "period": "Jan 2009 Ã¢ÂÂ Mar 2010",
       "icon": "fas fa-user-tie",
       "icon_gradient": "linear-gradient(135deg,#f093fb,#f5576c)",
       "duties": [
@@ -503,9 +503,9 @@
     },
     {
       "id": "lead-3",
-      "title": "Member â AIESEC",
+      "title": "Member Ã¢ÂÂ AIESEC",
       "organization": "AIESEC in Universiti Teknologi Malaysia",
-      "period": "May 2010 â May 2012",
+      "period": "May 2010 Ã¢ÂÂ May 2012",
       "icon": "fas fa-hands-helping",
       "icon_gradient": "linear-gradient(135deg,#4facfe,#00f2fe)",
       "duties": [
@@ -519,19 +519,19 @@
   "teaching": [
     {
       "id": "teach-1",
-      "title": "Artificial Intelligence",
+      "title": "Artificial Intelligence - Micro Credential",
       "description": "ML fundamentals, search algorithms, neural networks, intelligent systems, and AI applications",
       "category": "ai-data",
-      "level": "Undergraduate",
-      "status": "current"
+      "status": "current",
+      "level": "Undergraduate"
     },
     {
       "id": "teach-2",
-      "title": "Data Science",
+      "title": "Data Science  - Micro Credential",
       "description": "Data analysis, visualization, statistical modeling, machine learning pipelines, and Python tools",
       "category": "ai-data",
-      "level": "Undergraduate",
-      "status": "current"
+      "status": "current",
+      "level": "Undergraduate"
     },
     {
       "id": "teach-3",
@@ -546,8 +546,8 @@
       "title": "Object-Oriented Programming",
       "description": "OOP concepts, classes, inheritance, polymorphism, encapsulation, and design patterns",
       "category": "programming",
-      "level": "Undergraduate",
-      "status": "current"
+      "status": "past",
+      "level": "Undergraduate"
     },
     {
       "id": "teach-5",
@@ -594,16 +594,16 @@
       "title": "Operating Systems",
       "description": "Process management, memory management, file systems, scheduling, concurrency, and Linux administration",
       "category": "networks-systems",
-      "level": "Undergraduate",
-      "status": "current"
+      "status": "past",
+      "level": "Undergraduate"
     },
     {
       "id": "teach-11",
       "title": "Computer Architecture & Organization",
       "description": "CPU design, memory hierarchy, instruction sets, pipelining, I/O systems, and computer performance",
       "category": "networks-systems",
-      "level": "Undergraduate",
-      "status": "current"
+      "status": "past",
+      "level": "Undergraduate"
     }
   ],
   "cv_filename": "Alaw Alqushaibi CV 18-04-2026.pdf"
