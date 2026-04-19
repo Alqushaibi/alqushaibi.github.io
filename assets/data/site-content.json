@@ -25,7 +25,7 @@
       "id": "edu-1",
       "degree": "Ph.D. in Information Technology",
       "institution": "Universiti Teknologi PETRONAS, Malaysia",
-      "period": "Jan 2022 Ã¢ÂÂ May 2025",
+      "period": "Jan 2022 ÃÂ¢ÃÂÃÂ May 2025",
       "thesis": "Optimization of Pix2pix GANs via Gradient Penalty Sine Cosine Algorithm",
       "dot_color": ""
     },
@@ -33,7 +33,7 @@
       "id": "edu-2",
       "degree": "M.S. in IT, by Research",
       "institution": "Universiti Teknologi PETRONAS, Malaysia",
-      "period": "Jul 2019 Ã¢ÂÂ Aug 2021",
+      "period": "Jul 2019 ÃÂ¢ÃÂÃÂ Aug 2021",
       "thesis": "Enhanced Weight Optimized RNN Based on Sine Cosine Algorithm",
       "dot_color": ""
     },
@@ -41,15 +41,15 @@
       "id": "edu-3",
       "degree": "B.S. in Computer Science",
       "institution": "Universiti Teknologi Malaysia",
-      "period": "Jul 2008 Ã¢ÂÂ Mar 2012",
-      "thesis": "Computer Network and Security ÃÂ· CGPA 3.10/4 (2nd Upper)",
+      "period": "Jul 2008 ÃÂ¢ÃÂÃÂ Mar 2012",
+      "thesis": "Computer Network and Security ÃÂÃÂ· CGPA 3.10/4 (2nd Upper)",
       "dot_color": ""
     },
     {
       "id": "edu-4",
       "degree": "AWS re/Start Program",
       "institution": "Amazon Web Services (AWS) Training Program",
-      "period": "Dec 2025 Ã¢ÂÂ Mar 2026",
+      "period": "Dec 2025 ÃÂ¢ÃÂÃÂ Mar 2026",
       "thesis": "Cloud Architecture, DevOps, Security, AI/ML on AWS",
       "dot_color": "#f6ad55"
     }
@@ -57,15 +57,15 @@
   "current_positions": [
     {
       "id": "pos-1",
-      "title": "Program Coordinator Ã¢ÂÂ Information Technology",
+      "title": "Program Coordinator ÃÂ¢ÃÂÃÂ Information Technology",
       "institution": "MAHSA University",
-      "period": "Jan 2026 Ã¢ÂÂ Present"
+      "period": "Jan 2026 ÃÂ¢ÃÂÃÂ Present"
     },
     {
       "id": "pos-2",
       "title": "Lecturer in Artificial Intelligence",
       "institution": "MAHSA University",
-      "period": "Jul 2025 Ã¢ÂÂ Present"
+      "period": "Jul 2025 ÃÂ¢ÃÂÃÂ Present"
     }
   ],
   "experience": [
@@ -165,7 +165,7 @@
         "Manage hardware installation and maintenance of Intel servers (Disk, CPU/Memory, PCI, HBA, SAS)",
         "Manage and configure Windows DNS/DHCP service",
         "Physical installation of server racks, KVM, switches and rack mount keyboards",
-        "LAN, WAN, WLAN Ã¢ÂÂ Installation, Configuration, and Troubleshooting"
+        "LAN, WAN, WLAN ÃÂ¢ÃÂÃÂ Installation, Configuration, and Troubleshooting"
       ]
     },
     {
@@ -391,30 +391,30 @@
   "awards": [
     {
       "id": "aw-1",
-      "title": "Graduate on Time (GOT) Award Ã¢ÂÂ PhD",
+      "title": "Graduate on Time (GOT) Award- PhD",
       "issuer": "Universiti Teknologi PETRONAS (UTP)",
       "year": "2025",
-      "description": "For completion of PhD in the stipulated time of 42 months",
       "level": "gold",
-      "icon": "fas fa-medal"
+      "icon": "fas fa-medal",
+      "description": "For completion of PhD in the stipulated time of 42 months"
     },
     {
       "id": "aw-2",
-      "title": "Graduate on Time (GOT) Award Ã¢ÂÂ M.S.",
+      "title": "Graduate on Time (GOT) Award - M.S.",
       "issuer": "Universiti Teknologi PETRONAS (UTP)",
       "year": "2021",
-      "description": "For completion of M.S. in the stipulated time of 24 months",
       "level": "gold",
-      "icon": "fas fa-medal"
+      "icon": "fas fa-medal",
+      "description": "For completion of M.S. in the stipulated time of 24 months"
     },
     {
       "id": "aw-3",
-      "title": "Best Paper Award Ã¢ÂÂ International Conference",
+      "title": "Best Paper Award - International Conference",
       "issuer": "Pimpri Chinchwad College of Engineering, Pune, India",
       "year": "2024",
-      "description": "Recognition for outstanding research paper",
       "level": "silver",
-      "icon": "fas fa-trophy"
+      "icon": "fas fa-trophy",
+      "description": "Recognition for outstanding research paper"
     },
     {
       "id": "aw-4",
