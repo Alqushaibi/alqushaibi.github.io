@@ -185,6 +185,15 @@
     /* ── Sub-section heading ── */
     .sub-h{font-size:8pt;font-weight:700;color:var(--navy);margin:.55rem 0 .3rem;padding:.2rem .5rem;background:var(--sidebar-bg);border-radius:4px}
 
+    /* ── Referees ── */
+    .ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+    .ref-card{border:1px solid var(--border);border-radius:6px;padding:.5rem .65rem;page-break-inside:avoid}
+    .ref-name{font-size:8.3pt;font-weight:700;color:var(--navy);line-height:1.3}
+    .ref-pos{font-size:7.5pt;color:#667eea;font-weight:500;margin-top:.08rem}
+    .ref-meta{font-size:7pt;color:var(--muted);margin-top:.15rem;line-height:1.6}
+    .ref-meta a{color:var(--muted);text-decoration:none}
+    .ref-rel{font-size:7pt;color:var(--muted);font-style:italic;margin-top:.1rem}
+
     /* ── Workshops ── */
     .ws{margin-bottom:.42rem;page-break-inside:avoid}
     .ws-t{font-size:7.8pt;font-weight:600;color:var(--navy);line-height:1.35}
@@ -234,6 +243,7 @@
       </div>
     </div>
     <div class="hdr-metrics">
+      <div class="m-box" id="mExpBox" style="display:none"><div class="val" id="mExp">—</div><div class="lbl">Experience</div></div>
       <div class="m-box"><div class="val" id="mCite">—</div><div class="lbl">Citations</div></div>
       <div class="m-box"><div class="val" id="mH">—</div><div class="lbl">h-index</div></div>
       <div class="m-box"><div class="val" id="mI10">—</div><div class="lbl">i10-index</div></div>
@@ -333,6 +343,11 @@
         <div id="mLead"></div>
       </div>
 
+      <div class="section" id="refSection" style="display:none">
+        <div class="st"><i class="fas fa-address-card"></i> Referees</div>
+        <div id="mReferees"></div>
+      </div>
+
     </main>
   </div>
 
@@ -382,6 +397,12 @@ function renderSC(sc){
   /* Header title */
   if(sc.current_positions?.length)
     document.getElementById('hdrTitle').textContent = sc.current_positions.map(p=>p.title).join(' · ');
+
+  /* Experience years */
+  if(sc.experience_years){
+    document.getElementById('mExp').textContent = sc.experience_years;
+    document.getElementById('mExpBox').style.display = '';
+  }
 
   /* Phone / WhatsApp */
   if(sc.phone){
@@ -485,6 +506,23 @@ function renderSC(sc){
       <div class="lead-per">${esc(l.period)}</div>
       ${(l.duties||[]).length?`<ul class="lead-ul">${(l.duties||[]).map(d=>`<li>${esc(d)}</li>`).join('')}</ul>`:''}
     </div>`).join('');
+
+  /* Referees */
+  const refs = sc.referees||[];
+  if(refs.length && !sc.referees_hidden){
+    document.getElementById('refSection').style.display = '';
+    document.getElementById('mReferees').innerHTML = `<div class="ref-grid">${refs.map(r=>`
+      <div class="ref-card">
+        <div class="ref-name">${esc(r.name)}</div>
+        ${r.position?`<div class="ref-pos">${esc(r.position)}</div>`:''}
+        <div class="ref-meta">
+          ${r.email?`<div><i class="fas fa-envelope" style="width:9pt"></i> <a href="mailto:${esc(r.email)}">${esc(r.email)}</a></div>`:''}
+          ${r.phone?`<div><i class="fas fa-phone" style="width:9pt"></i> ${esc(r.phone)}</div>`:''}
+          ${r.location?`<div><i class="fas fa-map-marker-alt" style="width:9pt"></i> ${esc(r.location)}</div>`:''}
+        </div>
+        ${r.relationship?`<div class="ref-rel">Relationship: ${esc(r.relationship)}</div>`:''}
+      </div>`).join('')}</div>`;
+  }
 }
 
 function renderPubs(data){

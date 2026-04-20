@@ -177,6 +177,7 @@
       <div class="sb-group">Other Tabs</div>
       <div class="sb-item" data-sec="teaching"><i class="fas fa-chalkboard-teacher"></i> Teaching</div>
       <div class="sb-item" data-sec="supervision"><i class="fas fa-user-graduate"></i> Supervision</div>
+      <div class="sb-item" data-sec="referees"><i class="fas fa-address-card"></i> Referees</div>
       <div class="sb-item" data-sec="media"><i class="fas fa-images"></i> Media Gallery</div>
       <div class="sb-item" data-sec="cv"><i class="fas fa-file-alt"></i> CV / Resume</div>
       <div class="sb-group">System</div>
@@ -308,6 +309,23 @@
           <button class="btn btn-ok" id="saveSupBtn" onclick="saveSupervision()"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
       </div>
 
+      <!-- ════ REFEREES ════ -->
+      <div class="sec" id="sec-referees">
+        <div class="sec-hdr"><h2><i class="fas fa-address-card"></i> Referees</h2><p>Manage referee entries shown at the bottom of the PDF CV.</p></div>
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
+            <h3 style="margin:0"><i class="fas fa-list"></i> Referee List</h3>
+            <label style="display:flex;align-items:center;gap:.4rem;font-size:.84rem;color:var(--txt2);cursor:pointer;margin:0">
+              <input type="checkbox" id="refHideChk"> Hide referees section in PDF CV
+            </label>
+          </div>
+          <div id="refList"></div>
+          <button class="btn btn-outline btn-sm" style="margin-top:.75rem" onclick="openRefModal()"><i class="fas fa-plus"></i> Add Referee</button>
+        </div>
+        <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>site-content.json</code></span>
+          <button class="btn btn-ok" onclick="saveSection('referees')"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
+      </div>
+
       <!-- ════ MEDIA ════ -->
       <div class="sec" id="sec-media">
         <div class="sec-hdr"><h2><i class="fas fa-images"></i> Media Gallery</h2></div>
@@ -413,8 +431,11 @@
         <div class="card">
           <h3><i class="fas fa-phone"></i> Contact Details</h3>
           <div class="info-box"><i class="fas fa-info-circle"></i> Phone number is shown in the PDF CV with a WhatsApp link. Include country code, e.g. <code>+60123456789</code></div>
-          <div class="fg"><label>WhatsApp / Phone number</label><input type="tel" id="phoneInput" placeholder="+60123456789"></div>
-          <button class="btn btn-primary" onclick="savePhone()"><i class="fas fa-save"></i> Save Phone</button>
+          <div class="two-col">
+            <div class="fg"><label>WhatsApp / Phone number</label><input type="tel" id="phoneInput" placeholder="+60123456789"></div>
+            <div class="fg"><label>Years of Experience (shown in CV header, e.g. <code>8+</code>)</label><input type="text" id="expYearsInput" placeholder="8+"></div>
+          </div>
+          <button class="btn btn-primary" onclick="saveContactDetails()"><i class="fas fa-save"></i> Save Contact Details</button>
         </div>
         <div class="card">
           <h3><i class="fas fa-lock"></i> Change Password</h3>
@@ -677,7 +698,11 @@ async function loadSC() {
   } catch(e) {
     try { const r = await fetch('assets/data/site-content.json'); SC = await r.json(); } catch(_) {}
   }
-  if (SC) renderSC();
+  if (SC) {
+    if (!SC.referees) SC.referees = [];
+    if (SC.referees_hidden === undefined) SC.referees_hidden = false;
+    renderSC();
+  }
 }
 
 function renderSC() {
@@ -696,6 +721,9 @@ function renderSC() {
   renderSimpleList('memList',      SC.memberships,       itemMemHtml);
   renderSimpleList('leadList',     SC.leadership,        itemLeadHtml);
   renderSimpleList('teachList',    SC.teaching,          itemTeachHtml);
+  renderSimpleList('refList',      SC.referees||[],      itemRefHtml);
+  const rhc = document.getElementById('refHideChk');
+  if (rhc) rhc.checked = !!SC.referees_hidden;
   renderSkillLists();
   renderCvInfo();
 }
@@ -740,18 +768,22 @@ function renderCvInfo() {
   if (lnk) { lnk.href = fn ? encodeURIComponent(fn) : '#'; }
   const ph = document.getElementById('phoneInput');
   if (ph) ph.value = SC.phone || '';
+  const ey = document.getElementById('expYearsInput');
+  if (ey) ey.value = SC.experience_years || '';
 }
 
-async function savePhone() {
+async function saveContactDetails() {
   if (!getToken()) return toast('GitHub token not set — go to Settings.','er');
-  const val = document.getElementById('phoneInput').value.trim();
-  SC.phone = val;
+  SC.phone = (document.getElementById('phoneInput').value || '').trim();
+  SC.experience_years = (document.getElementById('expYearsInput').value || '').trim();
   try {
-    await commitSC('Admin: update phone number');
+    await commitSC('Admin: update contact details');
   } catch(e) {
     toast(`Save failed: ${e.message}`, 'er');
   }
 }
+
+async function savePhone() { return saveContactDetails(); }
 
 /* ─── Generic list renderer ─── */
 function renderSimpleList(id, arr, htmlFn) {
@@ -777,6 +809,7 @@ const itemAwardHtml = a => `<strong>${esc(a.title)}</strong><br><span>${esc(a.is
 const itemMemHtml   = m => `<strong>${esc(m.title)}</strong><br><span>${esc(m.organization)}</span>`;
 const itemLeadHtml  = l => `<strong>${esc(l.title)}</strong><br><span>${esc(l.organization)} · ${esc(l.period)}</span>`;
 const itemTeachHtml = t => `<strong>${esc(t.title)}</strong> <span class="badge ${t.status==='current'?'current':'completed'}">${esc(t.status)}</span><br><span>${esc(t.category)} · ${esc(t.level)}</span>`;
+const itemRefHtml   = r => `<strong>${esc(r.name)}</strong>${r.position?` <span style="color:var(--s);font-size:.8rem">${esc(r.position)}</span>`:''}<br><span>${esc(r.email)}${r.location?` · ${esc(r.location).substring(0,50)}...`:''}</span>`;
 
 /* ─── Save sections ─── */
 async function saveSection(field) {
@@ -788,6 +821,10 @@ async function saveSection(field) {
   if (field === 'skills') {
     SC.reviewer_journals = document.getElementById('reviewerJournals').value
       .split('\n').map(s=>s.trim()).filter(Boolean);
+  }
+  if (field === 'referees') {
+    SC.referees_hidden = document.getElementById('refHideChk').checked;
+    if (!SC.referees) SC.referees = [];
   }
   // Find the clicked save button and show spinner
   const btn = event?.target?.closest('button');
@@ -822,7 +859,8 @@ const LIST_MAP = {
   eduList:'education', posList:'current_positions',
   expList:'experience', projList:'research_projects', wsList:'workshops',
   awardList:'awards', memList:'memberships', leadList:'leadership', teachList:'teaching',
-  techSkillList:'technical_skills', langSkillList:'language_skills'
+  techSkillList:'technical_skills', langSkillList:'language_skills',
+  refList:'referees'
 };
 
 function editItem(listId, idx) {
@@ -848,7 +886,8 @@ function openModalFor(type, item) {
     experience:'Experience Entry', research_projects:'Research Project',
     workshops:'Workshop', awards:'Award', memberships:'Membership',
     leadership:'Leadership Entry', teaching:'Teaching Subject',
-    technical_skills:'Technical Skill', language_skills:'Language'
+    technical_skills:'Technical Skill', language_skills:'Language',
+    referees:'Referee'
   }[type] || 'Edit Item';
   document.getElementById('itemModalTitle').textContent = (editingIdx === -1 ? 'Add ' : 'Edit ') + title;
   document.getElementById('itemModalBody').innerHTML = buildModalForm(type, item || {});
@@ -933,6 +972,13 @@ function buildModalForm(type, d) {
       <div class="two-col">${f('Language *','name', d.name)}${f('Flag emoji','flag', d.flag||'🏳️')}</div>
       <div class="two-col">${f('Level (1-5)','level', d.level||3, 'type="number" min="1" max="5"')}${f('Label','label', d.label||'Proficient')}</div>`;
 
+    case 'referees': return `
+      ${f('Full Name *','name', d.name, 'placeholder="e.g. Prof. Dr. John Smith"')}
+      ${f('Position / Title','position', d.position||'', 'placeholder="e.g. Associate Professor"')}
+      <div class="two-col">${f('Email','email', d.email||'', 'type="email" placeholder="email@university.edu"')}${f('Phone','phone', d.phone||'', 'placeholder="+601xxxxxxxx"')}</div>
+      ${f('Institution / Location','location', d.location||'', 'placeholder="University, City, Country"')}
+      ${f('Relationship','relationship', d.relationship||'', 'placeholder="e.g. PhD Supervisor"')}`;
+
     default: return '<p>Unknown type.</p>';
   }
 }
@@ -996,6 +1042,11 @@ function saveModalItem() {
       item = {id:`lang-${Date.now()}`,name:gv('name'),flag:gv('flag'),
         level:parseInt(gv('level'),10)||3,label:gv('label')};
       break;
+    case 'referees':
+      if (!gv('name')) return toast('Name is required.','er');
+      item = {id:`ref-${Date.now()}`,name:gv('name'),position:gv('position'),
+        email:gv('email'),phone:gv('phone'),location:gv('location'),relationship:gv('relationship')};
+      break;
     default: return;
   }
   if (editingIdx === -1) {
@@ -1020,6 +1071,7 @@ function openMemModal()   { editingType='memberships';       editingIdx=-1; open
 function openLeadModal()  { editingType='leadership';        editingIdx=-1; openModalFor('leadership');        }
 function openTeachModal() { editingType='teaching';          editingIdx=-1; openModalFor('teaching');          }
 function openSkillModal(t){ editingType=t==='tech'?'technical_skills':'language_skills'; editingIdx=-1; openModalFor(editingType); }
+function openRefModal()   { editingType='referees';           editingIdx=-1; openModalFor('referees');           }
 
 /* ════════════════════════════════════════════════════════════
    SUPERVISION

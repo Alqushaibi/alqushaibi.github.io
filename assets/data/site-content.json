@@ -607,5 +607,45 @@
     }
   ],
   "cv_filename": "Alaw Alqushaibi CV 18-04-2026.pdf",
-  "phone": ""
+  "phone": "601121226508",
+  "experience_years": "8+",
+  "referees_hidden": false,
+  "referees": [
+    {
+      "id": "ref-1",
+      "name": "AP. Dr. Mohd Hilmi Hasan",
+      "position": "",
+      "email": "mhilmi_hasan@utp.edu.my",
+      "location": "Universiti Teknologi PETRONAS, 32610 Seri Iskandar, Perak, Malaysia",
+      "phone": "",
+      "relationship": ""
+    },
+    {
+      "id": "ref-2",
+      "name": "AP. Dr. Said Jadid Abdulkadir",
+      "position": "",
+      "email": "saidjadid.a@utp.edu.my",
+      "location": "Universiti Teknologi PETRONAS, 32610 Seri Iskandar, Perak, Malaysia",
+      "phone": "",
+      "relationship": ""
+    },
+    {
+      "id": "ref-3",
+      "name": "Dr. Kamaluddeen Usman Danyaro",
+      "position": "",
+      "email": "kamaluddeen.usman@utp.edu.my",
+      "location": "Universiti Teknologi PETRONAS, 32610 Seri Iskandar, Perak, Malaysia",
+      "phone": "",
+      "relationship": ""
+    },
+    {
+      "id": "ref-4",
+      "name": "Eng. Abdulhadi Saeed Hasan Al-Zawari",
+      "position": "",
+      "email": "hadialzawari@gmail.com",
+      "location": "Yemen Company for Mobile Telephone - Sabefon, Headquarters, Al Mualla, Aden, Republic of Yemen. P.O. Box 4455",
+      "phone": "",
+      "relationship": ""
+    }
+  ]
 }
