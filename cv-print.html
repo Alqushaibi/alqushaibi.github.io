@@ -129,6 +129,16 @@
     .teach-grid{overflow:hidden}
     .hdr-meta{overflow-wrap:break-word}
 
+    /* ── Professional Summary band ── */
+    .cv-summary{display:flex;gap:1.6rem;align-items:flex-start;padding:.9rem 1.75rem;background:#f4f7fb;border-bottom:2px solid var(--border)}
+    .sum-profile{flex:1;min-width:0}
+    .sum-profile p{font-size:7.8pt;color:var(--muted);line-height:1.7;overflow-wrap:break-word}
+    .sum-divider{width:1px;background:var(--border);align-self:stretch;flex-shrink:0}
+    .sum-interests{flex-shrink:0;width:52mm}
+    .sum-int-lbl{font-size:6.2pt;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--blue);margin-bottom:.4rem}
+    .sum-tags{display:flex;flex-wrap:wrap;gap:.22rem}
+    .sum-tag{font-size:6.5pt;padding:.1rem .38rem;border-radius:50px;background:#dbeafe;color:#1e40af;font-weight:600;line-height:1.4}
+
     /* ── Publications ── */
     .pub{margin-bottom:.55rem;padding-left:.55rem;border-left:2px solid #e2e8f0;page-break-inside:avoid}
     .pub-num{font-size:7pt;color:var(--muted);font-weight:600;margin-bottom:.1rem}
@@ -210,6 +220,7 @@
       #pageWrap{padding:0}
       .cv-page{box-shadow:none;width:100%;margin:0;overflow:hidden}
       .cv-body{overflow:hidden}
+      .cv-summary{page-break-inside:avoid}
       .exp,.aw,.pub,.proj,.teach-card,.ws,.lead{page-break-inside:avoid}
       a{color:inherit}
       .hdr-link{color:rgba(255,255,255,.85)!important}
@@ -249,6 +260,19 @@
       <div class="m-box"><div class="val" id="mI10">—</div><div class="lbl">i10-index</div></div>
     </div>
   </header>
+
+  <!-- PROFESSIONAL SUMMARY BAND -->
+  <div class="cv-summary">
+    <div class="sum-profile">
+      <div class="sum-int-lbl" style="margin-bottom:.35rem"><i class="fas fa-user" style="margin-right:.3rem"></i>Professional Summary</div>
+      <p id="mProfile"></p>
+    </div>
+    <div class="sum-divider"></div>
+    <div class="sum-interests">
+      <div class="sum-int-lbl"><i class="fas fa-flask" style="margin-right:.3rem"></i>Research Interests</div>
+      <div class="sum-tags" id="mInterests"></div>
+    </div>
+  </div>
 
   <!-- BODY -->
   <div class="cv-body">
@@ -295,16 +319,6 @@
 
     <!-- ══ MAIN ══ -->
     <main class="cv-main">
-
-      <div class="section">
-        <div class="st"><i class="fas fa-user"></i> Profile</div>
-        <p class="profile-txt" id="mProfile"></p>
-      </div>
-
-      <div class="section">
-        <div class="st"><i class="fas fa-flask"></i> Research Interests</div>
-        <div class="tags" id="mInterests"></div>
-      </div>
 
       <div class="section">
         <div class="st"><i class="fas fa-briefcase"></i> Professional Experience</div>
@@ -468,7 +482,7 @@ function renderSC(sc){
 
   /* Research Interests */
   document.getElementById('mInterests').innerHTML =
-    (sc.bio?.research_interests||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('');
+    (sc.bio?.research_interests||[]).map(t=>`<span class="sum-tag">${esc(t)}</span>`).join('');
 
   /* Experience — all duties */
   document.getElementById('mExp').innerHTML = (sc.experience||[]).map(e=>`
