@@ -322,7 +322,7 @@
 
       <div class="section">
         <div class="st"><i class="fas fa-briefcase"></i> Professional Experience</div>
-        <div id="mExp"></div>
+        <div id="mExpList"></div>
       </div>
 
       <div class="section">
@@ -485,7 +485,7 @@ function renderSC(sc){
     (sc.bio?.research_interests||[]).map(t=>`<span class="sum-tag">${esc(t)}</span>`).join('');
 
   /* Experience — all duties */
-  document.getElementById('mExp').innerHTML = (sc.experience||[]).map(e=>`
+  document.getElementById('mExpList').innerHTML = (sc.experience||[]).map(e=>`
     <div class="exp">
       <div class="exp-t">${esc(e.title)}</div>
       <div class="exp-co">
