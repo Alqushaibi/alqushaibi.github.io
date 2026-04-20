@@ -119,8 +119,20 @@
     .pill.image{background:#ebf8ff;color:#2b6cb0}
     .pill.video{background:#fef3c7;color:#92400e}
     .pill.social,.pill.linkedin,.pill.facebook,.pill.instagram{background:#f0fdf4;color:#166534}
+    .pill.album{background:#ede9fe;color:#5b21b6}
     @media(max-width:680px){.adm-sidebar{display:none}.two-col,.three-col{grid-template-columns:1fr}}
+    /* Quill overrides */
+    .ql-toolbar{border-radius:6px 6px 0 0!important;border-color:var(--border)!important;padding:4px 6px!important}
+    .ql-container{border-radius:0 0 6px 6px!important;border-color:var(--border)!important;font-family:inherit!important;font-size:.875rem!important}
+    .ql-editor{min-height:60px;max-height:120px;overflow-y:auto;padding:6px 10px!important}
+    .ql-editor.ql-blank::before{color:var(--txt2)!important;font-style:normal!important}
+    /* Album asset list */
+    .album-asset-list{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.6rem}
+    .album-asset-row{display:flex;align-items:center;gap:.5rem;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.35rem .5rem}
+    .album-asset-thumb{width:40px;height:30px;border-radius:4px;object-fit:cover;flex-shrink:0;background:var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .album-asset-label{flex:1;font-size:.8rem;color:var(--txt2);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
   </style>
+  <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
 </head>
 <body>
 
@@ -331,10 +343,11 @@
         <div class="sec-hdr"><h2><i class="fas fa-images"></i> Media Gallery</h2></div>
         <div class="card">
           <h3><i class="fas fa-plus-circle"></i> Add New Item</h3>
-          <div style="display:flex;gap:.6rem;margin-bottom:1.1rem">
+          <div style="display:flex;gap:.6rem;margin-bottom:1.1rem;flex-wrap:wrap">
             <button class="btn btn-outline" id="addImgBtn" onclick="setMediaType('image')" style="flex:1"><i class="fas fa-image"></i> Image</button>
             <button class="btn btn-outline" id="addVidBtn" onclick="setMediaType('video')" style="flex:1"><i class="fab fa-youtube"></i> YouTube</button>
             <button class="btn btn-outline" id="addSocBtn" onclick="setMediaType('social')" style="flex:1"><i class="fas fa-share-alt"></i> Social Post</button>
+            <button class="btn btn-outline" id="addAlbBtn" onclick="setMediaType('album')" style="flex:1"><i class="fas fa-images"></i> Album</button>
           </div>
           <div id="imgForm" style="display:none">
             <div class="upload-zone" id="dropZone" onclick="document.getElementById('imgFile').click()"
@@ -350,7 +363,7 @@
               <div class="fg"><label>Title *</label><input type="text" id="imgTitle" placeholder="Photo caption"></div>
               <div class="fg"><label>Date</label><input type="text" id="imgDate" placeholder="e.g. April 2024"></div>
             </div>
-            <div class="fg"><label>Description</label><textarea id="imgDesc" placeholder="Short description (optional)" rows="2"></textarea></div>
+            <div class="fg"><label>Description</label><div id="imgDescQ"></div></div>
             <button class="btn btn-ok" id="uploadImgBtn" onclick="uploadImage()" disabled><i class="fas fa-upload"></i> Upload &amp; Add to Gallery</button>
           </div>
           <div id="vidForm" style="display:none">
@@ -359,7 +372,7 @@
               <div class="fg"><label>Title *</label><input type="text" id="vidTitle" placeholder="Video title"></div>
               <div class="fg"><label>Date</label><input type="text" id="vidDate" placeholder="e.g. March 2025"></div>
             </div>
-            <div class="fg"><label>Description</label><textarea id="vidDesc" rows="2" placeholder="Short description (optional)"></textarea></div>
+            <div class="fg"><label>Description</label><div id="vidDescQ"></div></div>
             <button class="btn btn-ok" onclick="addVideo()"><i class="fas fa-plus"></i> Add Video</button>
           </div>
           <div id="socForm" style="display:none">
@@ -376,7 +389,7 @@
               <div class="fg"><label>Title *</label><input type="text" id="socTitle" placeholder="Post caption or title"></div>
               <div class="fg"><label>Date</label><input type="text" id="socDate" placeholder="e.g. April 2025"></div>
             </div>
-            <div class="fg"><label>Description</label><textarea id="socDesc" rows="2" placeholder="Short description (optional)"></textarea></div>
+            <div class="fg"><label>Description</label><div id="socDescQ"></div></div>
             <div class="fg">
               <label>Preview Image <span style="font-size:.78rem;color:var(--txt2)">(optional – shown as thumbnail in gallery)</span></label>
               <div id="socImgZone" style="border:2px dashed var(--border);border-radius:8px;padding:.6rem;text-align:center;cursor:pointer;font-size:.83rem;color:var(--txt2)" onclick="document.getElementById('socImgFile').click()">
@@ -387,6 +400,33 @@
               <span id="socImgStatus" style="font-size:.78rem;color:var(--txt2)"></span>
             </div>
             <button class="btn btn-ok" onclick="addSocial()"><i class="fas fa-plus"></i> Add Social Post</button>
+          </div>
+          <div id="albForm" style="display:none">
+            <div class="two-col">
+              <div class="fg"><label>Title *</label><input type="text" id="albTitle" placeholder="Album title"></div>
+              <div class="fg"><label>Date</label><input type="text" id="albDate" placeholder="e.g. May 2025"></div>
+            </div>
+            <div class="fg"><label>Description</label><div id="albDescQ"></div></div>
+            <div class="fg">
+              <label>Assets <span style="font-size:.78rem;color:var(--txt2)">(images or YouTube videos)</span></label>
+              <div id="albAssetList" class="album-asset-list"></div>
+              <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem">
+                <label class="btn btn-outline btn-sm" style="cursor:pointer;margin:0">
+                  <i class="fas fa-images"></i> Add Images
+                  <input type="file" id="albImgFiles" accept="image/*" multiple style="display:none" onchange="addAlbumImages(this.files)">
+                </label>
+                <button class="btn btn-outline btn-sm" onclick="showAlbYTRow()"><i class="fab fa-youtube"></i> Add YouTube</button>
+              </div>
+              <div id="albYTRow" style="display:none;margin-top:.5rem">
+                <div class="two-col">
+                  <div class="fg"><label>YouTube URL</label><input type="url" id="albYTUrl" placeholder="https://youtube.com/watch?v=..."></div>
+                  <div class="fg"><label>Caption</label><input type="text" id="albYTCap" placeholder="Optional caption"></div>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="addAlbumYT()"><i class="fas fa-plus"></i> Add Video</button>
+              </div>
+            </div>
+            <div id="albUploadProgress" style="font-size:.8rem;color:var(--txt2);min-height:1.2rem;margin-bottom:.4rem"></div>
+            <button class="btn btn-ok" id="saveAlbBtn" onclick="saveAlbum()"><i class="fas fa-plus"></i> Create Album</button>
           </div>
         </div>
         <div class="card"><h3><i class="fas fa-list"></i> Gallery Items</h3><div id="mediaList"></div></div>
@@ -440,6 +480,7 @@
         <div class="card">
           <h3><i class="fas fa-phone"></i> Contact Details</h3>
           <div class="info-box"><i class="fas fa-info-circle"></i> Phone number is shown in the PDF CV with a WhatsApp link. Include country code, e.g. <code>+60123456789</code></div>
+          <div class="fg"><label>University / Institution</label><input type="text" id="universityInput" placeholder="e.g. MAHSA University, Malaysia"></div>
           <div class="two-col">
             <div class="fg"><label>WhatsApp / Phone number</label><input type="tel" id="phoneInput" placeholder="+60123456789"></div>
             <div class="fg"><label>Years of Experience (shown in CV header, e.g. <code>8+</code>)</label><input type="text" id="expYearsInput" placeholder="8+"></div>
@@ -653,13 +694,45 @@ let SUP = null;  // supervision
 let supSha = '';
 let MEDIA = [];  // media items
 let mediaSha = '';
-let pendingImgFile    = null;
-let pendingCvFile     = null;
-let pendingSocImgFile = null;
-let pendingSocImgUrl  = '';
-let editingMediaIdx   = -1;
+let pendingImgFile     = null;
+let pendingCvFile      = null;
+let pendingSocImgFile  = null;
+let pendingSocImgUrl   = '';
+let pendingAlbumAssets = [];
+let editingAlbumAssets = [];
+let editingMediaIdx    = -1;
 let editingType = null;
 let editingIdx  = -1;
+
+/* ── Quill helpers ── */
+const quillInstances = {};
+function initQuill(containerId, placeholder, initialHtml) {
+  if (!window.Quill) return null;
+  const el = document.getElementById(containerId);
+  if (!el) return null;
+  if (quillInstances[containerId]) {
+    if (initialHtml !== undefined) quillInstances[containerId].root.innerHTML = initialHtml || '';
+    return quillInstances[containerId];
+  }
+  el.innerHTML = '';
+  const q = new Quill(`#${containerId}`, {
+    theme: 'snow',
+    placeholder: placeholder || '',
+    modules: { toolbar: [['bold','italic','underline'],['link'],['clean']] }
+  });
+  if (initialHtml) q.root.innerHTML = initialHtml;
+  quillInstances[containerId] = q;
+  return q;
+}
+function getQuillHtml(containerId) {
+  const q = quillInstances[containerId];
+  if (!q) {
+    const el = document.getElementById(containerId);
+    return el ? el.querySelector('.ql-editor')?.innerHTML || '' : '';
+  }
+  const html = q.root.innerHTML;
+  return (html === '<p><br></p>' || html === '<p></p>') ? '' : html;
+}
 
 function navToSection(name) {
   document.querySelectorAll('.sb-item').forEach(s => s.classList.remove('active'));
@@ -782,12 +855,15 @@ function renderCvInfo() {
   if (ph) ph.value = SC.phone || '';
   const ey = document.getElementById('expYearsInput');
   if (ey) ey.value = SC.experience_years || '';
+  const un = document.getElementById('universityInput');
+  if (un) un.value = SC.university || '';
 }
 
 async function saveContactDetails() {
   if (!getToken()) return toast('GitHub token not set — go to Settings.','er');
   SC.phone = (document.getElementById('phoneInput').value || '').trim();
   SC.experience_years = (document.getElementById('expYearsInput').value || '').trim();
+  SC.university = (document.getElementById('universityInput').value || '').trim();
   try {
     await commitSC('Admin: update contact details');
   } catch(e) {
@@ -1217,16 +1293,27 @@ function renderMediaAdmin() {
   const socIcon  = {linkedin:'fab fa-linkedin',facebook:'fab fa-facebook',instagram:'fab fa-instagram'};
   const socColor = {linkedin:'#0077b5',facebook:'#1877f2',instagram:'#e1306c'};
   c.innerHTML = MEDIA.map((item,i) => {
-    const thumb = item.type==='video'  ? `<i class="fab fa-youtube" style="color:#ff0000"></i>`
-      : item.type==='social' && item.image_url ? `<img src="${esc(item.image_url)}" style="width:100%;height:100%;object-fit:cover" onerror="this.outerHTML='<i class=\\'${socIcon[item.platform]||'fas fa-share-alt'}\\' style=\\'color:${socColor[item.platform]||'#4a5568'};font-size:1.1rem\\'></i>'">`
-      : item.type==='social' ? `<i class="${socIcon[item.platform]||'fas fa-share-alt'}" style="color:${socColor[item.platform]||'#4a5568'};font-size:1.1rem"></i>`
-      : `<img src="${esc(item.url)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`;
+    let thumb;
+    if (item.type==='video') {
+      thumb = `<i class="fab fa-youtube" style="color:#ff0000"></i>`;
+    } else if (item.type==='album') {
+      const first = item.assets?.find(a=>a.type==='image');
+      thumb = first ? `<img src="${esc(first.url)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"><span style="position:absolute;bottom:1px;right:2px;font-size:.6rem;color:#fff;font-weight:700;background:rgba(0,0,0,.45);border-radius:3px;padding:0 3px">${item.assets?.length||0}</span>`
+        : `<i class="fas fa-images" style="color:var(--s)"></i>`;
+    } else if (item.type==='social' && item.image_url) {
+      thumb = `<img src="${esc(item.image_url)}" style="width:100%;height:100%;object-fit:cover" onerror="this.outerHTML='<i class=\\'${socIcon[item.platform]||'fas fa-share-alt'}\\' style=\\'color:${socColor[item.platform]||'#4a5568'};font-size:1.1rem\\'></i>'">`;
+    } else if (item.type==='social') {
+      thumb = `<i class="${socIcon[item.platform]||'fas fa-share-alt'}" style="color:${socColor[item.platform]||'#4a5568'};font-size:1.1rem"></i>`;
+    } else {
+      thumb = `<img src="${esc(item.url)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`;
+    }
+    const pillLabel = item.type==='social'?(item.platform||'social'):item.type;
     return `
     <div class="item-row" style="${item.hidden?'opacity:.45':''}">
-      <div style="width:48px;height:32px;border-radius:6px;overflow:hidden;background:var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center">${thumb}</div>
+      <div style="position:relative;width:48px;height:32px;border-radius:6px;overflow:hidden;background:var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center">${thumb}</div>
       <div class="item-row-main">
         <strong>${esc(item.title)}</strong>${item.hidden?' <span style="font-size:.75rem;color:var(--err)">(hidden)</span>':''}
-        <span>${esc(item.date||'')} <span class="pill ${item.type}">${item.type==='social'?(item.platform||'social'):item.type}</span></span>
+        <span>${esc(item.date||'')} <span class="pill ${item.type}">${pillLabel}</span></span>
       </div>
       <div class="row-actions">
         <button class="icon-btn" onclick="editMedia(${i})" title="Edit"><i class="fas fa-edit"></i></button>
@@ -1241,9 +1328,14 @@ function setMediaType(type) {
   document.getElementById('imgForm').style.display = type==='image'  ? 'block' : 'none';
   document.getElementById('vidForm').style.display = type==='video'  ? 'block' : 'none';
   document.getElementById('socForm').style.display = type==='social' ? 'block' : 'none';
-  document.getElementById('addImgBtn').className = 'btn ' + (type==='image' ?'btn-primary':'btn-outline');
-  document.getElementById('addVidBtn').className = 'btn ' + (type==='video' ?'btn-primary':'btn-outline');
-  document.getElementById('addSocBtn').className = 'btn ' + (type==='social'?'btn-primary':'btn-outline');
+  document.getElementById('albForm').style.display = type==='album'  ? 'block' : 'none';
+  const types = {addImgBtn:'image',addVidBtn:'video',addSocBtn:'social',addAlbBtn:'album'};
+  Object.entries(types).forEach(([id,t]) => {
+    document.getElementById(id).className = 'btn ' + (type===t ? 'btn-primary':'btn-outline');
+  });
+  const qMap = {image:'imgDescQ',video:'vidDescQ',social:'socDescQ',album:'albDescQ'};
+  const qId = qMap[type];
+  if (qId) setTimeout(() => initQuill(qId, 'Short description (optional)'), 50);
 }
 
 function handleImgFile(file) {
@@ -1289,13 +1381,15 @@ async function uploadImage() {
     await ghPutBin(`/repos/${OWNER}/${REPO}/contents/${path}`, b64, sha, `Admin: upload ${name}`);
     const url = `https://${OWNER}.github.io/${path}`;
     MEDIA.push({id:`img-${Date.now()}`,type:'image',title,
-      description:document.getElementById('imgDesc').value.trim(),
+      description: getQuillHtml('imgDescQ'),
       date:document.getElementById('imgDate').value.trim(), url});
     renderMediaAdmin();
     pendingImgFile = null;
     document.getElementById('imgPreview').style.display = 'none';
     document.getElementById('dropZone').style.display = 'block';
-    ['imgTitle','imgDesc','imgDate'].forEach(id => { document.getElementById(id).value=''; });
+    document.getElementById('imgTitle').value='';
+    document.getElementById('imgDate').value='';
+    if (quillInstances['imgDescQ']) quillInstances['imgDescQ'].root.innerHTML='';
     toast('Image uploaded! Click Save to update gallery.','ok');
   } catch(e) { toast(`Upload failed: ${e.message}`,'er'); }
   finally { btn.innerHTML = '<i class="fas fa-upload"></i> Upload &amp; Add to Gallery'; btn.disabled = false; }
@@ -1307,10 +1401,11 @@ function addVideo() {
   if (!url||!title) return toast('URL and title are required.','er');
   if (!/youtube\.com|youtu\.be/.test(url)) return toast('Must be a valid YouTube URL.','er');
   MEDIA.push({id:`vid-${Date.now()}`,type:'video',title,
-    description:document.getElementById('vidDesc').value.trim(),
+    description: getQuillHtml('vidDescQ'),
     date:document.getElementById('vidDate').value.trim(), url});
   renderMediaAdmin();
-  ['vidUrl','vidTitle','vidDesc','vidDate'].forEach(id=>{document.getElementById(id).value='';});
+  ['vidUrl','vidTitle','vidDate'].forEach(id=>{document.getElementById(id).value='';});
+  if (quillInstances['vidDescQ']) quillInstances['vidDescQ'].root.innerHTML='';
   toast('Video added. Click Save to apply.','ok');
 }
 
@@ -1326,13 +1421,14 @@ function addSocial() {
   const entry = {
     id: `soc-${Date.now()}`, type: 'social', platform,
     title, url,
-    description: document.getElementById('socDesc').value.trim(),
+    description: getQuillHtml('socDescQ'),
     date:        document.getElementById('socDate').value.trim()
   };
   if (pendingSocImgUrl) entry.image_url = pendingSocImgUrl;
   MEDIA.push(entry);
   renderMediaAdmin();
-  ['socUrl','socTitle','socDesc','socDate'].forEach(id => { document.getElementById(id).value = ''; });
+  ['socUrl','socTitle','socDate'].forEach(id => { document.getElementById(id).value = ''; });
+  if (quillInstances['socDescQ']) quillInstances['socDescQ'].root.innerHTML='';
   pendingSocImgUrl = ''; pendingSocImgFile = null;
   document.getElementById('socImgPreview').style.display = 'none';
   document.getElementById('socImgZone').style.display = 'block';
@@ -1356,12 +1452,10 @@ function deleteMedia(i) {
 function buildMediaForm(item) {
   const f = (label,id,val='',extra='') =>
     `<div class="fg"><label>${label}</label><input type="text" id="mf_${id}" value="${esc(val)}" ${extra}></div>`;
-  const ta = (label,id,val='',rows=2) =>
-    `<div class="fg"><label>${label}</label><textarea id="mf_${id}" rows="${rows}">${esc(val)}</textarea></div>`;
   const baseFields = `
     ${f('Title *','title', item.title)}
     <div class="two-col">${f('Date','date', item.date||'')}${f('','_spacer','','style="visibility:hidden"')}</div>
-    ${ta('Description','description', item.description||'')}`;
+    <div class="fg"><label>Description</label><div id="mf_descQ"></div></div>`;
   if (item.type === 'image') return `
     <div class="info-box" style="margin-bottom:.75rem"><i class="fas fa-info-circle"></i> To replace the image, delete and re-upload.</div>
     ${baseFields}`;
@@ -1387,6 +1481,40 @@ function buildMediaForm(item) {
       <span id="editSocImgStatus" style="font-size:.78rem;color:var(--txt2)"></span>
       <input type="hidden" id="mf_image_url" value="${esc(item.image_url||'')}">
     </div>`;
+  if (item.type === 'album') {
+    const assets = item.assets||[];
+    const assetRows = assets.map((a,ai) => {
+      const thumbInner = a.type==='video'
+        ? `<i class="fab fa-youtube" style="color:#ff0000;font-size:.85rem"></i>`
+        : `<img src="${esc(a.url)}" style="width:100%;height:100%;object-fit:cover">`;
+      return `<div class="album-asset-row" id="eal_${ai}">
+        <div class="album-asset-thumb">${thumbInner}</div>
+        <span class="album-asset-label">${esc(a.caption||a.url)}</span>
+        <button class="icon-btn del btn-sm" onclick="removeEditAlbumAsset(${ai})" title="Remove"><i class="fas fa-trash"></i></button>
+      </div>`;
+    }).join('');
+    return `
+      ${baseFields}
+      <div class="fg">
+        <label>Assets (${assets.length})</label>
+        <div id="editAlbAssetList" class="album-asset-list">${assetRows}</div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.4rem">
+          <label class="btn btn-outline btn-sm" style="cursor:pointer;margin:0">
+            <i class="fas fa-images"></i> Add Images
+            <input type="file" id="editAlbImgFiles" accept="image/*" multiple style="display:none" onchange="addEditAlbumImages(this.files)">
+          </label>
+          <button class="btn btn-outline btn-sm" onclick="showEditAlbYTRow()"><i class="fab fa-youtube"></i> Add YouTube</button>
+        </div>
+        <div id="editAlbYTRow" style="display:none;margin-top:.5rem">
+          <div class="two-col">
+            <div class="fg"><input type="url" id="editAlbYTUrl" placeholder="https://youtube.com/watch?v=..."></div>
+            <div class="fg"><input type="text" id="editAlbYTCap" placeholder="Caption (optional)"></div>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="addEditAlbumYT()"><i class="fas fa-plus"></i> Add</button>
+        </div>
+        <div id="editAlbProgress" style="font-size:.8rem;color:var(--txt2);min-height:1.2rem;margin-top:.3rem"></div>
+      </div>`;
+  }
   return '<p>Unknown type.</p>';
 }
 
@@ -1439,11 +1567,14 @@ async function handleSocImgFile(file) {
 function editMedia(i) {
   editingMediaIdx = i;
   const item = MEDIA[i];
-  const typeLabel = {image:'Image',video:'Video',social:'Social Post'}[item.type]||item.type;
+  editingAlbumAssets = item.type==='album' ? JSON.parse(JSON.stringify(item.assets||[])) : [];
+  const typeLabel = {image:'Image',video:'Video',social:'Social Post',album:'Album'}[item.type]||item.type;
   document.getElementById('itemModal').style.display = 'flex';
   document.getElementById('itemModalTitle').textContent = `Edit ${typeLabel}`;
   document.getElementById('itemModalBody').innerHTML = buildMediaForm(item);
   document.getElementById('itemModalSave').onclick = saveMediaEdit;
+  delete quillInstances['mf_descQ'];
+  setTimeout(() => initQuill('mf_descQ', 'Description', item.description||''), 50);
 }
 
 function saveMediaEdit() {
@@ -1454,7 +1585,7 @@ function saveMediaEdit() {
   if (!title) return toast('Title is required.','er');
   item.title       = title;
   item.date        = document.getElementById('mf_date')?.value.trim() || item.date;
-  item.description = document.getElementById('mf_description')?.value.trim() || '';
+  item.description = getQuillHtml('mf_descQ');
   if (item.type === 'video') {
     const url = document.getElementById('mf_url')?.value.trim();
     if (!url) return toast('URL is required.','er');
@@ -1468,8 +1599,12 @@ function saveMediaEdit() {
     const imgUrl  = document.getElementById('mf_image_url')?.value.trim();
     if (imgUrl) item.image_url = imgUrl;
   }
+  if (item.type === 'album') {
+    item.assets = editingAlbumAssets;
+  }
   closeModal('itemModal');
   document.getElementById('itemModalSave').onclick = saveModalItem;
+  delete quillInstances['mf_descQ'];
   renderMediaAdmin();
   toast('Updated. Click Save to apply.','ok');
 }
@@ -1487,6 +1622,152 @@ async function saveMedia() {
     toast('Media gallery saved!','ok');
   } catch(e) { toast(`Failed: ${e.message}`,'er'); }
   finally { btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Save'; btn.disabled = false; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   ALBUM
+════════════════════════════════════════════════════════════ */
+function renderAlbumAssets() {
+  const c = document.getElementById('albAssetList');
+  if (!c) return;
+  if (!pendingAlbumAssets.length) { c.innerHTML=''; return; }
+  c.innerHTML = pendingAlbumAssets.map((a,i) => {
+    const thumb = a.type==='video'
+      ? `<div class="album-asset-thumb" style="background:#ffe0e0;display:flex;align-items:center;justify-content:center"><i class="fab fa-youtube" style="color:#ff0000;font-size:.85rem"></i></div>`
+      : `<div class="album-asset-thumb"><img src="${esc(a.url)}" style="width:100%;height:100%;object-fit:cover"></div>`;
+    return `<div class="album-asset-row">${thumb}<span class="album-asset-label">${esc(a.caption||a.url)}</span><button class="icon-btn del btn-sm" onclick="removeAlbumAsset(${i})" title="Remove"><i class="fas fa-trash"></i></button></div>`;
+  }).join('');
+}
+
+function removeAlbumAsset(i) {
+  pendingAlbumAssets.splice(i,1);
+  renderAlbumAssets();
+}
+
+async function addAlbumImages(files) {
+  if (!files||!files.length) return;
+  if (!getToken()) return toast('GitHub token not set — go to Settings.','er');
+  const prog = document.getElementById('albUploadProgress');
+  const btn  = document.getElementById('saveAlbBtn');
+  if (btn) btn.disabled = true;
+  for (let idx=0; idx<files.length; idx++) {
+    const file = files[idx];
+    if (file.size > 5*1024*1024) { toast(`${file.name} too large (max 5 MB), skipped.`,'er'); continue; }
+    if (prog) prog.textContent = `Uploading ${idx+1}/${files.length}: ${file.name}…`;
+    try {
+      const b64 = await new Promise((res,rej)=>{ const r=new FileReader(); r.onload=e=>res(e.target.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); });
+      const ext  = file.name.split('.').pop()||'jpg';
+      const name = `alb_${Date.now()}_${idx}.${ext}`;
+      const path = `assets/img/media/${name}`;
+      let sha; try { const ex=await ghGet(`/repos/${OWNER}/${REPO}/contents/${path}`); sha=ex.sha; } catch(_){}
+      await ghPutBin(`/repos/${OWNER}/${REPO}/contents/${path}`, b64, sha, `Admin: upload ${name}`);
+      pendingAlbumAssets.push({type:'image', url:`https://${OWNER}.github.io/${path}`, caption:''});
+      renderAlbumAssets();
+    } catch(e) { toast(`Upload failed for ${file.name}: ${e.message}`,'er'); }
+  }
+  if (prog) prog.textContent = `${files.length} file(s) uploaded.`;
+  if (btn) btn.disabled = false;
+  document.getElementById('albImgFiles').value='';
+}
+
+function showAlbYTRow() {
+  const r = document.getElementById('albYTRow');
+  if (r) r.style.display = r.style.display==='none' ? 'block' : 'none';
+}
+
+function addAlbumYT() {
+  const url = document.getElementById('albYTUrl')?.value.trim();
+  const cap = document.getElementById('albYTCap')?.value.trim();
+  if (!url) return toast('YouTube URL is required.','er');
+  if (!/youtube\.com|youtu\.be/.test(url)) return toast('Must be a valid YouTube URL.','er');
+  pendingAlbumAssets.push({type:'video', url, caption:cap||''});
+  renderAlbumAssets();
+  document.getElementById('albYTUrl').value='';
+  document.getElementById('albYTCap').value='';
+  document.getElementById('albYTRow').style.display='none';
+}
+
+async function saveAlbum() {
+  const title = document.getElementById('albTitle')?.value.trim();
+  if (!title) return toast('Title is required.','er');
+  if (!pendingAlbumAssets.length) return toast('Add at least one image or video.','er');
+  MEDIA.push({
+    id: `alb-${Date.now()}`,
+    type: 'album',
+    title,
+    date: document.getElementById('albDate')?.value.trim()||'',
+    description: getQuillHtml('albDescQ'),
+    assets: [...pendingAlbumAssets]
+  });
+  renderMediaAdmin();
+  pendingAlbumAssets = [];
+  document.getElementById('albTitle').value='';
+  document.getElementById('albDate').value='';
+  if (quillInstances['albDescQ']) quillInstances['albDescQ'].root.innerHTML='';
+  document.getElementById('albAssetList').innerHTML='';
+  document.getElementById('albUploadProgress').textContent='';
+  toast('Album created. Click Save to apply.','ok');
+}
+
+/* ── Edit album helpers ── */
+function removeEditAlbumAsset(i) {
+  editingAlbumAssets.splice(i,1);
+  refreshEditAlbumList();
+}
+
+function refreshEditAlbumList() {
+  const c = document.getElementById('editAlbAssetList');
+  if (!c) return;
+  c.innerHTML = editingAlbumAssets.map((a,ai) => {
+    const thumbInner = a.type==='video'
+      ? `<i class="fab fa-youtube" style="color:#ff0000;font-size:.85rem"></i>`
+      : `<img src="${esc(a.url)}" style="width:100%;height:100%;object-fit:cover">`;
+    return `<div class="album-asset-row" id="eal_${ai}">
+      <div class="album-asset-thumb">${thumbInner}</div>
+      <span class="album-asset-label">${esc(a.caption||a.url)}</span>
+      <button class="icon-btn del btn-sm" onclick="removeEditAlbumAsset(${ai})" title="Remove"><i class="fas fa-trash"></i></button>
+    </div>`;
+  }).join('');
+}
+
+function showEditAlbYTRow() {
+  const r = document.getElementById('editAlbYTRow');
+  if (r) r.style.display = r.style.display==='none' ? 'block':'none';
+}
+
+function addEditAlbumYT() {
+  const url = document.getElementById('editAlbYTUrl')?.value.trim();
+  const cap = document.getElementById('editAlbYTCap')?.value.trim();
+  if (!url) return toast('YouTube URL is required.','er');
+  if (!/youtube\.com|youtu\.be/.test(url)) return toast('Must be a valid YouTube URL.','er');
+  editingAlbumAssets.push({type:'video', url, caption:cap||''});
+  refreshEditAlbumList();
+  document.getElementById('editAlbYTUrl').value='';
+  document.getElementById('editAlbYTCap').value='';
+  document.getElementById('editAlbYTRow').style.display='none';
+}
+
+async function addEditAlbumImages(files) {
+  if (!files||!files.length) return;
+  if (!getToken()) return toast('GitHub token not set — go to Settings.','er');
+  const prog = document.getElementById('editAlbProgress');
+  for (let idx=0; idx<files.length; idx++) {
+    const file = files[idx];
+    if (file.size > 5*1024*1024) { toast(`${file.name} too large, skipped.`,'er'); continue; }
+    if (prog) prog.textContent = `Uploading ${idx+1}/${files.length}…`;
+    try {
+      const b64 = await new Promise((res,rej)=>{ const r=new FileReader(); r.onload=e=>res(e.target.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); });
+      const ext  = file.name.split('.').pop()||'jpg';
+      const name = `alb_${Date.now()}_${idx}.${ext}`;
+      const path = `assets/img/media/${name}`;
+      let sha; try { const ex=await ghGet(`/repos/${OWNER}/${REPO}/contents/${path}`); sha=ex.sha; } catch(_){}
+      await ghPutBin(`/repos/${OWNER}/${REPO}/contents/${path}`, b64, sha, `Admin: upload ${name}`);
+      editingAlbumAssets.push({type:'image', url:`https://${OWNER}.github.io/${path}`, caption:''});
+      refreshEditAlbumList();
+    } catch(e) { toast(`Upload failed: ${e.message}`,'er'); }
+  }
+  if (prog) prog.textContent = `Done.`;
+  document.getElementById('editAlbImgFiles').value='';
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -1563,5 +1844,6 @@ function toast(msg, type='') {
 
 document.addEventListener('DOMContentLoaded', initAuth);
 </script>
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 </body>
 </html>

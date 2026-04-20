@@ -560,7 +560,7 @@ function renderMedia() {
           </div>
           <div class="media-info">
             <h4>${esc(item.title)}</h4>
-            ${item.description?`<p>${esc(item.description)}</p>`:''}
+            ${item.description?`<p>${item.description}</p>`:''}
             <div class="media-meta">
               ${item.date?`<span class="media-date"><i class="fas fa-calendar-alt"></i> ${esc(item.date)}</span>`:''}
               <span class="media-type-badge video"><i class="fas fa-video"></i> Video</span>
@@ -584,10 +584,40 @@ function renderMedia() {
           </a>
           <div class="media-info">
             <h4>${esc(item.title)}</h4>
-            ${item.description?`<p>${esc(item.description)}</p>`:''}
+            ${item.description?`<p>${item.description}</p>`:''}
             <div class="media-meta">
               ${item.date?`<span class="media-date"><i class="fas fa-calendar-alt"></i> ${esc(item.date)}</span>`:''}
               <span class="media-type-badge social"><i class="fas fa-share-alt"></i> ${m.label}</span>
+            </div>
+          </div>
+        </div>`;
+    }
+    if (item.type === 'album') {
+      const assets = item.assets||[];
+      const thumbs = assets.slice(0,4);
+      const mosaic = thumbs.map((a, ai) => {
+        if (a.type==='video') {
+          const vid = getYTId(a.url);
+          const t = vid ? `https://img.youtube.com/vi/${vid}/hqdefault.jpg` : '';
+          return `<div class="alb-cell" onclick="openAlbumAsset(${items.indexOf(item)},${ai})" style="cursor:pointer;position:relative">
+            ${t?`<img src="${t}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">`:'<div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center"><i class="fab fa-youtube" style="color:#ff0000;font-size:1.2rem"></i></div>'}
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.25)"><i class="fas fa-play" style="color:#fff;font-size:.7rem"></i></div>
+          </div>`;
+        }
+        return `<div class="alb-cell" onclick="openAlbumAsset(${items.indexOf(item)},${ai})" style="cursor:pointer">
+          <img src="${esc(a.url)}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
+        </div>`;
+      }).join('');
+      const extra = assets.length > 4 ? `<div class="alb-cell alb-more">+${assets.length-4}</div>` : '';
+      return `
+        <div class="media-card" data-type="album">
+          <div class="media-thumb alb-mosaic">${mosaic}${extra}</div>
+          <div class="media-info">
+            <h4>${esc(item.title)}</h4>
+            ${item.description?`<p>${item.description}</p>`:''}
+            <div class="media-meta">
+              ${item.date?`<span class="media-date"><i class="fas fa-calendar-alt"></i> ${esc(item.date)}</span>`:''}
+              <span class="media-type-badge image"><i class="fas fa-images"></i> Album · ${assets.length}</span>
             </div>
           </div>
         </div>`;
@@ -600,7 +630,7 @@ function renderMedia() {
         </div>
         <div class="media-info">
           <h4>${esc(item.title)}</h4>
-          ${item.description?`<p>${esc(item.description)}</p>`:''}
+          ${item.description?`<p>${item.description}</p>`:''}
           <div class="media-meta">
             ${item.date?`<span class="media-date"><i class="fas fa-calendar-alt"></i> ${esc(item.date)}</span>`:''}
             <span class="media-type-badge image"><i class="fas fa-image"></i> Image</span>
@@ -641,6 +671,20 @@ function closeLightbox() {
   if (lb) lb.style.display = 'none';
   if (vm) { vm.style.display='none'; vm.querySelector('iframe').src=''; }
   document.body.style.overflow = '';
+}
+
+function openAlbumAsset(itemIdx, assetIdx) {
+  const visible = mediaData.filter(i => !i.hidden);
+  const filtered = mediaFilter==='all' ? visible : visible.filter(i=>i.type===mediaFilter);
+  const item = filtered[itemIdx];
+  if (!item || item.type !== 'album') return;
+  const asset = (item.assets||[])[assetIdx];
+  if (!asset) return;
+  if (asset.type === 'video') {
+    openVideo(asset.url);
+  } else {
+    openLightbox(asset.url, asset.caption || item.title);
+  }
 }
 
 /* ════════════════════════════════════════════════════════════

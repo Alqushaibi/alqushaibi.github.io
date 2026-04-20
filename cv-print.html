@@ -252,7 +252,7 @@
           <span id="hdrPhone" style="display:none"><i class="fab fa-whatsapp"></i> <a id="phoneLink" href="#" class="hdr-link"></a></span>
           <span><i class="fas fa-globe"></i> <a href="https://alqushaibi.github.io" target="_blank" class="hdr-link">alqushaibi.github.io</a></span>
           <span><i class="fas fa-graduation-cap"></i> <a href="https://scholar.google.com/citations?user=7B_-M3YAAAAJ" target="_blank" class="hdr-link">Google Scholar</a></span>
-          <span><i class="fas fa-university"></i> MAHSA University, Malaysia</span>
+          <span id="hdrUniversity"><i class="fas fa-university"></i> MAHSA University, Malaysia</span>
         </div>
       </div>
     </div>
@@ -414,6 +414,12 @@ function renderSC(sc){
   /* Header title */
   if(sc.current_positions?.length)
     document.getElementById('hdrTitle').textContent = sc.current_positions.map(p=>p.title).join(' · ');
+
+  /* University */
+  if(sc.university){
+    const u = document.getElementById('hdrUniversity');
+    if(u) u.innerHTML = `<i class="fas fa-university"></i> ${esc(sc.university)}`;
+  }
 
   /* Experience years */
   if(sc.experience_years){

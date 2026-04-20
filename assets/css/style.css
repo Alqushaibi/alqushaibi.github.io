@@ -159,6 +159,32 @@ p:last-child { margin-bottom: 0; }
   border-color: #00b4d8;
 }
 
+/* Album mosaic */
+.alb-mosaic {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 2px;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  border-radius: inherit;
+}
+.alb-cell {
+  overflow: hidden;
+  background: #1a202c;
+  position: relative;
+}
+.alb-cell img { width:100%;height:100%;object-fit:cover;display:block }
+.alb-more {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.6);
+  color: #fff;
+  font-size: .85rem;
+  font-weight: 700;
+}
+
 .nav-toggle {
   display: none;
   flex-direction: column;
