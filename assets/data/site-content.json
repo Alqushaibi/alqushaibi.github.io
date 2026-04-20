@@ -1,9 +1,7 @@
 {
   "bio": {
     "paragraphs": [
-      "Currently serving as <strong>Program Coordinator</strong> for the Information Technology program at MAHSA University, with responsibilities in curriculum oversight, academic coordination, and quality assurance. With over <strong>8 years</strong> of combined experience in teaching, research and development, and student supervision.",
-      "Expertise in <strong>Machine Learning</strong>, <strong>Deep Learning</strong>, and <strong>Data Science</strong>, backed by a strong publication record in Q1/Q2 journals and international conferences. My research spans Generative AI, Medical Image Processing, Metaheuristic Optimization, and Computer Vision, with work published in <em>IEEE Access</em>, <em>Heliyon</em>, <em>Sustainability</em>, and more.",
-      "Proven ability to design and deliver engaging curricula for courses including Advanced Databases, Data Science Fundamentals, and Structured Programming. Skilled in fostering student-centered learning through workshops such as Computer Vision with MATLAB and AI micro-credential programs."
+      "An experienced academic with over <strong>8 years</strong> in teaching, research, and student supervision, currently serving as IT Program Coordinator at MAHSA University. Expertise spans Machine Learning, Deep Learning, Data Science, and Generative AI, with a strong publication record in Q1/Q2 journals including <em>IEEE Access</em> and <em>Heliyon</em>. Proven ability to design engaging curricula and deliver student-centred learning across undergraduate and postgraduate levels."
     ],
     "research_interests": [
       "Machine Learning",
@@ -607,7 +605,7 @@
     }
   ],
   "cv_filename": "Alaw Alqushaibi CV 18-04-2026.pdf",
-  "phone": "601121226508",
+  "phone": "+601121226508",
   "experience_years": "8+",
   "referees_hidden": false,
   "referees": [
