@@ -377,6 +377,15 @@
               <div class="fg"><label>Date</label><input type="text" id="socDate" placeholder="e.g. April 2025"></div>
             </div>
             <div class="fg"><label>Description</label><textarea id="socDesc" rows="2" placeholder="Short description (optional)"></textarea></div>
+            <div class="fg">
+              <label>Preview Image <span style="font-size:.78rem;color:var(--txt2)">(optional – shown as thumbnail in gallery)</span></label>
+              <div id="socImgZone" style="border:2px dashed var(--border);border-radius:8px;padding:.6rem;text-align:center;cursor:pointer;font-size:.83rem;color:var(--txt2)" onclick="document.getElementById('socImgFile').click()">
+                <i class="fas fa-image"></i> Click to upload image
+              </div>
+              <input type="file" id="socImgFile" accept="image/*" style="display:none" onchange="handleSocImgFile(this.files[0])">
+              <img id="socImgPreview" style="display:none;max-height:80px;border-radius:6px;margin-top:.4rem" alt="Preview">
+              <span id="socImgStatus" style="font-size:.78rem;color:var(--txt2)"></span>
+            </div>
             <button class="btn btn-ok" onclick="addSocial()"><i class="fas fa-plus"></i> Add Social Post</button>
           </div>
         </div>
@@ -644,8 +653,11 @@ let SUP = null;  // supervision
 let supSha = '';
 let MEDIA = [];  // media items
 let mediaSha = '';
-let pendingImgFile = null;
-let pendingCvFile  = null;
+let pendingImgFile    = null;
+let pendingCvFile     = null;
+let pendingSocImgFile = null;
+let pendingSocImgUrl  = '';
+let editingMediaIdx   = -1;
 let editingType = null;
 let editingIdx  = -1;
 
@@ -1202,23 +1214,27 @@ function renderMediaAdmin() {
   const c = document.getElementById('mediaList');
   if (!c) return;
   if (!MEDIA.length) { c.innerHTML = '<div class="empty"><i class="fas fa-images"></i><p>No items yet.</p></div>'; return; }
-  const socIcon = {linkedin:'fab fa-linkedin',facebook:'fab fa-facebook',instagram:'fab fa-instagram'};
+  const socIcon  = {linkedin:'fab fa-linkedin',facebook:'fab fa-facebook',instagram:'fab fa-instagram'};
   const socColor = {linkedin:'#0077b5',facebook:'#1877f2',instagram:'#e1306c'};
-  c.innerHTML = MEDIA.map((item,i) => `
-    <div class="item-row">
-      <div style="width:48px;height:32px;border-radius:6px;overflow:hidden;background:var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center">
-        ${item.type==='video'  ? `<i class="fab fa-youtube" style="color:#ff0000"></i>`
-        : item.type==='social' ? `<i class="${socIcon[item.platform]||'fas fa-share-alt'}" style="color:${socColor[item.platform]||'#4a5568'};font-size:1.1rem"></i>`
-        : `<img src="${esc(item.url)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`}
-      </div>
+  c.innerHTML = MEDIA.map((item,i) => {
+    const thumb = item.type==='video'  ? `<i class="fab fa-youtube" style="color:#ff0000"></i>`
+      : item.type==='social' && item.image_url ? `<img src="${esc(item.image_url)}" style="width:100%;height:100%;object-fit:cover" onerror="this.outerHTML='<i class=\\'${socIcon[item.platform]||'fas fa-share-alt'}\\' style=\\'color:${socColor[item.platform]||'#4a5568'};font-size:1.1rem\\'></i>'">`
+      : item.type==='social' ? `<i class="${socIcon[item.platform]||'fas fa-share-alt'}" style="color:${socColor[item.platform]||'#4a5568'};font-size:1.1rem"></i>`
+      : `<img src="${esc(item.url)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`;
+    return `
+    <div class="item-row" style="${item.hidden?'opacity:.45':''}">
+      <div style="width:48px;height:32px;border-radius:6px;overflow:hidden;background:var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center">${thumb}</div>
       <div class="item-row-main">
-        <strong>${esc(item.title)}</strong>
+        <strong>${esc(item.title)}</strong>${item.hidden?' <span style="font-size:.75rem;color:var(--err)">(hidden)</span>':''}
         <span>${esc(item.date||'')} <span class="pill ${item.type}">${item.type==='social'?(item.platform||'social'):item.type}</span></span>
       </div>
       <div class="row-actions">
+        <button class="icon-btn" onclick="editMedia(${i})" title="Edit"><i class="fas fa-edit"></i></button>
+        <button class="icon-btn" onclick="toggleHideMedia(${i})" title="${item.hidden?'Show':'Hide'}"><i class="fas fa-eye${item.hidden?'':'-slash'}"></i></button>
         <button class="icon-btn del" onclick="deleteMedia(${i})" title="Delete"><i class="fas fa-trash"></i></button>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function setMediaType(type) {
@@ -1307,15 +1323,27 @@ function addSocial() {
   if (platform==='linkedin'  && !urlLower.includes('linkedin.com'))  return toast('URL does not look like a LinkedIn link.','er');
   if (platform==='facebook'  && !urlLower.includes('facebook.com'))  return toast('URL does not look like a Facebook link.','er');
   if (platform==='instagram' && !urlLower.includes('instagram.com')) return toast('URL does not look like an Instagram link.','er');
-  MEDIA.push({
+  const entry = {
     id: `soc-${Date.now()}`, type: 'social', platform,
     title, url,
     description: document.getElementById('socDesc').value.trim(),
     date:        document.getElementById('socDate').value.trim()
-  });
+  };
+  if (pendingSocImgUrl) entry.image_url = pendingSocImgUrl;
+  MEDIA.push(entry);
   renderMediaAdmin();
   ['socUrl','socTitle','socDesc','socDate'].forEach(id => { document.getElementById(id).value = ''; });
+  pendingSocImgUrl = ''; pendingSocImgFile = null;
+  document.getElementById('socImgPreview').style.display = 'none';
+  document.getElementById('socImgZone').style.display = 'block';
+  document.getElementById('socImgStatus').textContent = '';
   toast('Social post added. Click Save to apply.','ok');
+}
+
+function toggleHideMedia(i) {
+  MEDIA[i].hidden = !MEDIA[i].hidden;
+  renderMediaAdmin();
+  toast(`Item ${MEDIA[i].hidden?'hidden':'visible'}. Click Save to apply.`, 'ok');
 }
 
 function deleteMedia(i) {
@@ -1323,6 +1351,127 @@ function deleteMedia(i) {
   MEDIA.splice(i,1);
   renderMediaAdmin();
   toast('Removed. Click Save to apply.','ok');
+}
+
+function buildMediaForm(item) {
+  const f = (label,id,val='',extra='') =>
+    `<div class="fg"><label>${label}</label><input type="text" id="mf_${id}" value="${esc(val)}" ${extra}></div>`;
+  const ta = (label,id,val='',rows=2) =>
+    `<div class="fg"><label>${label}</label><textarea id="mf_${id}" rows="${rows}">${esc(val)}</textarea></div>`;
+  const baseFields = `
+    ${f('Title *','title', item.title)}
+    <div class="two-col">${f('Date','date', item.date||'')}${f('','_spacer','','style="visibility:hidden"')}</div>
+    ${ta('Description','description', item.description||'')}`;
+  if (item.type === 'image') return `
+    <div class="info-box" style="margin-bottom:.75rem"><i class="fas fa-info-circle"></i> To replace the image, delete and re-upload.</div>
+    ${baseFields}`;
+  if (item.type === 'video') return `
+    ${f('YouTube URL *','url', item.url, 'type="url"')}
+    ${baseFields}`;
+  if (item.type === 'social') return `
+    <div class="fg"><label>Platform</label><select id="mf_platform">
+      <option value="linkedin"${item.platform==='linkedin'?' selected':''}>LinkedIn</option>
+      <option value="facebook"${item.platform==='facebook'?' selected':''}>Facebook</option>
+      <option value="instagram"${item.platform==='instagram'?' selected':''}>Instagram</option>
+    </select></div>
+    ${f('Post URL *','url', item.url, 'type="url"')}
+    ${baseFields}
+    <div class="fg">
+      <label>Preview Image <span style="font-size:.78rem;color:var(--txt2)">(optional)</span></label>
+      ${item.image_url?`<img src="${esc(item.image_url)}" style="max-height:70px;border-radius:6px;margin-bottom:.4rem;display:block" alt="Current image"><small style="color:var(--txt2)">Current image above.</small>`:''}
+      <div id="editSocImgZone" style="border:2px dashed var(--border);border-radius:8px;padding:.5rem;text-align:center;cursor:pointer;font-size:.83rem;color:var(--txt2);margin-top:.4rem" onclick="document.getElementById('editSocImgFile').click()">
+        <i class="fas fa-image"></i> ${item.image_url?'Replace image':'Upload image'}
+      </div>
+      <input type="file" id="editSocImgFile" accept="image/*" style="display:none" onchange="handleEditSocImgFile(this.files[0])">
+      <img id="editSocImgPreview" style="display:none;max-height:70px;border-radius:6px;margin-top:.4rem" alt="">
+      <span id="editSocImgStatus" style="font-size:.78rem;color:var(--txt2)"></span>
+      <input type="hidden" id="mf_image_url" value="${esc(item.image_url||'')}">
+    </div>`;
+  return '<p>Unknown type.</p>';
+}
+
+let editSocImgUploading = false;
+async function handleEditSocImgFile(file) {
+  if (!file) return;
+  if (file.size > 5*1024*1024) return toast('File too large (max 5 MB).','er');
+  if (!getToken()) return toast('GitHub token not set.','er');
+  const status = document.getElementById('editSocImgStatus');
+  const preview = document.getElementById('editSocImgPreview');
+  status.textContent = 'Uploading…';
+  editSocImgUploading = true;
+  try {
+    const b64 = await new Promise((res,rej)=>{ const r=new FileReader(); r.onload=e=>res(e.target.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); });
+    const ext  = file.name.split('.').pop()||'jpg';
+    const name = `soc_${Date.now()}.${ext}`;
+    const path = `assets/img/media/${name}`;
+    let sha; try { const ex=await ghGet(`/repos/${OWNER}/${REPO}/contents/${path}`); sha=ex.sha; } catch(_){}
+    await ghPutBin(`/repos/${OWNER}/${REPO}/contents/${path}`, b64, sha, `Admin: upload ${name}`);
+    const url = `https://${OWNER}.github.io/${path}`;
+    document.getElementById('mf_image_url').value = url;
+    preview.src = `data:image/*;base64,${b64}`; preview.style.display = 'block';
+    status.textContent = '✓ Uploaded';
+  } catch(e) { status.textContent = `Error: ${e.message}`; }
+  editSocImgUploading = false;
+}
+
+async function handleSocImgFile(file) {
+  if (!file) return;
+  if (file.size > 5*1024*1024) return toast('File too large (max 5 MB).','er');
+  if (!getToken()) return toast('GitHub token not set.','er');
+  const status  = document.getElementById('socImgStatus');
+  const preview = document.getElementById('socImgPreview');
+  status.textContent = 'Uploading…';
+  pendingSocImgFile = file;
+  try {
+    const b64 = await new Promise((res,rej)=>{ const r=new FileReader(); r.onload=e=>res(e.target.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); });
+    const ext  = file.name.split('.').pop()||'jpg';
+    const name = `soc_${Date.now()}.${ext}`;
+    const path = `assets/img/media/${name}`;
+    let sha; try { const ex=await ghGet(`/repos/${OWNER}/${REPO}/contents/${path}`); sha=ex.sha; } catch(_){}
+    await ghPutBin(`/repos/${OWNER}/${REPO}/contents/${path}`, b64, sha, `Admin: upload ${name}`);
+    pendingSocImgUrl = `https://${OWNER}.github.io/${path}`;
+    preview.src = `data:image/*;base64,${b64}`; preview.style.display = 'block';
+    document.getElementById('socImgZone').style.display = 'none';
+    status.textContent = '✓ Uploaded';
+  } catch(e) { status.textContent = `Error: ${e.message}`; pendingSocImgFile = null; }
+}
+
+function editMedia(i) {
+  editingMediaIdx = i;
+  const item = MEDIA[i];
+  const typeLabel = {image:'Image',video:'Video',social:'Social Post'}[item.type]||item.type;
+  document.getElementById('itemModal').style.display = 'flex';
+  document.getElementById('itemModalTitle').textContent = `Edit ${typeLabel}`;
+  document.getElementById('itemModalBody').innerHTML = buildMediaForm(item);
+  document.getElementById('itemModalSave').onclick = saveMediaEdit;
+}
+
+function saveMediaEdit() {
+  if (editSocImgUploading) return toast('Image still uploading, please wait.','er');
+  const i = editingMediaIdx;
+  const item = MEDIA[i];
+  const title = document.getElementById('mf_title')?.value.trim();
+  if (!title) return toast('Title is required.','er');
+  item.title       = title;
+  item.date        = document.getElementById('mf_date')?.value.trim() || item.date;
+  item.description = document.getElementById('mf_description')?.value.trim() || '';
+  if (item.type === 'video') {
+    const url = document.getElementById('mf_url')?.value.trim();
+    if (!url) return toast('URL is required.','er');
+    item.url = url;
+  }
+  if (item.type === 'social') {
+    const url = document.getElementById('mf_url')?.value.trim();
+    if (!url) return toast('URL is required.','er');
+    item.url      = url;
+    item.platform = document.getElementById('mf_platform')?.value || item.platform;
+    const imgUrl  = document.getElementById('mf_image_url')?.value.trim();
+    if (imgUrl) item.image_url = imgUrl;
+  }
+  closeModal('itemModal');
+  document.getElementById('itemModalSave').onclick = saveModalItem;
+  renderMediaAdmin();
+  toast('Updated. Click Save to apply.','ok');
 }
 
 async function saveMedia() {

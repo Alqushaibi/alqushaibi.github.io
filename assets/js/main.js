@@ -544,7 +544,8 @@ function renderMedia() {
   const grid  = document.getElementById('mediaGrid');
   const empty = document.getElementById('mediaEmpty');
   if (!grid) return;
-  const items = mediaFilter==='all' ? mediaData : mediaData.filter(i=>i.type===mediaFilter);
+  const visible = mediaData.filter(i => !i.hidden);
+  const items = mediaFilter==='all' ? visible : visible.filter(i=>i.type===mediaFilter);
   if (!items.length) { grid.innerHTML=''; if(empty) empty.style.display='block'; return; }
   if (empty) empty.style.display = 'none';
   grid.innerHTML = items.map(item => {
@@ -569,12 +570,17 @@ function renderMedia() {
     }
     if (item.type==='social') {
       const m = SOCIAL_META[item.platform] || { icon:'fas fa-share-alt', label: item.platform||'Social', btnClass:'linkedin' };
+      const thumbHtml = item.image_url
+        ? `<img src="${esc(item.image_url)}" alt="${esc(item.title)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">
+           <div style="position:absolute;top:.4rem;right:.4rem"><i class="${m.icon} social-platform-icon ${esc(item.platform)}" style="font-size:1.2rem;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))"></i></div>
+           <span class="social-view-btn ${m.btnClass}" style="position:absolute;bottom:.5rem;right:.5rem"><i class="fas fa-external-link-alt"></i> View Post</span>`
+        : `<i class="${m.icon} social-platform-icon ${esc(item.platform)}"></i>
+           <span class="social-platform-label">${m.label}</span>
+           <span class="social-view-btn ${m.btnClass}"><i class="fas fa-external-link-alt"></i> View Post</span>`;
       return `
         <div class="media-card social" data-type="social">
-          <a class="media-thumb" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">
-            <i class="${m.icon} social-platform-icon ${esc(item.platform)}"></i>
-            <span class="social-platform-label">${m.label}</span>
-            <span class="social-view-btn ${m.btnClass}"><i class="fas fa-external-link-alt"></i> View Post</span>
+          <a class="media-thumb" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer" style="position:relative">
+            ${thumbHtml}
           </a>
           <div class="media-info">
             <h4>${esc(item.title)}</h4>
