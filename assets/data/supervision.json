@@ -9,6 +9,15 @@
       "research_area": "AI / Machine Learning",
       "status": "current",
       "year_start": 2025
+    },
+    {
+      "id": "phd-1777954853453",
+      "name": "Xu Heng",
+      "degree": "Ph.D. Candidate",
+      "university": "MAHSA University",
+      "role": "Co-Supervisor",
+      "research_area": "Intelligent Construction",
+      "status": "current"
     }
   ],
   "masters": [],
