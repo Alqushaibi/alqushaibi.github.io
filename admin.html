@@ -1237,11 +1237,20 @@ function delSupItem(type, idx) {
 function openSupModal(type) {
   editingType = 'sup_'+type;
   editingIdx  = -1;
-  const blankItem = type==='fyp'
-    ? {name:'',title:'',role:'Main Supervisor',status:'current'}
-    : {name:'',degree:type==='phd'?'Ph.D. Candidate':"Master's Candidate",university:'MAHSA University',role:'Main Supervisor',research_area:'',status:'current'};
-  editSupItem(type, -1);
-  // Override: need blank data
+  document.getElementById('itemModal').style.display = 'flex';
+  const titles = {phd:'PhD Student',masters:'Master Student',fyp:'FYP Student'};
+  document.getElementById('itemModalTitle').textContent = 'Add ' + titles[type];
+  const f = (lbl,id,val='',extra='') => `<div class="fg"><label>${lbl}</label><input type="text" id="mf_${id}" value="${esc(val)}" ${extra}></div>`;
+  const sel = (lbl,id,opts,val='') => `<div class="fg"><label>${lbl}</label><select id="mf_${id}">${opts.map(([v,t])=>`<option value="${v}"${v===val?' selected':''}>${t}</option>`).join('')}</select></div>`;
+  document.getElementById('itemModalBody').innerHTML = type === 'fyp' ? `
+    ${f('Student Name *','name')}
+    ${f('Project Title *','title')}
+    ${f('Role','role','Main Supervisor')}
+    ${sel('Status','status',[['current','Current'],['completed','Completed']],'current')}` : `
+    ${f('Student Name *','name')}
+    <div class="two-col">${f('Degree','degree',type==='phd'?'Ph.D. Candidate':"Master's Candidate")}${f('University','university','MAHSA University')}</div>
+    <div class="two-col">${f('Role','role','Main Supervisor')}${f('Research Area','research_area')}</div>
+    ${sel('Status','status',[['current','Current'],['graduated','Graduated']],'current')}`;
   document.getElementById('itemModalSave').onclick = () => {
     if (!gv('name')) return toast('Name is required.','er');
     let item;
