@@ -11,14 +11,24 @@ Can also be run manually: python scripts/update_citations.py
 
 import json
 import os
+import signal
 import time
 import datetime
 from pathlib import Path
 
-SCHOLAR_ID    = "7B_-M3YAAAAJ"
-DATA_FILE     = Path(__file__).parent.parent / "assets" / "data" / "publications.json"
-MAX_RETRIES   = 3
-RETRY_DELAY   = 10  # seconds between retries
+SCHOLAR_ID       = "7B_-M3YAAAAJ"
+DATA_FILE        = Path(__file__).parent.parent / "assets" / "data" / "publications.json"
+MAX_RETRIES      = 3
+RETRY_DELAY      = 5    # seconds between retries
+ATTEMPT_TIMEOUT  = 90   # seconds per individual Scholar request
+
+
+class _AttemptTimeout(Exception):
+    pass
+
+
+def _timeout_handler(signum, frame):
+    raise _AttemptTimeout("Scholar request timed out")
 
 
 def load_current_data():
@@ -35,35 +45,36 @@ def save_data(data):
 def fetch_scholar_data():
     """Fetch author and publication data from Google Scholar via scholarly."""
     try:
-        from scholarly import scholarly, ProxyGenerator
+        from scholarly import scholarly
     except ImportError:
         print("[!] scholarly not installed. Run: pip install scholarly")
         return None
 
-    # Try free proxies to avoid rate-limiting
-    try:
-        pg = ProxyGenerator()
-        success = pg.FreeProxies()
-        if success:
-            scholarly.use_proxy(pg)
-            print("[i] Using free proxy for Scholar requests")
-        else:
-            print("[i] No free proxies available, proceeding without proxy")
-    except Exception as e:
-        print(f"[i] Proxy setup failed ({e}), proceeding without proxy")
+    # signal-based per-attempt timeout (works on Linux/macOS; no-op on Windows)
+    use_alarm = hasattr(signal, "SIGALRM")
+    if use_alarm:
+        signal.signal(signal.SIGALRM, _timeout_handler)
 
     for attempt in range(1, MAX_RETRIES + 1):
         try:
             print(f"[i] Fetching author profile (attempt {attempt}/{MAX_RETRIES})...")
+            if use_alarm:
+                signal.alarm(ATTEMPT_TIMEOUT)
             author = scholarly.search_author_id(SCHOLAR_ID)
             author = scholarly.fill(author, sections=["basics", "indices", "publications"])
+            if use_alarm:
+                signal.alarm(0)  # cancel alarm on success
             print(f"[✓] Fetched profile for: {author.get('name', 'Unknown')}")
             return author
+        except _AttemptTimeout:
+            print(f"[!] Attempt {attempt} timed out after {ATTEMPT_TIMEOUT}s")
         except Exception as e:
+            if use_alarm:
+                signal.alarm(0)
             print(f"[!] Attempt {attempt} failed: {e}")
-            if attempt < MAX_RETRIES:
-                print(f"[i] Retrying in {RETRY_DELAY}s...")
-                time.sleep(RETRY_DELAY)
+        if attempt < MAX_RETRIES:
+            print(f"[i] Retrying in {RETRY_DELAY}s...")
+            time.sleep(RETRY_DELAY)
 
     print("[✗] All attempts failed. Skipping update.")
     return None
