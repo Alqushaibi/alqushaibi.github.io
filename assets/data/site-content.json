@@ -466,6 +466,12 @@
       "title": "International Association of Engineers (IAENG)",
       "organization": "Member",
       "icon": "fas fa-cogs"
+    },
+    {
+      "id": "mem-1778567026619",
+      "title": "Research Fellowship",
+      "organization": "Research Management Centre (RMC), MAHSA University",
+      "icon": "fas fa-id-card"
     }
   ],
   "leadership": [
