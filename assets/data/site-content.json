@@ -153,7 +153,7 @@
       "id": "exp-5",
       "title": "System Administrator Assistant",
       "company": "Sabafon Company, Yemen",
-      "period": "Jun 2013 - May 2018",
+      "period": "Jun 2012 - May 2018",
       "type": "industry",
       "badge": "5 Years",
       "badge_type": "past",
@@ -165,22 +165,6 @@
         "Manage and configure Windows DNS/DHCP service",
         "Physical installation of server racks, KVM, switches and rack mount keyboards",
         "LAN, WAN, WLAN – Installation, Configuration, and Troubleshooting"
-      ]
-    },
-    {
-      "id": "exp-6",
-      "title": "Customer Care Consultant",
-      "company": "Sabafon Company, Yemen",
-      "period": "Jul 2012 - Jun 2013",
-      "type": "industry",
-      "badge": "1 Year",
-      "badge_type": "past",
-      "icon": "fas fa-headset",
-      "duties": [
-        "Provide user-level technical support",
-        "Give suggestions contributing to high customer satisfaction",
-        "Solve customer problems or escalate to concerned departments",
-        "Promote the company's products and services"
       ]
     },
     {
