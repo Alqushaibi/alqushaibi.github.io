@@ -190,6 +190,7 @@
       <div class="sb-item" data-sec="teaching"><i class="fas fa-chalkboard-teacher"></i> Teaching</div>
       <div class="sb-item" data-sec="supervision"><i class="fas fa-user-graduate"></i> Supervision</div>
       <div class="sb-item" data-sec="referees"><i class="fas fa-address-card"></i> Referees</div>
+      <div class="sb-item" data-sec="custom_sections"><i class="fas fa-th-large"></i> CV Custom Sections</div>
       <div class="sb-item" data-sec="media"><i class="fas fa-images"></i> Media Gallery</div>
       <div class="sb-item" data-sec="cv"><i class="fas fa-file-alt"></i> CV / Resume</div>
       <div class="sb-group">System</div>
@@ -336,6 +337,18 @@
         </div>
         <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>site-content.json</code></span>
           <button class="btn btn-ok" onclick="saveSection('referees')"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
+      </div>
+
+      <!-- ════ CUSTOM SECTIONS ════ -->
+      <div class="sec" id="sec-custom_sections">
+        <div class="sec-hdr"><h2><i class="fas fa-th-large"></i> CV Custom Sections</h2><p>Create new sections for the CV and choose whether they appear in the left sidebar or main column.</p></div>
+        <div class="card">
+          <h3><i class="fas fa-list"></i> Custom Sections</h3>
+          <div id="customSecList"></div>
+          <button class="btn btn-outline btn-sm" style="margin-top:.75rem" onclick="openCustomModal()"><i class="fas fa-plus"></i> Add Custom Section</button>
+        </div>
+        <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>site-content.json</code></span>
+          <button class="btn btn-ok" onclick="saveSection('custom_sections')"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
       </div>
 
       <!-- ════ MEDIA ════ -->
@@ -786,6 +799,7 @@ async function loadSC() {
   if (SC) {
     if (!SC.referees) SC.referees = [];
     if (SC.referees_hidden === undefined) SC.referees_hidden = false;
+    if (!SC.custom_sections) SC.custom_sections = [];
     renderSC();
   }
 }
@@ -807,6 +821,7 @@ function renderSC() {
   renderSimpleList('leadList',     SC.leadership,        itemLeadHtml);
   renderSimpleList('teachList',    SC.teaching,          itemTeachHtml);
   renderSimpleList('refList',      SC.referees||[],      itemRefHtml);
+  renderSimpleList('customSecList', SC.custom_sections||[], itemCustomHtml);
   const rhc = document.getElementById('refHideChk');
   if (rhc) rhc.checked = !!SC.referees_hidden;
   renderSkillLists();
@@ -898,6 +913,7 @@ const itemMemHtml   = m => `<strong>${esc(m.title)}</strong><br><span>${esc(m.or
 const itemLeadHtml  = l => `<strong>${esc(l.title)}</strong><br><span>${esc(l.organization)} · ${esc(l.period)}</span>`;
 const itemTeachHtml = t => `<strong>${esc(t.title)}</strong> <span class="badge ${t.status==='current'?'current':'completed'}">${esc(t.status)}</span><br><span>${esc(t.category)} · ${esc(t.level)}</span>`;
 const itemRefHtml   = r => `<strong>${esc(r.name)}</strong>${r.position?` <span style="color:var(--s);font-size:.8rem">${esc(r.position)}</span>`:''}<br><span>${esc(r.email)}${r.location?` · ${esc(r.location).substring(0,50)}...`:''}</span>`;
+const itemCustomHtml = s => `<strong>${esc(s.title)}</strong> <span style="margin-left:.5rem;color:var(--muted)">${esc(s.location==='sidebar'?'Sidebar':'Main Column')}</span><br><span style="color:var(--txt2)">${esc(s.content).substring(0,80)}${s.content && s.content.length>80?'…':''}</span>`;
 
 /* ─── Save sections ─── */
 async function saveSection(field) {
@@ -948,7 +964,7 @@ const LIST_MAP = {
   expList:'experience', projList:'research_projects', wsList:'workshops',
   awardList:'awards', memList:'memberships', leadList:'leadership', teachList:'teaching',
   techSkillList:'technical_skills', langSkillList:'language_skills',
-  refList:'referees'
+  refList:'referees', customSecList:'custom_sections'
 };
 
 function editItem(listId, idx) {
@@ -975,7 +991,7 @@ function openModalFor(type, item) {
     workshops:'Workshop', awards:'Award', memberships:'Membership',
     leadership:'Leadership Entry', teaching:'Teaching Subject',
     technical_skills:'Technical Skill', language_skills:'Language',
-    referees:'Referee'
+    referees:'Referee', custom_sections:'Custom CV Section'
   }[type] || 'Edit Item';
   document.getElementById('itemModalTitle').textContent = (editingIdx === -1 ? 'Add ' : 'Edit ') + title;
   document.getElementById('itemModalBody').innerHTML = buildModalForm(type, item || {});
@@ -1067,6 +1083,11 @@ function buildModalForm(type, d) {
       ${f('Institution / Location','location', d.location||'', 'placeholder="University, City, Country"')}
       ${f('Relationship','relationship', d.relationship||'', 'placeholder="e.g. PhD Supervisor"')}`;
 
+    case 'custom_sections': return `
+      ${f('Section Title *','title', d.title, 'placeholder="e.g. Professional Summary"')}
+      ${sel('Location','location',[['sidebar','Left Column'],['main','Main Column']], d.location||'main')}
+      ${ta('Content','content', d.content||'', 6)}`;
+
     default: return '<p>Unknown type.</p>';
   }
 }
@@ -1134,6 +1155,10 @@ function saveModalItem() {
       if (!gv('name')) return toast('Name is required.','er');
       item = {id:`ref-${Date.now()}`,name:gv('name'),position:gv('position'),
         email:gv('email'),phone:gv('phone'),location:gv('location'),relationship:gv('relationship')};
+      break;
+    case 'custom_sections':
+      if (!gv('title')) return toast('Section title is required.','er');
+      item = {id:`custom-${Date.now()}`,title:gv('title'),location:gv('location')||'main',content:gv('content')};
       break;
     default: return;
   }

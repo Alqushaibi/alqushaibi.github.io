@@ -318,6 +318,8 @@
         <div id="sWorkshops"></div>
       </div>
 
+      <div id="sCustomSections"></div>
+
     </aside>
 
     <!-- ══ MAIN ══ -->
@@ -359,6 +361,8 @@
         <div class="st"><i class="fas fa-users"></i> Leadership &amp; Volunteer</div>
         <div id="mLead"></div>
       </div>
+
+      <div id="mCustomSections"></div>
 
       <div class="section" id="refSection" style="display:none">
         <div class="st"><i class="fas fa-address-card"></i> Referees</div>
@@ -483,6 +487,20 @@ function renderSC(sc){
     <div class="ws">
       <div class="ws-t">${esc(w.title)}</div>
       <div class="ws-sub">${esc(w.institution)} &middot; ${esc(w.year)}</div>
+    </div>`).join('');
+
+  const customSections = sc.custom_sections||[];
+  const customSidebar = customSections.filter(s=>s.location==='sidebar');
+  const customMain = customSections.filter(s=>s.location!=='sidebar');
+  document.getElementById('sCustomSections').innerHTML = customSidebar.map(s=>`
+    <div class="section">
+      <div class="st"><i class="fas fa-th-large"></i> ${esc(s.title)}</div>
+      <div class="custom-content">${esc(s.content).split('\n').map(line=>line.trim()).filter(Boolean).map(line=>`<p>${line}</p>`).join('')}</div>
+    </div>`).join('');
+  document.getElementById('mCustomSections').innerHTML = customMain.map(s=>`
+    <div class="section">
+      <div class="st"><i class="fas fa-th-large"></i> ${esc(s.title)}</div>
+      <div class="custom-content">${esc(s.content).split('\n').map(line=>line.trim()).filter(Boolean).map(line=>`<p>${line}</p>`).join('')}</div>
     </div>`).join('');
 
   /* Profile */
