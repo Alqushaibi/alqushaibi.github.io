@@ -68,6 +68,15 @@
     .st i{font-size:7pt}
     .section{margin-bottom:1rem}
 
+    /* ── Custom sections ── */
+    .custom-content { font-size: 7.5pt; line-height: 1.4; color: var(--text); }
+    .custom-content p { margin: 0 0 0.3rem 0; }
+    .custom-content ul, .custom-content ol { margin: 0.2rem 0; padding-left: 1rem; }
+    .custom-content li { margin-bottom: 0.1rem; }
+    .custom-content a { color: var(--blue); text-decoration: underline; }
+    .custom-content strong, .custom-content b { font-weight: 700; }
+    .custom-content em, .custom-content i { font-style: italic; }
+
     /* ── Education ── */
     .edu{margin-bottom:.6rem;page-break-inside:avoid}
     .edu-deg{font-size:8pt;font-weight:700;color:var(--navy);line-height:1.3}
@@ -495,12 +504,12 @@ function renderSC(sc){
   document.getElementById('sCustomSections').innerHTML = customSidebar.map(s=>`
     <div class="section">
       <div class="st"><i class="fas fa-th-large"></i> ${esc(s.title)}</div>
-      <div class="custom-content">${esc(s.content).split('\n').map(line=>line.trim()).filter(Boolean).map(line=>`<p>${line}</p>`).join('')}</div>
+      <div class="custom-content">${s.content}</div>
     </div>`).join('');
   document.getElementById('mCustomSections').innerHTML = customMain.map(s=>`
     <div class="section">
       <div class="st"><i class="fas fa-th-large"></i> ${esc(s.title)}</div>
-      <div class="custom-content">${esc(s.content).split('\n').map(line=>line.trim()).filter(Boolean).map(line=>`<p>${line}</p>`).join('')}</div>
+      <div class="custom-content">${s.content}</div>
     </div>`).join('');
 
   /* Profile */

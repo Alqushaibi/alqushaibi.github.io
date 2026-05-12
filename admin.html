@@ -545,6 +545,8 @@
 <div id="toast"></div>
 
 <script>
+function esc(s){ if(!s&&s!==0) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function stripHtml(s){ return String(s||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim(); }
 /* ════════════════════════════════════════════════════════════
    CONFIG
 ════════════════════════════════════════════════════════════ */
@@ -899,6 +901,10 @@ function renderSimpleList(id, arr, htmlFn) {
       <div class="row-actions">
         <button class="icon-btn" onclick="editItem('${id}',${i})" title="Edit"><i class="fas fa-edit"></i></button>
         <button class="icon-btn del" onclick="deleteItem('${id}',${i})" title="Delete"><i class="fas fa-trash"></i></button>
+        ${id === 'customSecList' ? `
+        <button class="icon-btn" onclick="moveItemUp('${id}',${i})" title="Move Up"><i class="fas fa-arrow-up"></i></button>
+        <button class="icon-btn" onclick="moveItemDown('${id}',${i})" title="Move Down"><i class="fas fa-arrow-down"></i></button>
+        ` : ''}
       </div>
     </div>`).join('');
 }
@@ -913,7 +919,7 @@ const itemMemHtml   = m => `<strong>${esc(m.title)}</strong><br><span>${esc(m.or
 const itemLeadHtml  = l => `<strong>${esc(l.title)}</strong><br><span>${esc(l.organization)} · ${esc(l.period)}</span>`;
 const itemTeachHtml = t => `<strong>${esc(t.title)}</strong> <span class="badge ${t.status==='current'?'current':'completed'}">${esc(t.status)}</span><br><span>${esc(t.category)} · ${esc(t.level)}</span>`;
 const itemRefHtml   = r => `<strong>${esc(r.name)}</strong>${r.position?` <span style="color:var(--s);font-size:.8rem">${esc(r.position)}</span>`:''}<br><span>${esc(r.email)}${r.location?` · ${esc(r.location).substring(0,50)}...`:''}</span>`;
-const itemCustomHtml = s => `<strong>${esc(s.title)}</strong> <span style="margin-left:.5rem;color:var(--muted)">${esc(s.location==='sidebar'?'Sidebar':'Main Column')}</span><br><span style="color:var(--txt2)">${esc(s.content).substring(0,80)}${s.content && s.content.length>80?'…':''}</span>`;
+const itemCustomHtml = s => `<strong>${esc(s.title)}</strong> <span style="margin-left:.5rem;color:var(--muted)">${esc(s.location==='sidebar'?'Sidebar':'Main Column')}</span><br><span style="color:var(--txt2)">${stripHtml(s.content).substring(0,80)}${s.content && stripHtml(s.content).length>80?'…':''}</span>`;
 
 /* ─── Save sections ─── */
 async function saveSection(field) {
@@ -983,6 +989,24 @@ function deleteItem(listId, idx) {
   toast('Deleted. Click Save to apply.','ok');
 }
 
+function moveItemUp(listId, idx) {
+  const key = LIST_MAP[listId];
+  if (idx > 0) {
+    [SC[key][idx-1], SC[key][idx]] = [SC[key][idx], SC[key][idx-1]];
+    renderSC();
+    toast('Moved up.','ok');
+  }
+}
+
+function moveItemDown(listId, idx) {
+  const key = LIST_MAP[listId];
+  if (idx < SC[key].length - 1) {
+    [SC[key][idx], SC[key][idx+1]] = [SC[key][idx+1], SC[key][idx]];
+    renderSC();
+    toast('Moved down.','ok');
+  }
+}
+
 function openModalFor(type, item) {
   document.getElementById('itemModal').style.display = 'flex';
   const title = {
@@ -995,6 +1019,9 @@ function openModalFor(type, item) {
   }[type] || 'Edit Item';
   document.getElementById('itemModalTitle').textContent = (editingIdx === -1 ? 'Add ' : 'Edit ') + title;
   document.getElementById('itemModalBody').innerHTML = buildModalForm(type, item || {});
+  if (type === 'custom_sections') {
+    initQuill('customContentQ', 'Enter content...', item ? item.content : '');
+  }
 }
 
 function buildModalForm(type, d) {
@@ -1086,7 +1113,7 @@ function buildModalForm(type, d) {
     case 'custom_sections': return `
       ${f('Section Title *','title', d.title, 'placeholder="e.g. Professional Summary"')}
       ${sel('Location','location',[['sidebar','Left Column'],['main','Main Column']], d.location||'main')}
-      ${ta('Content','content', d.content||'', 6)}`;
+      <div class="fg"><label>Content</label><div id="customContentQ"></div></div>`;
 
     default: return '<p>Unknown type.</p>';
   }
@@ -1158,7 +1185,7 @@ function saveModalItem() {
       break;
     case 'custom_sections':
       if (!gv('title')) return toast('Section title is required.','er');
-      item = {id:`custom-${Date.now()}`,title:gv('title'),location:gv('location')||'main',content:gv('content')};
+      item = {id:`custom-${Date.now()}`,title:gv('title'),location:gv('location')||'main',content:getQuillHtml('customContentQ')};
       break;
     default: return;
   }
