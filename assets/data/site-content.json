@@ -54,7 +54,14 @@
       "dot_color": "#f6ad55"
     }
   ],
-  "custom_sections": [],
+  "custom_sections": [
+    {
+      "id": "custom-1778578232898",
+      "title": "Academic Leadership & Quality Assurance",
+      "location": "sidebar",
+      "content": "Program coordination\nMQA/MQF compliance\nCurriculum mapping\nCLO/PLO alignment\nAssessment moderation\nContinuous Quality Improvement (CQI)\nAccreditation preparation\nStudent advising\nTimetable coordination\nTeaching allocation"
+    }
+  ],
   "current_positions": [
     {
       "id": "pos-1",
