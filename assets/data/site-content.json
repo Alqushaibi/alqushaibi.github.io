@@ -557,8 +557,8 @@
       "title": "Information Technology Fundamentals",
       "description": "Core IT concepts, hardware, software, networking basics, and digital literacy foundations",
       "category": "info-systems",
-      "level": "Undergraduate",
-      "status": "current"
+      "status": "past",
+      "level": "Undergraduate"
     },
     {
       "id": "teach-6",
@@ -589,8 +589,8 @@
       "title": "Wireless Communication",
       "description": "Wireless networks, protocols, 4G/5G, IoT connectivity, signal propagation, and mobile systems",
       "category": "networks-systems",
-      "level": "Undergraduate",
-      "status": "current"
+      "status": "past",
+      "level": "Undergraduate"
     },
     {
       "id": "teach-10",
