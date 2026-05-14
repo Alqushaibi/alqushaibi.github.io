@@ -8,6 +8,7 @@
   <title>Admin – Alawi Alqushaibi</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
@@ -131,6 +132,13 @@
     .album-asset-row{display:flex;align-items:center;gap:.5rem;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.35rem .5rem}
     .album-asset-thumb{width:40px;height:30px;border-radius:4px;object-fit:cover;flex-shrink:0;background:var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden}
     .album-asset-label{flex:1;font-size:.8rem;color:var(--txt2);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+    .pub-admin-row{display:flex;align-items:flex-start;gap:.75rem;padding:.65rem .75rem;border-bottom:1px solid var(--border);}
+    .pub-admin-row:last-child{border-bottom:none}
+    .pub-admin-row input[type="checkbox"]{margin-top:.2rem}
+    .pub-admin-label{flex:1;font-size:.88rem;color:var(--txt);line-height:1.4}
+    .pub-admin-year{color:var(--muted);font-size:.78rem;white-space:nowrap}
+    .page-tab-grid{display:grid;grid-template-columns:1fr 180px 180px;gap:.75rem;align-items:center}
+    .page-tab-grid input[type="text"], .page-tab-grid select{width:100%}
   </style>
   <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
 </head>
@@ -189,6 +197,8 @@
       <div class="sb-group">Other Tabs</div>
       <div class="sb-item" data-sec="teaching"><i class="fas fa-chalkboard-teacher"></i> Teaching</div>
       <div class="sb-item" data-sec="supervision"><i class="fas fa-user-graduate"></i> Supervision</div>
+      <div class="sb-item" data-sec="publications"><i class="fas fa-book-open"></i> Publications</div>
+      <div class="sb-item" data-sec="page_tabs"><i class="fas fa-arrows-alt-h"></i> Page Tabs</div>
       <div class="sb-item" data-sec="referees"><i class="fas fa-address-card"></i> Referees</div>
       <div class="sb-item" data-sec="custom_sections"><i class="fas fa-th-large"></i> CV Custom Sections</div>
       <div class="sb-item" data-sec="media"><i class="fas fa-images"></i> Media Gallery</div>
@@ -320,6 +330,38 @@
           <button class="btn btn-outline btn-sm" style="margin-top:.75rem" onclick="openSupModal('fyp')"><i class="fas fa-plus"></i> Add FYP Student</button></div>
         <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>assets/data/supervision.json</code></span>
           <button class="btn btn-ok" id="saveSupBtn" onclick="saveSupervision()"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
+      </div>
+
+      <div class="sec" id="sec-publications">
+        <div class="sec-hdr"><h2><i class="fas fa-book-open"></i> Publications</h2><p>Select featured publications and control how many appear on the website.</p></div>
+        <div class="card">
+          <h3><i class="fas fa-star"></i> Featured Publications</h3>
+          <div class="two-col">
+            <div class="fg"><label>Display count</label><input type="number" id="pubDisplayCount" min="0" placeholder="0 = all"></div>
+            <div class="fg"><label>Scholar URL</label><input type="url" id="pubScholarUrl" placeholder="https://scholar.google.com/..." ></div>
+          </div>
+          <div class="fg"><label>Footer message</label><textarea id="pubMessage" rows="3" placeholder="Full publication list available upon request or via Google Scholar."></textarea></div>
+        </div>
+        <div class="card">
+          <h3><i class="fas fa-tasks"></i> Selection</h3>
+          <p style="color:var(--muted);font-size:.85rem;margin-bottom:.75rem;">Check the publications you want to feature on the website. Unchecked items are hidden from the featured list.</p>
+          <div class="fg"><label>Selected IDs</label><input type="text" id="pubSelectedIds" placeholder="1,2,3"></div>
+          <div id="pubListAdmin" style="max-height:380px;overflow:auto;border:1px solid var(--border);border-radius:12px;background:var(--bg);padding:1rem"></div>
+        </div>
+        <div class="save-bar"><span><i class="fas fa-info-circle"></i> Saves to <code>assets/data/site-content.json</code></span>
+          <button class="btn btn-ok" onclick="saveSection('publications')"><i class="fas fa-cloud-upload-alt"></i> Save</button></div>
+      </div>
+
+      <div class="sec" id="sec-page_tabs">
+        <div class="sec-hdr"><h2><i class="fas fa-arrows-alt-h"></i> Page Tabs</h2><p>Rename, reorder, and choose icons for top-level website sections.</p></div>
+        <div class="card">
+          <h3><i class="fas fa-list"></i> Section order and icons</h3>
+          <div id="pageTabsList"></div>
+          <div style="margin-top:.85rem;display:flex;gap:.65rem;flex-wrap:wrap">
+            <button class="btn btn-outline btn-sm" onclick="moveAllTabsToDefault()"><i class="fas fa-sync-alt"></i> Reset default order</button>
+            <button class="btn btn-outline btn-sm" onclick="saveSection('page_tabs')"><i class="fas fa-save"></i> Save Page Tabs</button>
+          </div>
+        </div>
       </div>
 
       <!-- ════ REFEREES ════ -->
@@ -709,6 +751,7 @@ let SUP = null;  // supervision
 let supSha = '';
 let MEDIA = [];  // media items
 let mediaSha = '';
+let PUBS = [];  // publication list for admin selection
 let pendingImgFile     = null;
 let pendingCvFile      = null;
 let pendingSocImgFile  = null;
@@ -786,7 +829,7 @@ async function showApp() {
   if (!getToken()) {
     navToSection('settings');
   }
-  await Promise.all([loadSC(), loadSup(), loadMedia()]);
+  await Promise.all([loadSC(), loadSup(), loadMedia(), loadPublications()]);
 }
 
 /* ─── Site Content ─── */
@@ -827,6 +870,8 @@ function renderSC() {
   const rhc = document.getElementById('refHideChk');
   if (rhc) rhc.checked = !!SC.referees_hidden;
   renderSkillLists();
+  renderPublicationConfig();
+  renderPageTabsConfig();
   renderCvInfo();
 }
 
@@ -876,7 +921,117 @@ function renderCvInfo() {
   if (un) un.value = SC.university || '';
 }
 
-async function saveContactDetails() {
+async function loadPublications() {
+  try {
+    const res = await fetch('assets/data/publications.json');
+    if (!res.ok) throw new Error('Cannot load publications');
+    const json = await res.json();
+    PUBS = json.publications || [];
+  } catch (e) {
+    PUBS = [];
+    console.warn('Failed to load publications for admin:', e);
+  }
+  if (SC) renderPublicationConfig();
+}
+
+function renderPublicationConfig() {
+  if (!SC) return;
+  if (!SC.publication_preview) SC.publication_preview = {};
+  const preview = SC.publication_preview;
+  const selectedIds = Array.isArray(preview.selected_ids) ? preview.selected_ids : [];
+  const idsEl = document.getElementById('pubSelectedIds');
+  const displayEl = document.getElementById('pubDisplayCount');
+  const msgEl = document.getElementById('pubMessage');
+  const scholarEl = document.getElementById('pubScholarUrl');
+  if (idsEl) idsEl.value = selectedIds.join(',');
+  if (displayEl) displayEl.value = preview.count || '';
+  if (msgEl) msgEl.value = preview.message || 'Full publication list available upon request or via Google Scholar.';
+  if (scholarEl) scholarEl.value = preview.scholar_url || '';
+
+  const list = document.getElementById('pubListAdmin');
+  if (!list) return;
+  if (!PUBS.length) {
+    list.innerHTML = '<p class="empty"><i class="fas fa-spinner fa-spin"></i> Loading publications...</p>';
+    return;
+  }
+  const selectedSet = new Set(selectedIds.map(id => Number(id)));
+  list.innerHTML = PUBS.map(pub => `
+    <label class="pub-admin-row">
+      <input type="checkbox" data-id="${pub.id}" ${selectedSet.has(pub.id)?'checked':''}>
+      <div class="pub-admin-label"><strong>${esc(pub.title)}</strong><div class="pub-admin-year">${pub.year} · ${esc(pub.venue)}</div></div>
+    </label>`).join('');
+  list.querySelectorAll('input[type="checkbox"]').forEach(ch => {
+    ch.addEventListener('change', updatePubSelectedIds);
+  });
+}
+
+function updatePubSelectedIds() {
+  const values = Array.from(document.querySelectorAll('#pubListAdmin input[type="checkbox"]'))
+    .filter(ch => ch.checked)
+    .map(ch => ch.dataset.id)
+    .filter(Boolean);
+  const idsEl = document.getElementById('pubSelectedIds');
+  if (idsEl) idsEl.value = values.join(',');
+}
+
+function getDefaultPageTabs() {
+  return [
+    {id:'about', title:'Home', icon:'fas fa-user'},
+    {id:'teaching', title:'Teaching', icon:'fas fa-chalkboard-teacher'},
+    {id:'supervision', title:'Supervision', icon:'fas fa-user-graduate'},
+    {id:'publications', title:'Publications', icon:'fas fa-book-open'},
+    {id:'media', title:'Media', icon:'fas fa-images'},
+    {id:'cv', title:'CV', icon:'fas fa-file-alt'}
+  ];
+}
+
+const PAGE_TAB_ICONS = [
+  ['fas fa-user','Profile'],['fas fa-chalkboard-teacher','Teaching'],['fas fa-user-graduate','Supervision'],
+  ['fas fa-book-open','Publications'],['fas fa-images','Media'],['fas fa-file-alt','CV'],
+  ['fas fa-laptop-code','Tech'],['fas fa-briefcase','Experience'],['fas fa-flask','Research'],
+  ['fas fa-trophy','Awards'],['fas fa-users','Leadership'],['fas fa-id-card','Memberships'],
+  ['fas fa-sitemap','Systems'],['fas fa-network-wired','Networks'],['fas fa-chart-line','Metrics']
+];
+
+function renderPageTabsConfig() {
+  if (!SC) return;
+  if (!Array.isArray(SC.page_tabs) || !SC.page_tabs.length) SC.page_tabs = getDefaultPageTabs();
+  const list = document.getElementById('pageTabsList');
+  if (!list) return;
+  list.innerHTML = SC.page_tabs.map((tab, idx) => `
+    <div class="item-row page-tab-row" data-tab-id="${esc(tab.id)}">
+      <div class="item-row-main">
+        <div class="page-tab-grid">
+          <input type="text" data-field="title" value="${esc(tab.title)}" placeholder="Section title">
+          <select data-field="icon">${PAGE_TAB_ICONS.map(([value,label])=>`<option value="${value}"${value===tab.icon?' selected':''}>${label}</option>`).join('')}</select>
+          <input type="text" value="${esc(tab.id)}" disabled title="Tab ID">
+        </div>
+      </div>
+      <div class="row-actions">
+        <button class="icon-btn" onclick="movePageTabUp(${idx})" title="Move Up"><i class="fas fa-arrow-up"></i></button>
+        <button class="icon-btn" onclick="movePageTabDown(${idx})" title="Move Down"><i class="fas fa-arrow-down"></i></button>
+      </div>
+    </div>`).join('');
+}
+
+function movePageTabUp(idx) {
+  if (!SC || !SC.page_tabs || idx <= 0) return;
+  [SC.page_tabs[idx-1], SC.page_tabs[idx]] = [SC.page_tabs[idx], SC.page_tabs[idx-1]];
+  renderPageTabsConfig();
+}
+
+function movePageTabDown(idx) {
+  if (!SC || !SC.page_tabs || idx >= SC.page_tabs.length - 1) return;
+  [SC.page_tabs[idx], SC.page_tabs[idx+1]] = [SC.page_tabs[idx+1], SC.page_tabs[idx]];
+  renderPageTabsConfig();
+}
+
+function moveAllTabsToDefault() {
+  SC.page_tabs = getDefaultPageTabs();
+  renderPageTabsConfig();
+}
+
+function commitSC(msg) {
   if (!getToken()) return toast('GitHub token not set — go to Settings.','er');
   SC.phone = (document.getElementById('phoneInput').value || '').trim();
   SC.experience_years = (document.getElementById('expYearsInput').value || '').trim();
@@ -931,6 +1086,24 @@ async function saveSection(field) {
   if (field === 'skills') {
     SC.reviewer_journals = document.getElementById('reviewerJournals').value
       .split('\n').map(s=>s.trim()).filter(Boolean);
+  }
+  if (field === 'publications') {
+    if (!SC.publication_preview) SC.publication_preview = {};
+    const ids = (document.getElementById('pubSelectedIds').value || '')
+      .split(/[,\s]+/).map(s=>Number(s)).filter(n=>!Number.isNaN(n));
+    SC.publication_preview.selected_ids = ids;
+    SC.publication_preview.count = Number(document.getElementById('pubDisplayCount').value) || 0;
+    SC.publication_preview.message = document.getElementById('pubMessage').value.trim();
+    SC.publication_preview.scholar_url = document.getElementById('pubScholarUrl').value.trim();
+  }
+  if (field === 'page_tabs') {
+    const rows = document.querySelectorAll('#pageTabsList .page-tab-row');
+    SC.page_tabs = Array.from(rows).map(row => {
+      const title = row.querySelector('[data-field="title"]').value.trim();
+      const icon = row.querySelector('[data-field="icon"]').value.trim();
+      const id = row.dataset.tabId;
+      return {id, title: title || id, icon: icon || 'fas fa-circle'};
+    });
   }
   if (field === 'referees') {
     SC.referees_hidden = document.getElementById('refHideChk').checked;

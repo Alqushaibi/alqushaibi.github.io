@@ -56,6 +56,7 @@ function dots(level) {
 async function loadSiteContent() {
   try {
     siteContent = await fetchData('assets/data/site-content.json');
+    applyPageTabsConfig();
     renderBio();
     renderExperience();
     renderResearchProjects();
@@ -68,6 +69,43 @@ async function loadSiteContent() {
   } catch(err) {
     console.error('Failed to load site content:', err);
   }
+}
+
+function getDefaultPageTabs() {
+  return [
+    {id:'about', title:'Home', icon:'fas fa-user'},
+    {id:'teaching', title:'Teaching', icon:'fas fa-chalkboard-teacher'},
+    {id:'supervision', title:'Supervision', icon:'fas fa-user-graduate'},
+    {id:'publications', title:'Publications', icon:'fas fa-book-open'},
+    {id:'media', title:'Media', icon:'fas fa-images'},
+    {id:'cv', title:'CV', icon:'fas fa-file-alt'}
+  ];
+}
+
+function applyPageTabsConfig() {
+  if (!siteContent) return;
+  const tabs = Array.isArray(siteContent.page_tabs) && siteContent.page_tabs.length
+    ? siteContent.page_tabs
+    : getDefaultPageTabs();
+
+  const tabContainer = document.querySelector('.tab-container');
+  const navLinks = document.getElementById('navLinks');
+  if (!tabContainer || !navLinks) return;
+
+  tabs.forEach(tab => {
+    const btn = document.querySelector(`.tab-btn[data-tab="${tab.id}"]`);
+    const nav = document.querySelector(`.nav-link[data-tab="${tab.id}"]`);
+    if (btn) {
+      btn.innerHTML = `<i class="${esc(tab.icon)}"></i> ${esc(tab.title)}`;
+      tabContainer.appendChild(btn);
+    }
+    if (nav && nav.parentElement) {
+      nav.innerHTML = `<i class="${esc(tab.icon)}"></i> ${esc(tab.title)}`;
+      navLinks.appendChild(nav.parentElement);
+    }
+    const sectionTitle = document.querySelector(`#tab-${tab.id} .section-title span`);
+    if (sectionTitle) sectionTitle.textContent = tab.title;
+  });
 }
 
 /* ── Bio ── */
@@ -387,9 +425,41 @@ const qClass     = q => !q?'':q==='Q1'?'badge-q1':q==='Q2'?'badge-q2':q==='Q3'?'
 function renderPublications() {
   const list  = document.getElementById('pubList');
   const empty = document.getElementById('pubEmpty');
-  const pubs  = getFilteredSorted();
-  if (!pubs.length) { list.innerHTML=''; empty.style.display='block'; return; }
+  const preview = siteContent?.publication_preview || {};
+  let pubs = allPubs;
+
+  if (Array.isArray(preview.selected_ids) && preview.selected_ids.length) {
+    const selectedIds = preview.selected_ids.map(id => Number(id));
+    pubs = allPubs.filter(pub => selectedIds.includes(pub.id));
+    pubs = pubs.sort((a,b) => selectedIds.indexOf(a.id) - selectedIds.indexOf(b.id));
+    if (activeFilter !== 'all') pubs = pubs.filter(pub => pub.type === activeFilter);
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      pubs = pubs.filter(pub =>
+        pub.title.toLowerCase().includes(q) || pub.authors.toLowerCase().includes(q) ||
+        pub.venue.toLowerCase().includes(q) || String(pub.year).includes(q));
+    }
+    if (preview.count && Number(preview.count) > 0) {
+      pubs = pubs.slice(0, Number(preview.count));
+    }
+  } else {
+    pubs = getFilteredSorted();
+  }
+
+  const footer = document.getElementById('pubFooter');
+  if (!pubs.length) {
+    const noData = Array.isArray(preview.selected_ids) && preview.selected_ids.length
+      ? '<p>No selected publications are available.</p>'
+      : '<p>No publications found matching your search.</p>';
+    list.innerHTML = '';
+    empty.innerHTML = noData;
+    empty.style.display='block';
+    if (footer) footer.innerHTML = '';
+    return;
+  }
+
   empty.style.display = 'none';
+  if (footer) footer.innerHTML = '';
   list.innerHTML = pubs.map((pub,i) => `
     <div class="pub-item" data-type="${esc(pub.type)}" style="animation-delay:${i*.03}s">
       <div class="pub-rank"><span class="pub-rank-num">${i+1}</span></div>
@@ -410,6 +480,13 @@ function renderPublications() {
         <span class="citation-label">Citations</span>
       </div>
     </div>`).join('');
+
+  const footer = document.getElementById('pubFooter');
+  if (footer) {
+    footer.innerHTML = preview.message
+      ? `<p>${esc(preview.message)} ${preview.scholar_url ? `<a href="${esc(preview.scholar_url)}" target="_blank" rel="noopener">View on Google Scholar</a>` : ''}</p>`
+      : '';
+  }
 }
 
 function updateTabBadge(count) {

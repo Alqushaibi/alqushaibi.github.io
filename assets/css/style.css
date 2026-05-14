@@ -862,6 +862,10 @@ p:last-child { margin-bottom: 0; }
 }
 .pub-empty i { font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.4; display: block; }
 
+.pub-footer { margin-top: 1rem; padding: 1rem 1.25rem; border-radius: var(--radius); background: var(--surface-2); border: 1px solid var(--border); color: var(--text-secondary); }
+.pub-footer p { margin:0; line-height:1.6; }
+.pub-footer a { color: var(--secondary); text-decoration: underline; }
+
 /* ── Supervision Section ─────────────────────────────────── */
 .supervision-section {
   padding: 3rem 0 4rem;
