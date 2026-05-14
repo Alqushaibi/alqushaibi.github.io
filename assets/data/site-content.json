@@ -671,7 +671,7 @@
       "id": "teaching",
       "title": "Teaching",
       "icon": "fas fa-chalkboard-teacher",
-      "hidden": false
+      "hidden": true
     },
     {
       "id": "supervision",
