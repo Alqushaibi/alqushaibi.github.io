@@ -56,10 +56,10 @@
   ],
   "custom_sections": [
     {
-      "id": "custom-1778578232898",
+      "id": "custom-1778580376962",
       "title": "Academic Leadership & Quality Assurance",
       "location": "sidebar",
-      "content": "Program coordination\nMQA/MQF compliance\nCurriculum mapping\nCLO/PLO alignment\nAssessment moderation\nContinuous Quality Improvement (CQI)\nAccreditation preparation\nStudent advising\nTimetable coordination\nTeaching allocation"
+      "content": "<ul><li>Program coordination</li><li>MQA/MQF compliance</li><li>Curriculum mapping</li><li>CLO/PLO alignment</li><li>Assessment moderation</li><li>Continuous Quality Improvement (CQI)</li><li>Accreditation preparation</li><li>Student advising</li><li>Timetable coordination</li><li>Teaching allocation</li></ul>"
     }
   ],
   "current_positions": [
@@ -192,14 +192,14 @@
   "research_projects": [
     {
       "id": "proj-1",
-      "title": "AI-Powered Gamma Radiation Classification",
-      "badge": "Active : 2025-Present",
+      "title": "Collaborative AI research initiative with Malaysian Nuclear Agency involving deep learning-based material classification for intelligent scanning systems",
+      "badge": "Active : 2026-Present",
       "description": "Deep learning framework for nuclear scanning equipment: material classification (gas, liquid, air, solid). Collaboration with the Malaysian Nuclear Agency."
     },
     {
       "id": "proj-2",
       "title": "Deep Learning Teeth Age Prediction from Dental Radiographs",
-      "badge": "Active : 2025-Present",
+      "badge": "Active : 2026-Present",
       "description": "AI model for biological age estimation from dental X-rays. Cross-faculty collaboration with MAHSA Medic (IT & Dentistry)."
     },
     {
@@ -211,7 +211,7 @@
     {
       "id": "proj-4",
       "title": "ConfTrack Malaysia Conference Management System",
-      "badge": "Active : 2025 -Present",
+      "badge": "Active : 2026 -Present",
       "description": "Full-lifecycle platform: paper submission, blind peer review, editorial decisions, QR attendance, badges, and digital certificates. Hosting MISEBEIT 2026. \nwww.conftrack.com"
     },
     {
@@ -593,7 +593,7 @@
       "level": "Undergraduate"
     }
   ],
-  "cv_filename": "Alaw Alqushaibi CV 18-04-2026.pdf",
+  "cv_filename": "CV – Ts. Dr. Alawi Alqushaibi.pdf",
   "university": "MAHSA University, Malaysia",
   "phone": "+601121226508",
   "experience_years": "8+",
