@@ -677,13 +677,13 @@
       "id": "supervision",
       "title": "Supervision",
       "icon": "fas fa-user-graduate",
-      "hidden": true
+      "hidden": false
     },
     {
       "id": "publications",
       "title": "Publications",
       "icon": "fas fa-book-open",
-      "hidden": true
+      "hidden": false
     },
     {
       "id": "media",
