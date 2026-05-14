@@ -934,7 +934,7 @@ async function loadPublications() {
     PUBS = [];
     console.warn('Failed to load publications for admin:', e);
   }
-  if (SC) renderPublicationConfig();
+  renderPublicationConfig();
 }
 
 function renderPublicationConfig() {
