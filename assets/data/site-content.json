@@ -635,5 +635,66 @@
       "phone": "",
       "relationship": ""
     }
+  ],
+  "publication_preview": {
+    "selected_ids": [
+      161,
+      2,
+      3,
+      4,
+      5,
+      6,
+      10,
+      11,
+      13,
+      14,
+      15,
+      21,
+      22,
+      23,
+      24,
+      25
+    ],
+    "count": 17,
+    "message": "Full publication list available upon request or via Google Scholar.",
+    "scholar_url": "https://scholar.google.com/citations?user=7B_-M3YAAAAJ&hl=en"
+  },
+  "page_tabs": [
+    {
+      "id": "about",
+      "title": "Home",
+      "icon": "fas fa-user",
+      "hidden": false
+    },
+    {
+      "id": "teaching",
+      "title": "Teaching",
+      "icon": "fas fa-chalkboard-teacher",
+      "hidden": false
+    },
+    {
+      "id": "supervision",
+      "title": "Supervision",
+      "icon": "fas fa-user-graduate",
+      "hidden": false
+    },
+    {
+      "id": "publications",
+      "title": "Publications",
+      "icon": "fas fa-book-open",
+      "hidden": false
+    },
+    {
+      "id": "media",
+      "title": "Media",
+      "icon": "fas fa-images",
+      "hidden": false
+    },
+    {
+      "id": "cv",
+      "title": "CV",
+      "icon": "fas fa-file-alt",
+      "hidden": false
+    }
   ]
 }
