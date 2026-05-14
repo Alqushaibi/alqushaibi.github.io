@@ -830,6 +830,9 @@ async function showApp() {
     navToSection('settings');
   }
   await Promise.all([loadSC(), loadSup(), loadMedia(), loadPublications()]);
+  if (getToken()) {
+    navToSection('bio'); // Default to bio section when logged in
+  }
 }
 
 /* ─── Site Content ─── */
@@ -976,12 +979,12 @@ function updatePubSelectedIds() {
 
 function getDefaultPageTabs() {
   return [
-    {id:'about', title:'Home', icon:'fas fa-user'},
-    {id:'teaching', title:'Teaching', icon:'fas fa-chalkboard-teacher'},
-    {id:'supervision', title:'Supervision', icon:'fas fa-user-graduate'},
-    {id:'publications', title:'Publications', icon:'fas fa-book-open'},
-    {id:'media', title:'Media', icon:'fas fa-images'},
-    {id:'cv', title:'CV', icon:'fas fa-file-alt'}
+    {id:'about', title:'Home', icon:'fas fa-user', hidden:false},
+    {id:'teaching', title:'Teaching', icon:'fas fa-chalkboard-teacher', hidden:false},
+    {id:'supervision', title:'Supervision', icon:'fas fa-user-graduate', hidden:false},
+    {id:'publications', title:'Publications', icon:'fas fa-book-open', hidden:false},
+    {id:'media', title:'Media', icon:'fas fa-images', hidden:false},
+    {id:'cv', title:'CV', icon:'fas fa-file-alt', hidden:false}
   ];
 }
 
@@ -1006,6 +1009,9 @@ function renderPageTabsConfig() {
           <select data-field="icon">${PAGE_TAB_ICONS.map(([value,label])=>`<option value="${value}"${value===tab.icon?' selected':''}>${label}</option>`).join('')}</select>
           <input type="text" value="${esc(tab.id)}" disabled title="Tab ID">
         </div>
+        <label style="display:flex;align-items:center;gap:.4rem;margin-top:.5rem;font-size:.85rem;color:var(--txt2)">
+          <input type="checkbox" data-field="hidden" ${tab.hidden?'checked':''}> Hide this tab
+        </label>
       </div>
       <div class="row-actions">
         <button class="icon-btn" onclick="movePageTabUp(${idx})" title="Move Up"><i class="fas fa-arrow-up"></i></button>
@@ -1101,8 +1107,9 @@ async function saveSection(field) {
     SC.page_tabs = Array.from(rows).map(row => {
       const title = row.querySelector('[data-field="title"]').value.trim();
       const icon = row.querySelector('[data-field="icon"]').value.trim();
+      const hidden = row.querySelector('[data-field="hidden"]').checked;
       const id = row.dataset.tabId;
-      return {id, title: title || id, icon: icon || 'fas fa-circle'};
+      return {id, title: title || id, icon: icon || 'fas fa-circle', hidden};
     });
   }
   if (field === 'referees') {

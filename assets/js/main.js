@@ -85,7 +85,7 @@ function getDefaultPageTabs() {
 function applyPageTabsConfig() {
   if (!siteContent) return;
   const tabs = Array.isArray(siteContent.page_tabs) && siteContent.page_tabs.length
-    ? siteContent.page_tabs
+    ? siteContent.page_tabs.filter(tab => !tab.hidden)
     : getDefaultPageTabs();
 
   const tabContainer = document.querySelector('.tab-container');
