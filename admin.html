@@ -1053,18 +1053,6 @@ function moveAllTabsToDefault() {
   renderPageTabsConfig();
 }
 
-function commitSC(msg) {
-  if (!getToken()) return toast('GitHub token not set — go to Settings.','er');
-  SC.phone = (document.getElementById('phoneInput').value || '').trim();
-  SC.experience_years = (document.getElementById('expYearsInput').value || '').trim();
-  SC.university = (document.getElementById('universityInput').value || '').trim();
-  try {
-    await commitSC('Admin: update contact details');
-  } catch(e) {
-    toast(`Save failed: ${e.message}`, 'er');
-  }
-}
-
 async function savePhone() { return saveContactDetails(); }
 
 /* ─── Generic list renderer ─── */
