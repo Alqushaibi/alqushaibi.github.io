@@ -192,7 +192,7 @@
   "research_projects": [
     {
       "id": "proj-1",
-      "title": "AI-Powered Gamma Radiation Classification",
+      "title": "Collaborative AI research initiative with Malaysian Nuclear Agency involving deep learning-based material classification for intelligent scanning systems",
       "badge": "Active : 2025-Present",
       "description": "Deep learning framework for nuclear scanning equipment: material classification (gas, liquid, air, solid). Collaboration with the Malaysian Nuclear Agency."
     },
