@@ -483,7 +483,6 @@ function renderPublications() {
       </div>
     </div>`).join('');
 
-  const footer = document.getElementById('pubFooter');
   if (footer) {
     footer.innerHTML = preview.message
       ? `<p>${esc(preview.message)} ${preview.scholar_url ? `<a href="${esc(preview.scholar_url)}" target="_blank" rel="noopener">View on Google Scholar</a>` : ''}</p>`
