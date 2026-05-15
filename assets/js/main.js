@@ -427,6 +427,7 @@ function renderPublications() {
   const empty = document.getElementById('pubEmpty');
   const preview = siteContent?.publication_preview || {};
   let pubs = allPubs;
+  const countLimit = Number(preview.count) || 0;
 
   if (Array.isArray(preview.selected_ids) && preview.selected_ids.length) {
     const selectedIds = preview.selected_ids.map(id => Number(id));
@@ -439,11 +440,12 @@ function renderPublications() {
         pub.title.toLowerCase().includes(q) || pub.authors.toLowerCase().includes(q) ||
         pub.venue.toLowerCase().includes(q) || String(pub.year).includes(q));
     }
-    if (preview.count && Number(preview.count) > 0) {
-      pubs = pubs.slice(0, Number(preview.count));
-    }
   } else {
     pubs = getFilteredSorted();
+  }
+
+  if (countLimit > 0) {
+    pubs = pubs.slice(0, countLimit);
   }
 
   const footer = document.getElementById('pubFooter');

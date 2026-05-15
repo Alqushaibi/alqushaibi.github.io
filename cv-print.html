@@ -395,6 +395,8 @@ function esc(s){ if(!s&&s!==0) return ''; return String(s).replace(/&/g,'&amp;')
 function stripHtml(s){ return String(s||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim(); }
 function dots(n){ let h='<div class="ldots">'; for(let i=1;i<=5;i++) h+=`<span class="dot${i<=n?' on':''}"></span>`; return h+'</div>'; }
 
+let siteContent = null;
+
 async function ghFetch(path) {
   const r = await fetch(`https://api.github.com/repos/alqushaibi/alqushaibi.github.io/contents/${path}`,
     { headers: { Accept: 'application/vnd.github.v3+json' } });
@@ -410,6 +412,7 @@ async function loadAll(){
     ghFetch('assets/data/publications.json').catch(()=>null),
     ghFetch('assets/data/supervision.json').catch(()=>null)
   ]);
+  siteContent = sc || {};
   if(sc)      renderSC(sc);
   if(pubData) renderPubs(pubData);
   if(supData) renderSup(supData);
@@ -576,18 +579,31 @@ function renderSC(sc){
 }
 
 function renderPubs(data){
+  const preview = siteContent?.publication_preview || {};
   const m = data.metrics||{};
   document.getElementById('mCite').textContent = m.citations!=null ? m.citations.toLocaleString() : '—';
   document.getElementById('mH').textContent    = m.h_index   ?? '—';
   document.getElementById('mI10').textContent  = m.i10_index ?? '—';
 
   const all = (data.publications||[]);
-  const journals  = all.filter(p=>p.type==='journal').sort((a,b)=>(b.citations||0)-(a.citations||0));
-  const confs     = all.filter(p=>p.type==='conference').sort((a,b)=>(b.citations||0)-(a.citations||0));
-  const books     = all.filter(p=>p.type==='book').sort((a,b)=>(b.citations||0)-(a.citations||0));
+  let pubs = all;
+  const countLimit = Number(preview.count) || 0;
+
+  if (Array.isArray(preview.selected_ids) && preview.selected_ids.length) {
+    const selectedIds = preview.selected_ids.map(id => Number(id));
+    pubs = all.filter(pub => selectedIds.includes(pub.id))
+      .sort((a,b) => selectedIds.indexOf(a.id) - selectedIds.indexOf(b.id));
+  }
+  if (countLimit > 0) {
+    pubs = pubs.slice(0, countLimit);
+  }
+
+  const journals  = pubs.filter(p=>p.type==='journal').sort((a,b)=>(b.citations||0)-(a.citations||0));
+  const confs     = pubs.filter(p=>p.type==='conference').sort((a,b)=>(b.citations||0)-(a.citations||0));
+  const books     = pubs.filter(p=>p.type==='book').sort((a,b)=>(b.citations||0)-(a.citations||0));
 
   document.getElementById('pubCount').textContent =
-    `${all.length} total · ${journals.length} journals · ${confs.length} conferences${books.length?` · ${books.length} book chapters`:''}`;
+    `${pubs.length} total · ${journals.length} journals · ${confs.length} conferences${books.length?` · ${books.length} book chapters`:''}`;
 
   const pubHtml = (pubs, type) => pubs.map((p,i)=>`
     <div class="pub">
