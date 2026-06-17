@@ -122,6 +122,26 @@
       ]
     },
     {
+      "id": "exp-1781680369417",
+      "title": "Outcome-Based Education (OBE) / Malaysian Qualifications Framework (MQF) Expert Assessor",
+      "company": "MAHSA University",
+      "period": "April 2026 - Present",
+      "type": "academic",
+      "badge": "",
+      "badge_type": "current",
+      "icon": "fas fa-briefcase",
+      "duties": [
+        "a) Programme Rationale and Objectives",
+        "b) Programme Learning Outcomes (aligned with MQF Level 8)",
+        "c) Curriculum Design and Structure",
+        "d) Delivery Methods for ODL, including Self-Instructional Materials (SIM)",
+        "e) Assessment Strategies suitable for remote learning",
+        "f) Academic and Learner Support Services",
+        "g) Facilities and Learning Resources for online learners",
+        "h) Quality Assurance and Programme Monitoring Mechanisms"
+      ]
+    },
+    {
       "id": "exp-3",
       "title": "Lecturer of Computer Science  (Part Time)",
       "company": "Yemeni Military College",
@@ -186,26 +206,6 @@
         "Installing RFID devices, configuring routers, and troubleshooting gantry problems",
         "Requirements gathering, development planning, designing, workshops, documentation, and MySQL database maintenance",
         "Promote company products and services and convince customers to sign contracts"
-      ]
-    },
-    {
-      "id": "exp-1781680369417",
-      "title": "Outcome-Based Education (OBE) / Malaysian Qualifications Framework (MQF) Expert Assessor",
-      "company": "MAHSA University",
-      "period": "April 2026 - Present",
-      "type": "academic",
-      "badge": "",
-      "badge_type": "current",
-      "icon": "fas fa-briefcase",
-      "duties": [
-        "a) Programme Rationale and Objectives",
-        "b) Programme Learning Outcomes (aligned with MQF Level 8)",
-        "c) Curriculum Design and Structure",
-        "d) Delivery Methods for ODL, including Self-Instructional Materials (SIM)",
-        "e) Assessment Strategies suitable for remote learning",
-        "f) Academic and Learner Support Services",
-        "g) Facilities and Learning Resources for online learners",
-        "h) Quality Assurance and Programme Monitoring Mechanisms"
       ]
     }
   ],
