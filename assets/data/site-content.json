@@ -577,8 +577,8 @@
       "title": "Information Management",
       "description": "Information lifecycle, knowledge management, digital information systems, and organizational information strategy",
       "category": "info-systems",
-      "level": "Undergraduate",
-      "status": "current"
+      "status": "past",
+      "level": "Undergraduate"
     },
     {
       "id": "teach-8",
@@ -610,6 +610,22 @@
       "description": "CPU design, memory hierarchy, instruction sets, pipelining, I/O systems, and computer performance",
       "category": "networks-systems",
       "status": "past",
+      "level": "Undergraduate"
+    },
+    {
+      "id": "teach-1781680530786",
+      "title": "Mobile Technology",
+      "description": "",
+      "category": "networks-systems",
+      "status": "current",
+      "level": "Undergraduate"
+    },
+    {
+      "id": "teach-1781680553348",
+      "title": "TCP/IP Programming",
+      "description": "",
+      "category": "networks-systems",
+      "status": "current",
       "level": "Undergraduate"
     }
   ],
