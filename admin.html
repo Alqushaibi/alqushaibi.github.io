@@ -1192,6 +1192,7 @@ function moveItemDown(listId, idx) {
 }
 
 function openModalFor(type, item) {
+  document.getElementById('itemModalSave').onclick = saveModalItem;
   document.getElementById('itemModal').style.display = 'flex';
   const title = {
     education:'Education Entry', current_positions:'Current Position',
