@@ -11,21 +11,21 @@
       "year_start": 2025
     },
     {
-      "id": "phd-1777954853453",
-      "name": "Xu Heng",
-      "degree": "Ph.D. Candidate",
-      "university": "MAHSA University",
-      "role": "Co-Supervisor",
-      "research_area": "Intelligent Construction",
-      "status": "current"
-    },
-    {
       "id": "phd-1781675573979",
       "name": "Bashir Ibne Zafor",
       "degree": "Ph.D. Candidate",
       "university": "MAHSA University",
       "role": "Main Supervisor",
       "research_area": "AI, Machine Learning",
+      "status": "current"
+    },
+    {
+      "id": "phd-1777954853453",
+      "name": "Xu Heng",
+      "degree": "Ph.D. Candidate",
+      "university": "MAHSA University",
+      "role": "Co-Supervisor",
+      "research_area": "Intelligent Construction",
       "status": "current"
     }
   ],
