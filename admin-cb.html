@@ -155,13 +155,11 @@
       <div class="fg"><label>Create a password</label><input type="password" id="pw1" placeholder="Min 8 characters" autocomplete="new-password"></div>
       <div class="fg"><label>Confirm password</label><input type="password" id="pw2" placeholder="Repeat password" onkeydown="if(event.key==='Enter')setupPw()"></div>
       <button class="btn btn-primary" style="width:100%" onclick="setupPw()"><i class="fas fa-key"></i> Set Password &amp; Enter</button>
-      <p style="font-size:.85rem;color:var(--muted);margin-top:.9rem">Already have a password? <a href="#" onclick="showLoginForm();return false;" style="color:var(--s)">Login here</a>.</p>
     </div>
 
     <div id="frmLogin" style="display:none">
       <div class="fg"><label>Password</label><input type="password" id="pwLogin" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <button class="btn btn-primary" style="width:100%" id="loginBtn" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> Login</button>
-      <p style="font-size:.85rem;color:var(--muted);margin-top:.9rem">Need a new password? <a href="#" onclick="showSetupForm();return false;" style="color:var(--s)">Set it up here</a>.</p>
       <p style="font-size:.77rem;color:var(--muted);margin-top:.9rem"><a href="#" onclick="resetPw()" style="color:var(--s)">Forgot password? Reset</a></p>
     </div>
     <p id="authErr" style="color:var(--err);font-size:.83rem;margin-top:.9rem;display:none"></p>
@@ -611,26 +609,12 @@ let lockUntil = 0;
 
 function initAuth() {
   const stored = localStorage.getItem('adm_hash');
-  if (stored) {
-    showLoginForm();
-  } else {
-    showSetupForm();
-  }
+  document.getElementById('authSub').textContent = stored
+    ? 'Enter your password to continue' : 'Set up a password to protect this panel';
+  document.getElementById(stored ? 'frmLogin' : 'frmSetup').style.display = 'block';
   if (sessionStorage.getItem('adm_ok') === '1') showApp();
   // restore lockout
   lockUntil = parseInt(localStorage.getItem('adm_lock') || '0', 10);
-}
-
-function showSetupForm() {
-  document.getElementById('authSub').textContent = 'Set up a password to protect this panel';
-  document.getElementById('frmSetup').style.display = 'block';
-  document.getElementById('frmLogin').style.display = 'none';
-}
-
-function showLoginForm() {
-  document.getElementById('authSub').textContent = 'Enter your password to continue';
-  document.getElementById('frmSetup').style.display = 'none';
-  document.getElementById('frmLogin').style.display = 'block';
 }
 
 async function setupPw() {
@@ -1051,6 +1035,18 @@ function movePageTabDown(idx) {
 function moveAllTabsToDefault() {
   SC.page_tabs = getDefaultPageTabs();
   renderPageTabsConfig();
+}
+
+function commitSC(msg) {
+  if (!getToken()) return toast('GitHub token not set — go to Settings.','er');
+  SC.phone = (document.getElementById('phoneInput').value || '').trim();
+  SC.experience_years = (document.getElementById('expYearsInput').value || '').trim();
+  SC.university = (document.getElementById('universityInput').value || '').trim();
+  try {
+    await commitSC('Admin: update contact details');
+  } catch(e) {
+    toast(`Save failed: ${e.message}`, 'er');
+  }
 }
 
 async function savePhone() { return saveContactDetails(); }
