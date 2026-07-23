@@ -569,8 +569,8 @@
       "title": "Database Management Systems",
       "description": "Relational databases, SQL, ER modeling, normalization, transactions, and database administration",
       "category": "info-systems",
-      "level": "Undergraduate",
-      "status": "current"
+      "status": "past",
+      "level": "Undergraduate"
     },
     {
       "id": "teach-7",
@@ -585,8 +585,8 @@
       "title": "Information System",
       "description": "Systems analysis, design, implementation, and evaluation of enterprise information systems",
       "category": "info-systems",
-      "level": "Undergraduate",
-      "status": "current"
+      "status": "past",
+      "level": "Undergraduate"
     },
     {
       "id": "teach-9",
@@ -617,7 +617,7 @@
       "title": "Mobile Technology",
       "description": "",
       "category": "networks-systems",
-      "status": "current",
+      "status": "past",
       "level": "Undergraduate"
     },
     {
