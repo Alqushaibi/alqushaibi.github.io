@@ -78,6 +78,17 @@
   ],
   "experience": [
     {
+      "id": "exp-1789017854732",
+      "title": "Assistant Professor",
+      "company": "University of Nottingham Malaysia",
+      "period": "September 2026 - Current",
+      "type": "academic",
+      "badge": "Currnt",
+      "badge_type": "current",
+      "icon": "fas fa-briefcase",
+      "duties": []
+    },
+    {
       "id": "exp-1",
       "title": "Program Coordinator: Information Technology",
       "company": "MAHSA University",
@@ -207,17 +218,6 @@
         "Requirements gathering, development planning, designing, workshops, documentation, and MySQL database maintenance",
         "Promote company products and services and convince customers to sign contracts"
       ]
-    },
-    {
-      "id": "exp-1789017854732",
-      "title": "Assistant Professor",
-      "company": "University of Nottingham Malaysia",
-      "period": "September 2026 - Current",
-      "type": "academic",
-      "badge": "Currnt",
-      "badge_type": "current",
-      "icon": "fas fa-briefcase",
-      "duties": []
     }
   ],
   "research_projects": [
