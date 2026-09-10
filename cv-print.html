@@ -428,7 +428,9 @@ function renderSC(sc){
   img.src='assets/img/profile.jpeg';
 
   /* Header title */
-  if(sc.current_positions?.length)
+  if(sc.hero?.title)
+    document.getElementById('hdrTitle').textContent = sc.hero.title;
+  else if(sc.current_positions?.length)
     document.getElementById('hdrTitle').textContent = sc.current_positions.map(p=>p.title).join(' · ');
 
   /* University */

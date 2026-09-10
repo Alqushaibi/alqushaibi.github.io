@@ -411,16 +411,16 @@
       <div class="section-container">
         <h2 class="section-title"><span>Curriculum Vitae</span></h2>
         <div class="cv-actions">
-          <a id="cvDownloadLink" href="#" download class="cv-btn download">
+          <a href="cv-print.html" target="_blank" rel="noopener" class="cv-btn download">
             <i class="fas fa-download"></i> Download CV (PDF)
           </a>
-          <a href="cv-print.html" target="_blank" class="cv-btn" style="background:linear-gradient(135deg,#0077b6,#00b4d8);color:#fff;border:none">
-            <i class="fas fa-file-pdf"></i> Generate CV as PDF
+          <a id="cvArchiveLink" href="#" download class="cv-btn" style="display:none">
+            <i class="fas fa-file-pdf"></i> Download last saved PDF
           </a>
         </div>
         <div class="cv-embed">
-          <iframe id="cvIframe" src="" width="100%" height="920px" title="Ts. Dr. Alawi Alqushaibi – Curriculum Vitae">
-            <p>Your browser does not support PDF embedding.</p>
+          <iframe id="cvIframe" src="cv-print.html" width="100%" height="920px" title="Ts. Dr. Alawi Alqushaibi – Curriculum Vitae">
+            <p>Your browser does not support embedded documents.</p>
           </iframe>
         </div>
       </div>
@@ -434,8 +434,8 @@
   <div class="footer-container">
     <div class="footer-info">
       <strong>Ts. Dr. Alawi Alqushaibi</strong>
-      <p>Lecturer &amp; Program Coordinator – IT | MAHSA University</p>
-      <p>Kuala Lumpur, Malaysia</p>
+      <p id="footerTitle">Lecturer &amp; Program Coordinator – Information Technology</p>
+      <p id="footerAffiliation">MAHSA University, Kuala Lumpur, Malaysia</p>
     </div>
     <div class="footer-links">
       <a href="https://scholar.google.com/citations?user=7B_-M3YAAAAJ&hl=en" target="_blank" rel="noopener" title="Google Scholar"><i class="fas fa-graduation-cap"></i></a>

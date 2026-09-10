@@ -121,6 +121,10 @@ function renderHero() {
     const el = document.querySelector('.hero-affiliation');
     if (el) el.innerHTML = `<i class="fas fa-university"></i> ${esc(h.affiliation)}`;
   }
+  const ft = document.getElementById('footerTitle');
+  if (ft && h.title) ft.textContent = h.title;
+  const fa = document.getElementById('footerAffiliation');
+  if (fa && h.affiliation) fa.textContent = h.affiliation;
 }
 
 /* ── Bio ── */
@@ -358,12 +362,16 @@ function updateTeachingFilterCounts(subjects) {
 /* ── CV Section ── */
 function renderCvSection() {
   if (!siteContent) return;
+  // The CV tab embeds the live cv-print.html (always reflects the latest
+  // site-content.json). The uploaded PDF, if any, is offered as an archive link.
   const fn = siteContent.cv_filename;
-  const encoded = encodeURIComponent(fn);
-  const dlLink = document.getElementById('cvDownloadLink');
-  const iframe  = document.getElementById('cvIframe');
-  if (dlLink) { dlLink.href = encoded; dlLink.download = fn; }
-  if (iframe)   iframe.src  = encoded;
+  const archive = document.getElementById('cvArchiveLink');
+  if (archive && fn) {
+    const encoded = encodeURIComponent(fn);
+    archive.href = encoded;
+    archive.download = fn;
+    archive.style.display = '';
+  }
 }
 
 /* ════════════════════════════════════════════════════════════
