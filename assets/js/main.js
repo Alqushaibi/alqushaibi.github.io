@@ -57,6 +57,7 @@ async function loadSiteContent() {
   try {
     siteContent = await fetchData('assets/data/site-content.json');
     applyPageTabsConfig();
+    renderHero();
     renderBio();
     renderExperience();
     renderResearchProjects();
@@ -106,6 +107,20 @@ function applyPageTabsConfig() {
     const sectionTitle = document.querySelector(`#tab-${tab.id} .section-title span`);
     if (sectionTitle) sectionTitle.textContent = tab.title;
   });
+}
+
+/* ── Hero header (name / position / affiliation) ── */
+function renderHero() {
+  if (!siteContent) return;
+  const h = siteContent.hero || {};
+  if (h.title) {
+    const el = document.querySelector('.hero-title');
+    if (el) el.textContent = h.title;
+  }
+  if (h.affiliation) {
+    const el = document.querySelector('.hero-affiliation');
+    if (el) el.innerHTML = `<i class="fas fa-university"></i> ${esc(h.affiliation)}`;
+  }
 }
 
 /* ── Bio ── */

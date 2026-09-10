@@ -535,14 +535,16 @@
           <span id="tokenOk" style="margin-left:.75rem;font-size:.83rem;color:var(--ok);display:none"><i class="fas fa-check-circle"></i> Token saved</span>
         </div>
         <div class="card">
-          <h3><i class="fas fa-phone"></i> Contact Details</h3>
-          <div class="info-box"><i class="fas fa-info-circle"></i> Phone number is shown in the PDF CV with a WhatsApp link. Include country code, e.g. <code>+60123456789</code></div>
-          <div class="fg"><label>University / Institution</label><input type="text" id="universityInput" placeholder="e.g. MAHSA University, Malaysia"></div>
+          <h3><i class="fas fa-id-card"></i> Header &amp; Contact Details</h3>
+          <div class="info-box"><i class="fas fa-info-circle"></i> The position and affiliation lines appear in the homepage hero header. Phone number is shown in the PDF CV with a WhatsApp link — include country code, e.g. <code>+60123456789</code></div>
+          <div class="fg"><label>Position / Job title (homepage header)</label><input type="text" id="heroTitleInput" placeholder="e.g. Lecturer &amp; Program Coordinator – Information Technology"></div>
+          <div class="fg"><label>Affiliation line (homepage header)</label><input type="text" id="heroAffInput" placeholder="e.g. MAHSA University, Kuala Lumpur, Malaysia"></div>
+          <div class="fg"><label>University / Institution (PDF CV)</label><input type="text" id="universityInput" placeholder="e.g. MAHSA University, Malaysia"></div>
           <div class="two-col">
             <div class="fg"><label>WhatsApp / Phone number</label><input type="tel" id="phoneInput" placeholder="+60123456789"></div>
             <div class="fg"><label>Years of Experience (shown in CV header, e.g. <code>8+</code>)</label><input type="text" id="expYearsInput" placeholder="8+"></div>
           </div>
-          <button class="btn btn-primary" onclick="saveContactDetails()"><i class="fas fa-save"></i> Save Contact Details</button>
+          <button class="btn btn-primary" onclick="saveContactDetails()"><i class="fas fa-save"></i> Save Header &amp; Contact Details</button>
         </div>
         <div class="card">
           <h3><i class="fas fa-lock"></i> Change Password</h3>
@@ -938,6 +940,10 @@ function renderCvInfo() {
   if (ey) ey.value = SC.experience_years || '';
   const un = document.getElementById('universityInput');
   if (un) un.value = SC.university || '';
+  const ht = document.getElementById('heroTitleInput');
+  if (ht) ht.value = (SC.hero && SC.hero.title) || '';
+  const ha = document.getElementById('heroAffInput');
+  if (ha) ha.value = (SC.hero && SC.hero.affiliation) || '';
 }
 
 async function loadPublications() {
@@ -1051,6 +1057,26 @@ function movePageTabDown(idx) {
 function moveAllTabsToDefault() {
   SC.page_tabs = getDefaultPageTabs();
   renderPageTabsConfig();
+}
+
+async function saveContactDetails() {
+  if (!getToken()) return toast('GitHub token not set — go to Settings.','er');
+  SC.phone = (document.getElementById('phoneInput').value || '').trim();
+  SC.experience_years = (document.getElementById('expYearsInput').value || '').trim();
+  SC.university = (document.getElementById('universityInput').value || '').trim();
+  if (!SC.hero) SC.hero = {};
+  SC.hero.title = (document.getElementById('heroTitleInput').value || '').trim();
+  SC.hero.affiliation = (document.getElementById('heroAffInput').value || '').trim();
+  const btn = event?.target?.closest('button');
+  const orig = btn ? btn.innerHTML : null;
+  if (btn) { btn.innerHTML = '<span class="spin"></span> Saving…'; btn.disabled = true; }
+  try {
+    await commitSC('Admin: update header & contact details');
+  } catch(e) {
+    toast(`Save failed: ${e.message}`, 'er');
+  } finally {
+    if (btn) { btn.innerHTML = orig; btn.disabled = false; }
+  }
 }
 
 async function savePhone() { return saveContactDetails(); }
