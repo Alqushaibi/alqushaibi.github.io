@@ -531,6 +531,17 @@
         "Educated people about HIV/AIDS prevention in lectures and community outreach",
         "Worked in special needs schools helping disabled students"
       ]
+    },
+    {
+      "id": "lead-1789922920248",
+      "title": "Conference Chair of MI-SEBIT 2026",
+      "organization": "MAHSA University",
+      "period": "Dec 2025 - Oct 2026",
+      "icon": "fas fa-users",
+      "icon_gradient": "linear-gradient(135deg,#667eea,#764ba2)",
+      "duties": [
+        "Serving as Conference Chair of MI-SEBIT 2026, the 1st MAHSA International Conference on Sustainable Engineering, Built Environment & Information Technology, overseeing the full conference lifecycle including paper submission, blind peer review, and editorial decisions. The conference has attracted more than 200 paper submissions. Coordinating the submission platform (ConfTrack), speaker materials, and event logistics for the September 2026 conference dates."
+      ]
     }
   ],
   "teaching": [
