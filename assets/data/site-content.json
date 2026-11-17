@@ -648,6 +648,30 @@
       "category": "networks-systems",
       "status": "past",
       "level": "Undergraduate"
+    },
+    {
+      "id": "teach-1794913220003",
+      "title": "Programming and Algorithms",
+      "description": "",
+      "category": "programming",
+      "status": "current",
+      "level": "Undergraduate"
+    },
+    {
+      "id": "teach-1794913279155",
+      "title": "Simulation and Optimisation for Decision Support",
+      "description": "",
+      "category": "programming",
+      "status": "current",
+      "level": "Post-graduate"
+    },
+    {
+      "id": "teach-1794913306483",
+      "title": "Advanced Algorithms and Data Structures",
+      "description": "",
+      "category": "programming",
+      "status": "current",
+      "level": "Post-graduate"
     }
   ],
   "cv_filename": "CV – Ts. Dr. Alawi Alqushaibi.pdf",
