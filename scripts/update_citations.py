@@ -46,8 +46,9 @@ def fetch_scholar_data():
     """Fetch author and publication data from Google Scholar via scholarly."""
     try:
         from scholarly import scholarly
-    except ImportError:
-        print("[!] scholarly not installed. Run: pip install scholarly")
+    except ImportError as e:
+        # Report the real cause — a broken dependency also raises ImportError
+        print(f"[!] Could not import scholarly: {e}")
         return None
 
     # signal-based per-attempt timeout (works on Linux/macOS; no-op on Windows)

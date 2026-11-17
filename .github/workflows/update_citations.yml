@@ -26,7 +26,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install "scholarly>=1.7,<2" "httpx>=0.24" "requests>=2.28"
+          # bibtexparser 2.x removed the module scholarly imports — keep it on 1.x
+          pip install "scholarly>=1.7,<2" "bibtexparser>=1.4,<2" "httpx>=0.24" "requests>=2.28"
 
       - name: Run citation updater
         run: python scripts/update_citations.py
